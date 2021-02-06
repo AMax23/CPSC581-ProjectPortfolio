@@ -14,3 +14,9 @@ $("#det-p0").on("click", e => {
 $("#src-p0").on("click", e => {
     window.location.href = "https://github.com/AMax23/CPSC581-Project0";
 });
+
+//////////////////////////////////////////////////////////////////////
+// P1 go page
+$("#go-p1").on("click", e => {
+    window.location.assign(`${URL}/pages/p1.html`);
+});
