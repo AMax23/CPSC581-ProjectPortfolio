@@ -1,0 +1,192 @@
+﻿/* --- VARIABLES--- */
+
+:root {
+    --rgbGradient: linear-gradient( 
+      45deg
+    , #ff0000 /*Red*/
+    , #ff7300 /*Orange*/
+    , #fffb00 /*Yellow*/
+    , #48ff00 /*Lime Green*/
+    , #00ffd5 /*Teal*/
+    , #002bff /*Blue*/
+    , #7a00ff /*Magenta*/
+    , #ff00c8 /*Hot Pink*/
+    , #ff0000 /*Red*/
+    );
+
+    --speechBubbleColour: #7a00ff; /*Magenta*/
+}
+
+/* --- MAIN --- */
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
+
+#mainDiv {
+    position: absolute;
+    z-index: 9;
+}
+
+img {
+    position: absolute;
+    width: 50%;
+    top: -40px;
+    left: 50px;
+    transition: 0.8s;
+}
+
+#mainDiv:hover img {
+    top: -90px;
+}
+
+body {
+    display: flex;
+    height: 100vh;
+    background: #fff;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden; /* Hide scrollbars */
+}
+
+/* --- CSS Related to Speech Bubble ---*/
+#SpeechBubble {
+    position: absolute;
+    transform-origin: 0% 100%;
+    text-align: center;
+    background: var(--speechBubbleColour);
+    border-radius: 10px;
+    color: white;
+    width: 120px;
+    padding: 10px;
+    left: 135px;
+    top: -130px;
+    transform: scale(0); /*it should only appear when the mouse hovers over*/
+    animation-fill-mode: forwards; /*the scale value stays at 1 after the animation finishes*/
+}
+
+    /* Need to add a tail to the speech bubble.*/
+    #SpeechBubble::before {
+        content: '';
+        display: block;
+        width: 0;
+        position: absolute;
+        bottom: -20px;
+        left: 5px;
+        border-style: solid;
+        border-width: 15px;
+        border-color: var(--speechBubbleColour) transparent transparent var(--speechBubbleColour);
+        transform: rotate(20deg);
+    }
+
+/* Animate the speech bubble (Mouse enter): The scale changes from 0 to 1.*/
+@keyframes speechAnimate {
+    0% {
+        transform: scale(0);
+    }
+
+    50% {
+        transform: scale(1.25); /*Make the speech seem like a bounce.*/
+    }
+
+    100% {
+        transform: scale(1);
+    }
+/*
+    100% {
+        transform: scale(0);
+    }*/
+}
+
+
+/* Animate the speech bubble (Mouse enter): The scale changes from 0 to 1.*/
+@keyframes showSpeech {
+    0% {
+        transform: scale(0);
+    }
+
+    50% {
+        transform: scale(1.25); /*Make the speech seem like a bounce.*/
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Animate the speech bubble (Mouse leave): The scale goes from 1 back to 0 */
+@keyframes hideSpeech {
+    0% {
+        transform: scale(1);
+    }
+
+    100% {
+        transform: scale(0);
+    }
+}
+
+/* --- CSS Related to Button ---*/
+button {
+    background: #111;
+    color: #fff;
+    cursor: pointer;
+    position: relative;
+    height: 150px;
+    width: 200px;
+    /*    border: none;
+    outline: none;*/
+    border: 1px solid white;
+    border-radius: 5px;
+    font-size: 18px;
+}
+
+    button:before {
+        opacity: 0; /*RGB background is hidden before hovering*/
+        position: absolute;
+        content: '';
+        top: -2px;
+        left: -2px;
+        height: calc(100% + 4px);
+        width: calc(100% + 4px);
+        border-radius: 5px;
+        z-index: -1;
+        filter: blur(5px);
+        background: var(--rgbGradient);
+        background-size: 400%;
+        transition: opacity .3s ease-in-out;
+        animation: btnAnimate 20s linear infinite alternate;
+    }
+
+    button:hover:before {
+        opacity: 1;
+    }
+
+    button:hover {
+        border: none;
+        outline: none;
+    }
+
+/*While the button is pressed...*/
+/*button:hover:active {
+        background: none;
+    }
+
+        button:hover:active:before {
+            filter: blur(2px);
+        }*/
+
+@keyframes btnAnimate {
+    0% {
+        background-position: 0 0;
+    }
+
+    50% {
+        background-position: 400% 0;
+    }
+
+    100% {
+        background-position: 0 0;
+    }
+}
