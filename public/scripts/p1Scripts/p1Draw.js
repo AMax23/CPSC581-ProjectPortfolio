@@ -1,32 +1,52 @@
 // JavaScript source code
 
+var mic;
 
-////////////////////////// BASIC P5 SET UP  ////////////////////////////////////////
+// Canvas
+var canvasWidth = 600;
+var canvasHeight = 400;
+var canvasColour = 0;
+
+// The line will start from the center of the canvas.
+var lineX = canvasWidth / 2;
+var lineY = canvasHeight / 2;
+var prevLineX = lineX;
+var prevLineY = lineY;
+
+////////////////////////// BASIC P5 SET UP ////////////////////////////////////////
 function setup() {
-    createCanvas(600, 400);
-    background(255);
+    createCanvas(canvasWidth, canvasHeight);
+    background(canvasColour);
+
+    // Create and start an Audio input
     mic = new p5.AudioIn();
-    mic.start();
+    mic.start;
 }
 
 function draw() {
-    touchStarted();
-    startSketch();
+    // This function is to fix the error on the Chrome browser:
+    // "The AudioContext was not allowed to start. It must be resumed(or created) after a user gesture on the page."
+    getAudioContext().resume();
+    drawLine();
 }
-/////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////
 
+function drawLine() {
+    // Draw a line with the x and y coords
+    stroke(255);
+    line(prevLineX, prevLineY, lineX, lineY);
 
-function startSketch() {
     var volumeLevel = mic.getLevel(); // Read the amplitude (volume level).
-    var soundLevel = volumeLevel * 300; // This volume level is between 0–1 which is too small.
+    var soundLevel = volumeLevel * 10; // This volume level is between 0–1 which is too small.
 
-    console.log('sound level: ' + soundLevel);
-}
+    console.log('volumeLevel = ' + volumeLevel * 100);
+    //console.log(lineX + ', ' + lineY);
 
-// This function is to fix the error on the Chrome browser:
-// "The AudioContext was not allowed to start. It must be resumed(or created) after a user gesture on the page."
-function touchStarted() {
-    if (getAudioContext().state !== 'running') {
-        getAudioContext().resume();
-    }
+    // Prev x and y coords become current.
+    prevLineX = lineX;
+    prevLineY = lineY;
+
+    // Move line based on the sound level.
+    lineY = lineY + soundLevel;
+    lineX = lineX + soundLevel;
 }
