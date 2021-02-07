@@ -5,7 +5,7 @@ var mic;
 // Canvas
 var canvasWidth = 600;
 var canvasHeight = 400;
-var canvasColour = 0;
+var canvasColour = 0; // Black
 
 // The line will start from the center of the canvas.
 var lineX = canvasWidth / 2;
@@ -15,18 +15,16 @@ var prevLineY = lineY;
 
 ////////////////////////// BASIC P5 SET UP ////////////////////////////////////////
 function setup() {
-    createCanvas(canvasWidth, canvasHeight);
+    let cnv = createCanvas(canvasWidth, canvasHeight);
+    cnv.mousePressed(userStartAudio);
     background(canvasColour);
 
     // Create and start an Audio input
     mic = new p5.AudioIn();
-    mic.start;
+    mic.start();
 }
 
 function draw() {
-    // This function is to fix the error on the Chrome browser:
-    // "The AudioContext was not allowed to start. It must be resumed(or created) after a user gesture on the page."
-    getAudioContext().resume();
     drawLine();
 }
 ///////////////////////////////////////////////////////////////////////////////////
@@ -39,7 +37,7 @@ function drawLine() {
     var volumeLevel = mic.getLevel(); // Read the amplitude (volume level).
     var soundLevel = volumeLevel * 10; // This volume level is between 0–1 which is too small.
 
-    console.log('volumeLevel = ' + volumeLevel * 100);
+    console.log('sound Level = ' + soundLevel);
     //console.log(lineX + ', ' + lineY);
 
     // Prev x and y coords become current.
