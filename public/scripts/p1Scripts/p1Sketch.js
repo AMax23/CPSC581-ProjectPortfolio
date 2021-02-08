@@ -4,24 +4,20 @@ var mic;
 
 var userLine;
 
-// Canvas
-var canvasWidth = 600;
-var canvasHeight = 400;
-var canvasColour = 0; // Black
-
 ////////////////////////// BASIC P5 SET UP ////////////////////////////////////////
 function setup() {
-    let cnv = createCanvas(canvasWidth, canvasHeight);
+    let cnv = createCanvas(displayWidth, displayHeight);
     cnv.mousePressed(userStartAudio);
-    background(canvasColour);
+
+    background(0); // Black
 
     // Create and start an Audio input
     mic = new p5.AudioIn();
     mic.start();
 
     // The line will start from the center of the canvas.
-    var lineX = canvasWidth / 2;
-    var lineY = canvasHeight / 2;
+    var lineX = displayWidth / 2;
+    var lineY = displayHeight / 2;
     var prevLineX = lineX;
     var prevLineY = lineY;
     userLine = new Line(lineX, lineY, prevLineX, prevLineY);
