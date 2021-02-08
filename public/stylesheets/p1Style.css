@@ -1,0 +1,54 @@
+body {
+    /*overflow: hidden;*/ /* Hide scrollbars */
+}
+
+.toolsBar {
+    background-color: #ddd;
+    box-shadow: 0px 0px 10px rgba(30, 30, 30, 0.7);
+    color: #000;
+    position: relative;
+    left: 0;
+    top: 0;
+    height: 5%;
+    padding: 5px;
+    z-index: 1000;
+}
+
+    .toolsBar ul {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        flex-direction: row;
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        /*height: 10%;*/
+    }
+
+        .toolsBar ul li {
+            padding: 5px 10px;
+        }
+
+    .toolsBar input,
+    .toolsBar button {
+        text-align: center;
+        width: 45px;
+        height: 25px;
+    }
+
+    .toolsBar li:last-of-type {
+        margin-top: auto;
+    }
+
+/*    .toolsBar button {
+        background-color: transparent;
+        border: none;
+        color: #fff;
+        font-size: 20px;
+    }*/
+
+    .toolsBar label {
+        display: block;
+        font-size: 12px;
+        margin-bottom: 3px;
+    }

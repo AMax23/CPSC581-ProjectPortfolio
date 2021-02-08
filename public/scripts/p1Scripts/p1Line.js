@@ -8,14 +8,18 @@ function Line(posX, posY, prevX, prevY) {
     this.prevX = prevX;
     this.prevY = prevY;
     // Assign a random RGB colour when instantiated.
-    this.colourR = random(255);
-    this.colourG = random(255);
-    this.colourB = random(255);
+    //this.colourR = random(255);
+    //this.colourG = random(255);
+    //this.colourB = random(255);
+    this.userColour = document.getElementById('color'); // Whatever the user selects from the colour choices.
+    this.lineWeight = document.getElementById('weight');
 
     // Draw a line with the x and y coords.
     this.show = function () {
-        stroke(this.colourR, this.colourG, this.colourB);
+        //stroke(this.colourR, this.colourG, this.colourB);
+        stroke(this.userColour.value);
         //stroke(255);
+        strokeWeight(this.lineWeight.value);
         line(this.prevX, this.prevY, this.x, this.y);
     };
 
@@ -28,6 +32,7 @@ function Line(posX, posY, prevX, prevY) {
 
         var val = floor(random(4)); // Generate random number between 0 and 3.
 
+        // For now the direction is random but the lenght is based off the user sound input.
         if (val == 0) {
             this.x = this.x + soundLevel;
         } else if (val == 1) {
