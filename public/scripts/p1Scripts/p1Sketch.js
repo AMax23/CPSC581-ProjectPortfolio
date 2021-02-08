@@ -9,7 +9,7 @@ function setup() {
     var canvasWidth = displayWidth;
     var canvasHeight = 0.5 * displayHeight;
     let cnv = createCanvas(canvasWidth, canvasHeight);
-    cnv.mousePressed(userStartAudio);
+    cnv.touchStarted(userStartAudio);
 
     background(0); // Black
 
