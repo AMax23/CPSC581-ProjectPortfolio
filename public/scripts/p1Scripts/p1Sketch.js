@@ -36,7 +36,7 @@ function drawLine() {
 
     var volumeLevel = mic.getLevel(); // Read the amplitude (volume level).
     var soundLevel = volumeLevel * 100; // This volume level is between 0–1 which is too small.
-    //print(soundLevel);
+    print(soundLevel);
     userLine.show();
     userLine.move(soundLevel);
 }
