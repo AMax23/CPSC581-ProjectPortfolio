@@ -6,8 +6,6 @@ function Microphone() {
     this.freqBin = 0;
     this.FFT_SIZE = 1024;
     this.constraints = { audio: true };
-    this.volume;
-    this.freqBin;
 
     var self = this;
     this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -63,7 +61,7 @@ function Microphone() {
             //console.log(freqBinDataArray);
         }
 
-        setInterval(checkAudio, 64);
+        setInterval(checkAudio, 30); // Match with the FPS for the canvas update otherwise there is a lag.
     }
 
     this.getRMS = function (spectrum) {

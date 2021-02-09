@@ -8,8 +8,6 @@ var userLine;
 
 var eye;
 
-var a;
-
 ////////////////////////// BASIC P5 SET UP ////////////////////////////////////////
 function setup() {
     var canvasWidth = displayWidth;
@@ -35,6 +33,10 @@ function setup() {
     //mic = new p5.AudioIn();
     //mic.start();
 
+    // Initialize mic and start it.
+    mic = new Microphone();
+    mic.init();
+
     // The line will start from the center of the canvas.
     var lineX = canvasWidth / 2;
     var lineY = canvasHeight / 2;
@@ -42,17 +44,6 @@ function setup() {
     var prevLineY = lineY;
     // Create new instance of line.
     userLine = new Line(lineX, lineY, prevLineX, prevLineY);
-
-
-
-
-    //////
-    // Initialize mic and start it.
-    mic = new Microphone();
-    mic.init();
-    //a.init();
-    //////
-
 }
 
 function draw() {
@@ -75,7 +66,6 @@ function drawEyes() {
     scale(-1.0, 1.0);
     background(220);
     eye.show();
-
 }
 
 //function videoStuff() {
@@ -130,7 +120,6 @@ function drawEyes() {
 //}
 
 function drawLine() {
-
     var volumeLevel = mic.getVolumeLevel(); // Read the amplitude (volume level).
     //var soundLevel = volumeLevel * 100; // This volume level is between 0–1 which is too small.
     var soundLevel = map(volumeLevel, 0, 60, 0, 20); // Trial and error gave me these numbers.
