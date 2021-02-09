@@ -48,8 +48,8 @@ function setup() {
 
     //////
     // Initialize mic and start it.
-    a = new Microphone();
-    a.init();
+    mic = new Microphone();
+    mic.init();
     //a.init();
     //////
 
@@ -58,13 +58,14 @@ function setup() {
 function draw() {
     //translate(displayWidth, 0);
     //scale(-1.0, 1.0);
-    //drawLine();
+    drawLine();
     //videoStuff();
 
     //drawEyes();
     
     //console.log(a.volume);
 
+    //print(mic.getVolumeLevel() + ', ' + mic.getFreqBin());
 }
 ///////////////////////////////////////////////////////////////////////////////////
 
@@ -130,9 +131,9 @@ function drawEyes() {
 
 function drawLine() {
 
-    var volumeLevel = mic.getLevel(); // Read the amplitude (volume level).
+    var volumeLevel = mic.getVolumeLevel(); // Read the amplitude (volume level).
     //var soundLevel = volumeLevel * 100; // This volume level is between 0–1 which is too small.
-    var soundLevel = map(volumeLevel, 0, 0.06, 0, 20); // Trial and error gave me these numbers.
+    var soundLevel = map(volumeLevel, 0, 60, 0, 20); // Trial and error gave me these numbers.
     //print(volumeLevel, soundLevel);
     userLine.show();
     userLine.move(soundLevel);

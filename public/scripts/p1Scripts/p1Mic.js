@@ -3,6 +3,7 @@ function Microphone() {
 
     this.mic;
     this.volume = 0;
+    this.freqBin = 0;
     this.FFT_SIZE = 1024;
     this.constraints = { audio: true };
     this.volume;
@@ -53,8 +54,12 @@ function Microphone() {
         var checkAudio = function () {
             self.analyser.getByteFrequencyData(freqBinDataArray);
 
-            console.log('Volume: ' + self.getRMS(freqBinDataArray));
-            console.log('Freq Bin: ' + self.getIndexOfMax(freqBinDataArray));
+            //console.log('Volume: ' + self.getRMS(freqBinDataArray));
+
+            self.volume = self.getRMS(freqBinDataArray);
+            self.freqBin = self.getIndexOfMax(freqBinDataArray);
+
+            //console.log('Freq Bin: ' + self.getIndexOfMax(freqBinDataArray));
             //console.log(freqBinDataArray);
         }
 
@@ -68,12 +73,19 @@ function Microphone() {
         }
         rms /= spectrum.length;
         rms = Math.sqrt(rms);
-        self.volume = rms;
         return rms;
     }
 
     this.getIndexOfMax = function (array) {
         return array.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0);
+    }
+
+    this.getVolumeLevel = function () {
+        return self.volume;
+    }
+
+    this.getFreqBin = function () {
+        return self.freqBin;
     }
 
     //return self.volume;
