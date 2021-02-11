@@ -56,3 +56,8 @@ function hammer() {
         face.show(hammerImg);
     }
 }
+
+//// This function fires on every resize of the browser window.
+//function windowResized() {
+//    resizeCanvas(windowWidth, windowHeight);
+//}

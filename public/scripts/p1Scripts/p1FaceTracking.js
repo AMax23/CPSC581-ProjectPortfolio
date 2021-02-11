@@ -63,7 +63,7 @@ function Face(capture) {
                 // Testing 
                 //stroke(0);
                 //rect(this.currX, this.currY, img.width / 4, img.height / 4);
-                image(img, this.currX, this.currY, img.width / 4, img.height / 4);
+                image(img, this.currX, this.currY, img.width / 7, img.height / 7); // Make the image smaller for mobile devices
 
             }
         }
