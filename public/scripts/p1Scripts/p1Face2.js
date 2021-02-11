@@ -61,8 +61,8 @@ function Face(capture) {
             // The x and y coords are from the video capture which has size 640 x 480 (default for laptops)
             // When i change this size manually its not aligned anymore.
             // So i am just mapping it to the display width and height so its accurate.
-            this.currX = map(x, 0, 640, 0, width);
-            this.currY = map(y, 0, 480, 0, height);
+            this.currX = map(x, 0, capture.width, 0, width);
+            this.currY = map(y, 0, capture.height, 0, height);
             //console.log(x);
             //circle(this.currX, this.currY, 10);
             //fill(255, 0, 0);
@@ -90,8 +90,8 @@ function Face(capture) {
                 //console.log('keypoints = ' + keypoints.length);
                 for (var j = 0; j < keypoints.length; j++) {
                     const [x, y, z] = keypoints[j];
-                    var newX = map(x, 0, 640, 0, width);
-                    var newY = map(y, 0, 480, 0, height);
+                    var newX = map(x, 0, capture.width, 0, width);
+                    var newY = map(y, 0, capture.height, 0, height);
                     //console.log(x);
                     if (j == faceKeypoint) {
                         push();
@@ -144,7 +144,8 @@ function Face(capture) {
         }
 
         //background(0);
-        image(capture, 0, 0, capture.width, capture.height);
+        // for debugging
+        //image(capture, 0, 0, capture.width, capture.height);
 
         //fill(255, 0, 0);
         this.drawFaces(this.myFaces, mallet);

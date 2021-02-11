@@ -21,7 +21,7 @@ function setup() {
 
     // Set up video
     capture = createCapture(VIDEO);
-    capture.size(canvasWidth, canvasHeight);
+    //capture.size(canvasWidth, canvasHeight);
 
     capture.hide();
 
