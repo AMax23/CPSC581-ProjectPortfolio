@@ -1,16 +1,16 @@
+// JavaScript source code for the Mic constructor.
 
 function Microphone() {
 
-    this.mic;
     this.volume = 0;
     this.freqBin = 0;
-    this.FFT_SIZE = 1024;
+    this.FFT_SIZE = 1024; // Power of 2, between 32 and max unsigned integer
     this.constraints = { audio: true };
 
     var self = this;
+
     this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
     this.analyser = self.audioContext.createAnalyser();
-
 
     //window.addEventListener('load', init, false);
 
@@ -41,25 +41,18 @@ function Microphone() {
         function error() {
             console.log('Error: ' + arguments);
         }
-
     }
 
     this.beginRecording = function () {
-        self.analyser.fftSize = self.FFT_SIZE; // Power of 2, between 32 and max unsigned integer
+        self.analyser.fftSize = self.FFT_SIZE;
         var bufferLength = self.analyser.fftSize;
 
         var freqBinDataArray = new Uint8Array(bufferLength);
 
         var checkAudio = function () {
             self.analyser.getByteFrequencyData(freqBinDataArray);
-
-            //console.log('Volume: ' + self.getRMS(freqBinDataArray));
-
             self.volume = self.getRMS(freqBinDataArray);
             self.freqBin = self.getIndexOfMax(freqBinDataArray);
-
-            //console.log('Freq Bin: ' + self.getIndexOfMax(freqBinDataArray));
-            //console.log(freqBinDataArray);
         }
 
         setInterval(checkAudio, 30); // Match with the FPS for the canvas update otherwise there is a lag.
@@ -86,7 +79,4 @@ function Microphone() {
     this.getFreqBin = function () {
         return self.freqBin;
     }
-
-    //return self.volume;
-
 };
