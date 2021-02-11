@@ -58,7 +58,7 @@ function Face(capture) {
             this.prevX = this.currX;
             this.prevY = this.currY;
 
-            // The x and y coords are from the video capture which has size 640 x 480 (default)
+            // The x and y coords are from the video capture which has size 640 x 480 (default for laptops)
             // When i change this size manually its not aligned anymore.
             // So i am just mapping it to the display width and height so its accurate.
             this.currX = map(x, 0, 640, 0, width);
