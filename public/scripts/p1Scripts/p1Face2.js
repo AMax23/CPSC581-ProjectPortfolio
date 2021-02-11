@@ -28,15 +28,6 @@ function Face(capture) {
 
     self = this;
 
-    p5.RendererGL.prototype.line = function () {
-        var args = arguments;
-        this.beginShape();
-        this.vertex(args[0], args[1], args[2]);
-        this.vertex(args[3], args[4], args[5]);
-        this.endShape();
-        return this;
-    }
-
     this.init = function () {
 
         // Load the MediaPipe facemesh model assets.
@@ -55,12 +46,14 @@ function Face(capture) {
     }
 
     // Draw a face object returned by facemesh
-    this.drawFaces = function (faces) {
+    this.drawFaces = function (faces, hammerImg) {
+
+        var faceKeypoint = 108; // Forehead
 
         if (faces.length > 0) {
 
             const keypoints = faces[0].scaledMesh;
-            var [x, y, z] = keypoints[4];
+            var [x, y, z] = keypoints[faceKeypoint];
 
             this.prevX = this.currX;
             this.prevY = this.currY;
@@ -79,36 +72,39 @@ function Face(capture) {
             //console.log('line points = ' + this.prevX + ', ' + this.prevY + ', ' + this.currX + ', ' + this.currY);
 
             if (this.prevX != undefined && this.prevY != undefined && this.currX != undefined && this.currY != undefined) {
-                stroke(255);//this.userColour.value);
-                //stroke(255);
-                strokeWeight(2);//this.lineWeight.value);
-                line(this.prevX, this.prevY, this.currX, this.currY);
+                //stroke(255);//this.userColour.value);
+                ////stroke(255);
+                //strokeWeight(2);//this.lineWeight.value);
+                //line(this.prevX, this.prevY, this.currX, this.currY);
+                //circle(this.currX, this.currY, 2);
+                image(hammerImg, this.currX, this.currY, hammerImg.width / 4, hammerImg.height / 4);
+
             }
 
             //rect(10, 100, 5, 5);    
         }
 
-        //    for (var i = 0; i < faces.length; i++) {
-        //        //console.log(faces[].scaledMesh[10]);
-        //        const keypoints = faces[i].scaledMesh;
-        //        //console.log('keypoints = ' + keypoints.length);
-        //        for (var j = 0; j < keypoints.length; j++) {
-        //            const [x, y, z] = keypoints[j];
-        //            var newX = map(x, 0, 640, 0, width);
-        //            var newY = map(y, 0, 480, 0, height);
-        //            //console.log(x);
-        //            if (j == 4) {
-        //                push();
-        //                fill(255, 0, 0);
-        //                circle(newX, newY, 2);
-        //                pop();
+            for (var i = 0; i < faces.length; i++) {
+                //console.log(faces[].scaledMesh[10]);
+                const keypoints = faces[i].scaledMesh;
+                //console.log('keypoints = ' + keypoints.length);
+                for (var j = 0; j < keypoints.length; j++) {
+                    const [x, y, z] = keypoints[j];
+                    var newX = map(x, 0, 640, 0, width);
+                    var newY = map(y, 0, 480, 0, height);
+                    //console.log(x);
+                    if (j == faceKeypoint) {
+                        push();
+                        fill(255, 0, 0);
+                        circle(newX, newY, 2);
+                        pop();
 
-        //            } else {
-        //                circle(newX, newY, 2);
-        //            }
+                    } else {
+                        circle(newX, newY, 2);
+                    }
 
-        //        }
-        //    }
+                }
+            }
     }
 
     // reduces the number of keypoints to the desired set 
@@ -128,7 +124,7 @@ function Face(capture) {
         return ret;
     }
 
-    this.show = function () {
+    this.show = function (mallet) {
         // Flip the image
         translate(displayWidth, 0);
         scale(-1.0, 1.0);
@@ -151,7 +147,7 @@ function Face(capture) {
         //image(capture, 0, 0, capture.width, capture.height);
 
         //fill(255, 0, 0);
-        this.drawFaces(this.myFaces);
+        this.drawFaces(this.myFaces, mallet);
         //rect(150, 100, 20, 200);
         //stroke(255);
         //line(100, 100, 200, 400);
