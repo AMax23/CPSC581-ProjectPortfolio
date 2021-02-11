@@ -75,13 +75,13 @@ function hammer() {
 // Function to create holes in a 2d array.
 function createHoles() {
     // Create 6 mole holes
-    let numOfCols = 3;
-    let numOfRows = 2;
-    let colSpace = width / numOfCols;
+    let numOfCols = 2;
+    let numOfRows = 3;
+    let colSpace = width / numOfCols - 60;
     let rowSpace = height / 2 / numOfRows;
     for (let i = 0; i < numOfCols; i++) {
         for (let j = 0; j < numOfRows; j++) {
-            let x = (colSpace * i) + (colSpace / 2) - 50; // 50 came from trial and error to see what centers the holes.
+            let x = (colSpace * i) + (colSpace / 2) + 10; // 50 came from trial and error to see what centers the holes.
             let y = (rowSpace * j) + (rowSpace / 2) + 150;
             let hole = new Hole(x, y, holeImg);
             holes.push(hole);

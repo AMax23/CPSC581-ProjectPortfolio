@@ -5,8 +5,6 @@ function Face(capture) {
 
     this.currX;
     this.currY;
-    this.prevX = this.currX;
-    this.prevY = this.currY;
 
     // Using only 1 keypoint which is the bare minimum for better performance.
     this.VTX = [151]; // This is the keypoint for the forehead; // VTX468 = new Array(468).fill(0).map((x, i) => i); = full facemesh 468 points.
@@ -50,22 +48,16 @@ function Face(capture) {
             const keypoints = faces[0].scaledMesh;
             var [x, y, z] = keypoints[this.faceKeypointIndex];
 
-            this.prevX = this.currX;
-            this.prevY = this.currY;
-
             // **** The x and y coords are from the video capture which has size 640 x 480 (default for laptops?) ****
             // When i change this size manually its not aligned anymore.
             // So i am just mapping it to the display width and height so its accurate.
             this.currX = map(x, 0, capture.width, 0, width);
             this.currY = map(y, 0, capture.height, 0, height);
 
-            if (this.prevX != undefined && this.prevY != undefined && this.currX != undefined && this.currY != undefined) {
-                // Testing 
-                //stroke(0);
-                //rect(this.currX, this.currY, img.width / 4, img.height / 4);
-                image(img, this.currX, this.currY, img.width / 7, img.height / 7); // Make the image smaller for mobile devices
-
-            }
+            // Testing
+            //stroke(0);
+            //rect(this.currX, this.currY, img.width / 4, img.height / 4);
+            image(img, this.currX, this.currY, img.width / 7, img.height / 7); // Make the image smaller for mobile devices
         }
 
         // For testing only. Draw a dot for each keypoint and a red dot for the image.
@@ -80,11 +72,9 @@ function Face(capture) {
                     fill(255, 0, 0);
                     circle(newX, newY, 2);
                     pop();
-
                 } else {
                     circle(newX, newY, 2);
                 }
-
             }
         }
     }
