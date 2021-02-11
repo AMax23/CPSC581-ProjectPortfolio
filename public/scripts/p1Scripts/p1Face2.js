@@ -48,7 +48,7 @@ function Face(capture) {
     // Draw a face object returned by facemesh
     this.drawFaces = function (faces, hammerImg) {
 
-        var faceKeypoint = 108; // Forehead
+        var faceKeypoint = 108; // Forehead https://github.com/ManuelTS/augmentedFaceMeshIndices/blob/master/Front.jpg
 
         if (faces.length > 0) {
 
@@ -144,7 +144,7 @@ function Face(capture) {
         }
 
         //background(0);
-        //image(capture, 0, 0, capture.width, capture.height);
+        image(capture, 0, 0, capture.width, capture.height);
 
         //fill(255, 0, 0);
         this.drawFaces(this.myFaces, mallet);

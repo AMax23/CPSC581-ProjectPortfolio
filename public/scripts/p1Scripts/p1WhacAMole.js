@@ -21,9 +21,9 @@ function setup() {
 
     // Set up video
     capture = createCapture(VIDEO);
-    //capture.size(canvasWidth, canvasHeight);
+    capture.size(canvasWidth, canvasHeight);
 
-    //capture.hide();
+    capture.hide();
 
 
     //// this is to make sure the capture is loaded before asking facemesh to take a look
@@ -34,8 +34,8 @@ function setup() {
     //}
 
 
-    //face = new Face(capture);
-    //face.init();
+    face = new Face(capture);
+    face.init();
 
 
 
@@ -67,12 +67,9 @@ function draw() {
 
     //image(malletImg, 10, 10, malletImg.width / 4, malletImg.height / 4);
 
-    //background(0);
+    background(0);
 
-    //face.show(hammerImg);
-
-    image(capture, 0, 0, capture.width, capture.height);
-    console.log(capture.width, capture.height);
+    face.show(hammerImg);
 
 
 }
