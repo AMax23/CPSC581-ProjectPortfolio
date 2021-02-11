@@ -5,14 +5,14 @@ function Face(capture) {
     this.currY;
     this.prevX = this.currX;
     this.prevY = this.currY;
-    this.userColour = document.getElementById('color'); // Whatever the user selects from the colour choices.
-    this.lineWeight = document.getElementById('weight');
+    //this.userColour = document.getElementById('color'); // Whatever the user selects from the colour choices.
+    //this.lineWeight = document.getElementById('weight');
 
-    // === full facemesh 468 points ===
-    this.VTX = VTX468;
+    // Using 7 keypoints whihch is the bare minimum for better performance. 
+    this.VTX = VTX7; // VTX468 = full facemesh 468 points.
 
-    // select the right triangulation based on vertices
-    //var TRI = VTX == VTX7 ? TRI7 : (VTX == VTX33 ? TRI33 : (VTX == VTX68 ? TRI68 : TRI468))
+    // Select the right triangulation based on vertices
+    var TRI = this.VTX == VTX7 ? TRI7 : (this.VTX == VTX33 ? TRI33 : (this.VTX == VTX68 ? TRI68 : TRI468))
 
     this.MAX_FACES = 1; //default 10
 
@@ -30,6 +30,8 @@ function Face(capture) {
 
     this.init = function () {
 
+        tf.setBackend('wasm'); // GPU accelerated WebGL backend for TensorFlow.js, faster CPU execution
+
         // Load the MediaPipe facemesh model assets.
         facemesh.load().then(function (_model) {
             console.log("model initialized.")
@@ -46,9 +48,9 @@ function Face(capture) {
     }
 
     // Draw a face object returned by facemesh
-    this.drawFaces = function (faces, hammerImg) {
+    this.drawFaces = function (faces, img) {
 
-        var faceKeypoint = 108; // Forehead https://github.com/ManuelTS/augmentedFaceMeshIndices/blob/master/Front.jpg
+        var faceKeypoint = 1; // Nose https://github.com/ManuelTS/augmentedFaceMeshIndices/blob/master/Front.jpg
 
         if (faces.length > 0) {
 
@@ -58,7 +60,7 @@ function Face(capture) {
             this.prevX = this.currX;
             this.prevY = this.currY;
 
-            // The x and y coords are from the video capture which has size 640 x 480 (default for laptops)
+            // **** The x and y coords are from the video capture which has size 640 x 480 (default for laptops) ****
             // When i change this size manually its not aligned anymore.
             // So i am just mapping it to the display width and height so its accurate.
             this.currX = map(x, 0, capture.width, 0, width);
@@ -77,34 +79,37 @@ function Face(capture) {
                 //strokeWeight(2);//this.lineWeight.value);
                 //line(this.prevX, this.prevY, this.currX, this.currY);
                 //circle(this.currX, this.currY, 2);
-                image(hammerImg, this.currX, this.currY, hammerImg.width / 4, hammerImg.height / 4);
+                // Testing 
+                //stroke(0);
+                //rect(this.currX, this.currY, img.width / 4, img.height / 4);
+                image(img, this.currX, this.currY, img.width / 4, img.height / 4);
 
             }
 
             //rect(10, 100, 5, 5);    
         }
 
-            for (var i = 0; i < faces.length; i++) {
-                //console.log(faces[].scaledMesh[10]);
-                const keypoints = faces[i].scaledMesh;
-                //console.log('keypoints = ' + keypoints.length);
-                for (var j = 0; j < keypoints.length; j++) {
-                    const [x, y, z] = keypoints[j];
-                    var newX = map(x, 0, capture.width, 0, width);
-                    var newY = map(y, 0, capture.height, 0, height);
-                    //console.log(x);
-                    if (j == faceKeypoint) {
-                        push();
-                        fill(255, 0, 0);
-                        circle(newX, newY, 2);
-                        pop();
+        for (var i = 0; i < faces.length; i++) {
+            //console.log(faces[].scaledMesh[10]);
+            const keypoints = faces[i].scaledMesh;
+            //console.log('keypoints = ' + keypoints.length);
+            for (var j = 0; j < keypoints.length; j++) {
+                const [x, y, z] = keypoints[j];
+                var newX = map(x, 0, capture.width, 0, width);
+                var newY = map(y, 0, capture.height, 0, height);
+                //console.log(x);
+                if (j == faceKeypoint) {
+                    push();
+                    fill(255, 0, 0);
+                    circle(newX, newY, 2);
+                    pop();
 
-                    } else {
-                        circle(newX, newY, 2);
-                    }
-
+                } else {
+                    circle(newX, newY, 2);
                 }
+
             }
+        }
     }
 
     // reduces the number of keypoints to the desired set 
@@ -124,7 +129,7 @@ function Face(capture) {
         return ret;
     }
 
-    this.show = function (mallet) {
+    this.show = function (img) {
         // Flip the image
         translate(displayWidth, 0);
         scale(-1.0, 1.0);
@@ -148,7 +153,7 @@ function Face(capture) {
         //image(capture, 0, 0, capture.width, capture.height);
 
         //fill(255, 0, 0);
-        this.drawFaces(this.myFaces, mallet);
+        this.drawFaces(this.myFaces, img);
         //rect(150, 100, 20, 200);
         //stroke(255);
         //line(100, 100, 200, 400);

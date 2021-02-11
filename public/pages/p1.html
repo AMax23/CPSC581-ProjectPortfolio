@@ -16,7 +16,9 @@
     <!--<link href="../stylesheets/test.css" rel="stylesheet" />-->
 
 </head>
-<body>
+<body id="body">
+
+    <button id="startBtn"> start </button>
 
     <!--<div class="toolsBar">
         <ul>
@@ -33,12 +35,10 @@
             </li>
         </ul>
     </div>-->
-
     <!--<div class="container">
         <video class="input_video" muted="muted"></video>
         <canvas class="output_canvas" width="720" height="1280"></canvas>
     </div>-->
-
     <!-- p5.js -->
     <script src="https://cdn.jsdelivr.net/npm/p5@1.2.0/lib/p5.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.2.0/addons/p5.sound.js"></script>
@@ -51,19 +51,24 @@
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js" crossorigin="anonymous"></script>-->
-
-
+    
+    
+    <!-- Import @tensorflow/tfjs or @tensorflow/tfjs-core -->
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-core@2.4.0/dist/tf-core.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-webgl@2.4.0"></script>
+    <!--<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-webgl@2.4.0"></script>-->
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-converter@2.4.0/dist/tf-converter.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/facemesh@0.0.4"></script>
+
+    <!-- Adds the WASM backend to the global backend registry -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-wasm@2.4.0/dist/tf-backend-wasm.js"></script>
+
 
     <!--Additional Scripts-->
     <script src="../scripts/p1Scripts/landmarks.js"></script>
     <!--<script src="../scripts/p1Scripts/p1Sketch.js"></script>-->
     <!--<script src="../scripts/p1Scripts/p1Line.js"></script>
-    <script src="../scripts/p1Scripts/p1Face.js"></script>
-    <script src="../scripts/p1Scripts/p1Mic.js"></script>-->
+    <script src="../scripts/p1Scripts/p1Face.js"></script>-->
+    <script src="../scripts/p1Scripts/p1Mic.js"></script>
     <!--<script src="../scripts/p1Scripts/sketch.js"></script>-->
 
 

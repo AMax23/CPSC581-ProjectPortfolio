@@ -31,8 +31,9 @@ function Microphone() {
         function processSound(stream) {
             self.mic = self.audioContext.createMediaStreamSource(stream);
             self.mic.connect(self.analyser);
-            document.getElementById('clear').onclick = function () {
+            document.getElementById('startBtn').onclick = function () {
                 self.audioContext.resume();
+                console.log('Mic started');
             }
             self.beginRecording();
         }
