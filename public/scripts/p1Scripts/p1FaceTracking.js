@@ -7,9 +7,9 @@ function Face(capture) {
     this.currY;
 
     // Using only 1 keypoint which is the bare minimum for better performance.
-    this.VTX = [10]; // This is the keypoint for the forehead; // VTX468 = new Array(468).fill(0).map((x, i) => i); = full facemesh 468 points.
+    this.VTX = [10]; // This is some point on the face. // VTX468 = new Array(468).fill(0).map((x, i) => i); = full facemesh 468 points.
 
-    this.faceKeypoint = 10; // Forehead https://github.com/ManuelTS/augmentedFaceMeshIndices/blob/master/Front.jpg
+    this.faceKeypoint = 10; // https://github.com/ManuelTS/augmentedFaceMeshIndices/blob/master/Front.jpg
     this.faceKeypointIndex = this.VTX.indexOf(this.faceKeypoint);
 
     this.MAX_FACES = 1; // Default 10
@@ -56,7 +56,7 @@ function Face(capture) {
 
             // Testing
             //stroke(0);
-            //rect(this.currX, this.currY, img.width / 4, img.height / 4);
+            //rect(this.currX, this.currY, img.width / 7, img.height / 7);
             image(img, this.currX, this.currY, img.width / 7, img.height / 7); // Make the image smaller for mobile devices
         }
 
