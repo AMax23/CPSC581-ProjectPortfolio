@@ -17,6 +17,9 @@ var volumeLevel;
 var holes = [];
 var moles = [];
 
+var first = true;
+var x = 1;
+
 ////////////////////////// BASIC P5 SET UP ////////////////////////////////////////
 function setup() {
     var canvasWidth = displayWidth;
@@ -46,16 +49,17 @@ function setup() {
     mic.init();
 
     createHoles();
-
 }
 
 function draw() {
 
+    // Game background
     image(grassImg, 0, 0, width, height);
 
     // Show holes and moles
     for (var i = 0; i < holes.length; i++) {
         moles[i].show();
+        //moles[i].hide();
         holes[i].show();
     }
 
@@ -87,7 +91,7 @@ function createHoles() {
             let x = (colSpace * i) + (colSpace / 2) + 10; // 50, 150, and 60 came from trial and error to see what centers the holes.
             let y = (rowSpace * j) + (rowSpace / 2) + 150;
             let hole = new Hole(x, y, holeImg);
-            let mole = new Hole(x, y, moleImg);
+            let mole = new Mole(x, y, moleImg);
             holes.push(hole);
             moles.push(mole);
         }
