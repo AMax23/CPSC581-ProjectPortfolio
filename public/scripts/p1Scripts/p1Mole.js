@@ -36,10 +36,8 @@ function Mole(posX, posY, img) {
             this.hideY = this.hideY - this.speed;
         }
 
-        ////////////////////
-        // Testing boundaries
-        //this.extraCanvas.fill(255, 0, 0);
-        //rect(this.x, this.y, this.img.width / 7, this.img.height / 7);
+        ////////////////////////////////////////////////////////////
+        // Testing boundaries. Trial and error gave these numbers
         push();
         // Flip the image
         translate(displayWidth, 0);
@@ -47,21 +45,21 @@ function Mole(posX, posY, img) {
         fill(255, 255, 0);
         this.moleBounds.bottomRightX = this.x + 40;
         this.moleBounds.bottomRightY = this.y + 30;
-        rect(this.x + 40, this.y + 30, 10, 10);
+        rect(this.moleBounds.bottomRightX, this.moleBounds.bottomRightY, 10, 10);
         fill(255, 0, 0); this.y
         this.moleBounds.bottomLeftX = this.x + 70;
         this.moleBounds.bottomLeftY = this.y + 30;
-        rect(this.x + 70, this.y + 30, 10, 10);
+        rect(this.moleBounds.bottomLeftX, this.moleBounds.bottomLeftY, 10, 10);
         fill(0, 255, 0); this.y
         this.moleBounds.topLeftX = this.x + 70;
         this.moleBounds.topLeftY = this.y;
-        rect(this.x + 70, this.y, 10, 10);
+        rect(this.moleBounds.topLeftX, this.moleBounds.topLeftY, 10, 10);
         fill(255, 0, 255); this.y
         this.moleBounds.topRightX = this.x + 40;
         this.moleBounds.topRightY = this.y;
-        rect(this.x + 40, this.y, 10, 10);
+        rect(this.moleBounds.topRightX, this.moleBounds.topRightY, 10, 10);
         pop();
-        ////////////////////
+        ////////////////////////////////////////////////////////////
     }
 
     this.hide = function () {

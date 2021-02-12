@@ -126,7 +126,7 @@ function hammer() {
         pop();
     }
 
-    if (checkHit()) {
+    if (isMoleHit()) {
         face.show(hammerHitImg);
     } else {
         face.show(hammerImg);
@@ -136,15 +136,26 @@ function hammer() {
 /* Check if the hammer made contact with the mole.
  * If it does, then it returns true and a differend hammer is drawn.
  */
-function checkHit() {
+function isMoleHit() {
 
     // The x and y directions are flipped because the canvas is flipped when it draws the hammer
     // This is because of the camera mirroring.
     for (var i = 0; i < moles.length; i++) {
-        if ((hammerBounds.topLeftX <= moles[i].moleBounds.topLeftX && hammerBounds.topLeftX >= moles[i].moleBounds.topRightX
-            && hammerBounds.topLeftY > moles[i].moleBounds.topLeftY && hammerBounds.topLeftY < moles[i].moleBounds.bottomLeftY)
+        if (
+            // Case when the top left of the hammer is between the bounds of the mole.
+            (hammerBounds.topLeftX <= moles[i].moleBounds.topLeftX && hammerBounds.topLeftX >= moles[i].moleBounds.topRightX
+                && hammerBounds.topLeftY > moles[i].moleBounds.topLeftY && hammerBounds.topLeftY < moles[i].moleBounds.bottomLeftY)
+
+            // Case when the bottom left of the hammer is between the bounds of the mole.
             || (hammerBounds.bottomLeftX <= moles[i].moleBounds.topLeftX && hammerBounds.bottomLeftX >= moles[i].moleBounds.topRightX
-                && hammerBounds.bottomLeftY > moles[i].moleBounds.topLeftY && hammerBounds.bottomLeftY < moles[i].moleBounds.bottomLeftY)) {
+                && hammerBounds.bottomLeftY > moles[i].moleBounds.topLeftY && hammerBounds.bottomLeftY < moles[i].moleBounds.bottomLeftY)
+
+            // Case when the entire hammer is touching the mole but all the bounds of the hammer are outside the bounds of the mole's.
+            || (hammerBounds.bottomRightY >= moles[i].moleBounds.topLeftY && hammerBounds.bottomRightY <= moles[i].moleBounds.bottomLeftY
+                && hammerBounds.bottomRightX <= moles[i].moleBounds.topRightX && hammerBounds.topLeftX >= moles[i].moleBounds.topLeftX
+                && hammerBounds.topRightY <= moles[i].moleBounds.topRightY
+            )
+        ) {
             return true;
         }
     }
