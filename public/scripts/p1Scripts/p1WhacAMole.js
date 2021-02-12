@@ -17,8 +17,18 @@ var volumeLevel;
 var holes = [];
 var moles = [];
 
-var first = true;
-var x = 1;
+var screen = 1;
+
+var hammerBounds = {
+    'topLeftX': 0,
+    'topLeftY': 0,
+    'topRightX': 0,
+    'topRightY': 0,
+    'bottomLeftX': 0,
+    'bottomLeftY': 0,
+    'bottomRightX': 0,
+    'bottomRightY': 0
+};
 
 ////////////////////////// BASIC P5 SET UP ////////////////////////////////////////
 function preload() {
@@ -61,9 +71,22 @@ function setup() {
 }
 
 function draw() {
+    if (screen == 0) {
+        startScreen();
+    } else if (screen == 1) {
+        gameStart();
+    } else if (screen == 2) {
+        gameOver();
+    }
 
+    hammer();
+}
+///////////////////////////////////////////////////////////////////////////////////
+
+function gameStart() {
     // Game background
     image(grassImg, 0, 0, width, height);
+    //background(0);
 
     // Show holes and moles
     for (var i = 0; i < holes.length; i++) {
@@ -71,21 +94,61 @@ function draw() {
         //moles[i].hide();
         holes[i].show();
     }
-
-    hammer();
 }
-///////////////////////////////////////////////////////////////////////////////////
 
 function hammer() {
     var volumeThreshold = 15;
     volumeLevel = mic.getVolumeLevel(); // Read the amplitude (volume level).
     //console.log('volume level = ' + volumeLevel);
 
-    if (volumeLevel > volumeThreshold) {
+    //Initially for a bit the x and y might be undefined because the camera is still initializing.
+    if (face.currX != undefined) {
+        push();
+        // Flip the image
+        translate(displayWidth, 0);
+        scale(-1.0, 1.0);
+        fill(255, 255, 0);
+        hammerBounds.bottomRightX = face.currX - 70;
+        hammerBounds.bottomRightY = face.currY + 40;
+        ellipse(hammerBounds.bottomRightX, hammerBounds.bottomRightY, 10, 10);
+        fill(255, 0, 0);
+        hammerBounds.bottomLeftX = face.currX - 20;
+        hammerBounds.bottomLeftY = face.currY + 60;
+        ellipse(face.currX - 20, face.currY + 60, 10, 10);
+        fill(0, 255, 0);
+        hammerBounds.topLeftX = face.currX - 10;
+        hammerBounds.topLeftY = face.currY + 30;
+        ellipse(face.currX - 10, face.currY + 30, 10, 10);
+        fill(255, 0, 255);
+        hammerBounds.topRightX = face.currX - 70;
+        hammerBounds.topRightY = face.currY + 10;
+        ellipse(face.currX - 70, face.currY + 10, 10, 10);
+        pop();
+    }
+
+    if (checkHit()) {
         face.show(hammerHitImg);
     } else {
         face.show(hammerImg);
     }
+}
+
+/* Check if the hammer made contact with the mole.
+ * If it does, then it returns true and a differend hammer is drawn.
+ */
+function checkHit() {
+
+    // The x and y directions are flipped because the canvas is flipped when it draws the hammer
+    // This is because of the camera mirroring.
+    for (var i = 0; i < moles.length; i++) {
+        if ((hammerBounds.topLeftX <= moles[i].moleBounds.topLeftX && hammerBounds.topLeftX >= moles[i].moleBounds.topRightX
+            && hammerBounds.topLeftY > moles[i].moleBounds.topLeftY && hammerBounds.topLeftY < moles[i].moleBounds.bottomLeftY)
+            || (hammerBounds.bottomLeftX <= moles[i].moleBounds.topLeftX && hammerBounds.bottomLeftX >= moles[i].moleBounds.topRightX
+                && hammerBounds.bottomLeftY > moles[i].moleBounds.topLeftY && hammerBounds.bottomLeftY < moles[i].moleBounds.bottomLeftY)) {
+            return true;
+        }
+    }
+    return false;
 }
 
 // Function to create holes in a 2d array. And the moles.

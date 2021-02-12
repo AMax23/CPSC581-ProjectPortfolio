@@ -53,30 +53,36 @@ function Face(capture) {
             // So i am just mapping it to the display width and height so its accurate.
             this.currX = map(x, 0, capture.width, 0, width);
             this.currY = map(y, 0, capture.height, 0, height);
-
+            ///////////////////////
             // Testing
             //stroke(0);
-            //rect(this.currX, this.currY, img.width / 7, img.height / 7);
-            image(img, this.currX, this.currY, img.width / 7, img.height / 7); // Make the image smaller for mobile devices
+            //rect(this.currX - img.width / 7, this.currY, img.width / 7, img.height / 7);
+            //push();
+            //fill(255, 0, 0);
+            //ellipse(this.currX , this.currY, 10, 10);
+            //console.log('x and y in face = ' + this.currX + ', ' + this.currY);
+            //pop();
+            ///////////////////////
+            image(img, this.currX - img.width/7, this.currY, img.width / 7, img.height / 7); // Make the image smaller for mobile devices
         }
 
         // For testing only. Draw a dot for each keypoint and a red dot for the image.
-        for (var i = 0; i < faces.length; i++) {
-            const keypoints = faces[i].scaledMesh;
-            for (var j = 0; j < keypoints.length; j++) {
-                const [x, y, z] = keypoints[j];
-                var newX = map(x, 0, capture.width, 0, width);
-                var newY = map(y, 0, capture.height, 0, height);
-                if (this.VTX[j] == this.faceKeypoint) {
-                    push();
-                    fill(255, 0, 0);
-                    circle(newX, newY, 2);
-                    pop();
-                } else {
-                    circle(newX, newY, 2);
-                }
-            }
-        }
+        //for (var i = 0; i < faces.length; i++) {
+        //    const keypoints = faces[i].scaledMesh;
+        //    for (var j = 0; j < keypoints.length; j++) {
+        //        const [x, y, z] = keypoints[j];
+        //        var newX = map(x, 0, capture.width, 0, width);
+        //        var newY = map(y, 0, capture.height, 0, height);
+        //        if (this.VTX[j] == this.faceKeypoint) {
+        //            push();
+        //            fill(255, 0, 0);
+        //            circle(newX, newY, 20);
+        //            pop();
+        //        } else {
+        //            circle(newX, newY, 2);
+        //        }
+        //    }
+        //}
     }
 
     // Reduces the number of keypoints to the desired set 
@@ -115,5 +121,12 @@ function Face(capture) {
         //image(capture, 0, 0, capture.width, capture.height);
 
         this.drawFaces(this.myFaces, img);
+    }
+
+    this.getPos = function () {
+        return {
+            'x': this.currX,
+            'y': this.currY
+        }
     }
 }
