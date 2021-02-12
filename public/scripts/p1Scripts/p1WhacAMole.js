@@ -21,6 +21,15 @@ var first = true;
 var x = 1;
 
 ////////////////////////// BASIC P5 SET UP ////////////////////////////////////////
+function preload() {
+    // Load the images in a asynchronous way
+    hammerImg = loadImage('../images/project 1/thorsHammer.png'); // Load the image of the hammer
+    hammerHitImg = loadImage('../images/project 1/thorsHammerHit.png'); // Load the image hammer when its hitting
+    grassImg = loadImage('../images/project 1/grass.jpg'); // Load the image of the grass
+    holeImg = loadImage('../images/project 1/hole.png'); // Load the image of the hole
+    moleImg = loadImage('../images/project 1/mole.png'); // Load the image of the mole
+}
+
 function setup() {
     var canvasWidth = displayWidth;
     var canvasHeight = displayHeight;
@@ -28,12 +37,12 @@ function setup() {
     cnv.id('gameCanvas');
     cnv.touchStarted(userStartAudio);
 
-    // Load the images
-    hammerImg = loadImage('../images/project 1/thorsHammer.png'); // Load the image of the hammer
-    hammerHitImg = loadImage('../images/project 1/thorsHammerHit.png'); // Load the image hammer when its hitting
-    grassImg = loadImage('../images/project 1/grass.jpg'); // Load the image of the grass
-    holeImg = loadImage('../images/project 1/hole.png'); // Load the image of the hole
-    moleImg = loadImage('../images/project 1/mole.png'); // Load the image of the mole
+    // setup() waits until preload() is done
+    hammerImg.loadPixels();
+    hammerHitImg.loadPixels();
+    grassImg.loadPixels();
+    holeImg.loadPixels();
+    moleImg.loadPixels();
 
     // Set up video
     capture = createCapture(VIDEO);
