@@ -15,6 +15,7 @@ var mic;
 var volumeLevel;
 
 var holes = [];
+var moles = [];
 
 ////////////////////////// BASIC P5 SET UP ////////////////////////////////////////
 function setup() {
@@ -27,8 +28,9 @@ function setup() {
     // Load the images
     hammerImg = loadImage('../images/project 1/thorsHammer.png'); // Load the image of the hammer
     hammerHitImg = loadImage('../images/project 1/thorsHammerHit.png'); // Load the image hammer when its hitting
-    holeImg = loadImage('../images/project 1/hole.png'); // Load the image of the mole
     grassImg = loadImage('../images/project 1/grass.jpg'); // Load the image of the grass
+    holeImg = loadImage('../images/project 1/hole.png'); // Load the image of the hole
+    moleImg = loadImage('../images/project 1/mole.png'); // Load the image of the mole
 
     // Set up video
     capture = createCapture(VIDEO);
@@ -51,8 +53,9 @@ function draw() {
 
     image(grassImg, 0, 0, width, height);
 
-    // Show holes
+    // Show holes and moles
     for (var i = 0; i < holes.length; i++) {
+        moles[i].show();
         holes[i].show();
     }
 
@@ -72,7 +75,7 @@ function hammer() {
     }
 }
 
-// Function to create holes in a 2d array.
+// Function to create holes in a 2d array. And the moles.
 function createHoles() {
     // Create 6 mole holes
     let numOfCols = 2;
@@ -81,10 +84,12 @@ function createHoles() {
     let rowSpace = height / 2 / numOfRows;
     for (let i = 0; i < numOfCols; i++) {
         for (let j = 0; j < numOfRows; j++) {
-            let x = (colSpace * i) + (colSpace / 2) + 10; // 50 came from trial and error to see what centers the holes.
+            let x = (colSpace * i) + (colSpace / 2) + 10; // 50, 150, and 60 came from trial and error to see what centers the holes.
             let y = (rowSpace * j) + (rowSpace / 2) + 150;
             let hole = new Hole(x, y, holeImg);
+            let mole = new Hole(x, y, moleImg);
             holes.push(hole);
+            moles.push(mole);
         }
     }
 }

@@ -11,7 +11,7 @@ function Mole(posX, posY, img) {
         image(img, this.x, this.y, this.img.width / 7, this.img.height / 7);
     }
 
-    this.move = function () {
+    this.hide = function () {
 
     }
 
