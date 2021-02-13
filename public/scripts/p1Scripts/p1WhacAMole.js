@@ -9,11 +9,11 @@ var face; // For face tracking
 var hammerImg;
 var hammerHitImg;
 var holeImg;
-var grassImg;
+var bgImg;
 
 var mic;
 var volumeLevel;
-var volumeThreshold = 30;
+var volumeThreshold = 15;
 
 var holes = [];
 var moles = [];
@@ -25,7 +25,7 @@ function preload() {
     // Load the images in a asynchronous way
     hammerImg = loadImage('../images/project 1/thorsHammer.png'); // Load the image of the hammer
     hammerHitImg = loadImage('../images/project 1/thorsHammerHit.png'); // Load the image hammer when its hitting
-    grassImg = loadImage('../images/project 1/background.png'); // Load the image of the grass
+    bgImg = loadImage('../images/project 1/background.png'); // Load the image of the grass
     holeImg = loadImage('../images/project 1/hole.png'); // Load the image of the hole
     moleImg = loadImage('../images/project 1/mole.png'); // Load the image of the mole
 }
@@ -40,7 +40,7 @@ function setup() {
     // setup() waits until preload() is done
     hammerImg.loadPixels();
     hammerHitImg.loadPixels();
-    grassImg.loadPixels();
+    bgImg.loadPixels();
     holeImg.loadPixels();
     moleImg.loadPixels();
 
@@ -76,7 +76,7 @@ function draw() {
 
 function gameStart() {
     // Game background
-    image(grassImg, 0, 0, width, height);
+    image(bgImg, 0, 0, width, height);
     //background(0);
 
     volumeLevel = mic.getVolumeLevel(); // Read the amplitude (volume level).
@@ -86,17 +86,18 @@ function gameStart() {
         if (!moles[i].hit && volumeLevel > volumeThreshold) {
             moles[i].show();
             moles[i].out = true;
-            //console.log('mole is not hit AND there is sound ' + volumeLevel);
         } else if (moles[i].out && volumeLevel <= volumeThreshold) {
-            moles[i].out = false;
             moles[i].hide();
-            //console.log('no sound moles back in ' + volumeLevel);
         }
+        // Put this extra canvas exactly where the hole is so its aligned.
+        image(moles[i].extraCanvas, moles[i].x, moles[i].y);
     }
+
     // Show holes
     for (var i = 0; i < holes.length; i++) {
         holes[i].show();
     }
+
 }
 
 function hammer() {

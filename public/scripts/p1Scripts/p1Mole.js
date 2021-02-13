@@ -16,7 +16,7 @@ function Mole(posX, posY, img) {
     };
     this.out = false;
     this.img = img;
-    this.speed = 2;
+    this.speed = 10;
     this.hit = false;
     this.extraCanvas = createGraphics(100, 50); // This size is from trial and error to see what works best.
     this.bound = 50; // The point at which the mole is fully out or all in.
@@ -29,10 +29,11 @@ function Mole(posX, posY, img) {
          */
         this.extraCanvas.clear();
         this.extraCanvas.image(this.img, 0, this.hideY, this.img.width / 7, this.img.height / 7);
-        image(this.extraCanvas, this.x, this.y); // Put this extra canvas exactly where the hole is so its aligned.
+        //image(this.extraCanvas, this.x, this.y); // Put this extra canvas exactly where the hole is so its aligned.
 
-        if (this.hideY == 0) {
+        if (this.hideY <= 0) {
             this.hideY = 0;
+            this.out = true;
         } else {
             this.hideY = this.hideY - this.speed;
         }
@@ -67,12 +68,13 @@ function Mole(posX, posY, img) {
         // Same logic as showing the mole but now we are going down.
         this.extraCanvas.clear();
         this.extraCanvas.image(this.img, 0, this.hideY, this.img.width / 7, this.img.height / 7);
-        image(this.extraCanvas, this.x, this.y);
+        //image(this.extraCanvas, this.x, this.y);
 
         if (this.hideY >= this.bound) {
-            this.y = this.bound;
+            this.hideY = this.bound;
+            this.out = false;
         } else {
-            this.hideY = this.hideY + this.speed * 5;
+            this.hideY = this.hideY + this.speed;
         }
     }
 }
