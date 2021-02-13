@@ -78,16 +78,13 @@ function gameStart() {
     image(grassImg, 0, 0, width, height);
     //background(0);
 
-    // Show holes and moles
+    // Show moles
     for (var i = 0; i < moles.length; i++) {
-        moles[i].show();
-        //moles[i].hide();
-        push();
-        fill(255, 0, 0);
-        text(i, moles[i].x, moles[i].y);
-        pop();
+        if (!moles[i].hit) {
+            moles[i].show();
+        }
     }
-    // Show holes and moles
+    // Show holes
     for (var i = 0; i < holes.length; i++) {
         holes[i].show();
     }
@@ -103,13 +100,6 @@ function hammer() {
     } else {
         face.show(hammerImg);
     }
-
-    //// Delete the mole object after they have been hit.
-    //for (let i = moles.length - 1; i >= 0; i--) {
-    //    if (moles[i].hit) {
-    //        moles.splice(i, 1);
-    //    };
-    //}
 }
 
 /* Check if the hammer made contact with the mole.
@@ -119,7 +109,7 @@ function isMoleHit() {
     // The x and y directions are flipped because the canvas is flipped when it draws the hammer
     // This is because of the camera mirroring.
     for (var i = 0; i < moles.length; i++) {
-        if (
+        if (!moles[i].hit &&
             // Case when the top left of the hammer is between the bounds of the mole.
             (face.hammerBounds.topLeftX <= moles[i].moleBounds.topLeftX && face.hammerBounds.topLeftX >= moles[i].moleBounds.topRightX
                 && face.hammerBounds.topLeftY > moles[i].moleBounds.topLeftY && face.hammerBounds.topLeftY < moles[i].moleBounds.bottomLeftY)
@@ -156,8 +146,11 @@ function isMoleHit() {
                     tempIndex = 2;
                     break;
             }
+            // Only set the hit variable to true. I dont wanna delete the object from the array.
+            // So the array length will always be the samee regardless of the mole being hit.
             moles[tempIndex].hit = true;
-            console.log('you hit mole ' + tempIndex);
+            moles[tempIndex].hide();
+            //console.log('You hit mole ' + tempIndex);
             return true;
         }
     }

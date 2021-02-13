@@ -68,22 +68,22 @@ function Face(capture) {
             //Initially for a bit the x and y might be undefined because the camera is still initializing.
             if (this.currX != undefined) {
                 push();
-                fill(255, 255, 0);
+                //fill(255, 255, 0);
                 this.hammerBounds.bottomRightX = this.currX - 70;
                 this.hammerBounds.bottomRightY = this.currY + 40;
-                ellipse(this.hammerBounds.bottomRightX, this.hammerBounds.bottomRightY, 10, 10);
-                fill(255, 0, 0);
+                //ellipse(this.hammerBounds.bottomRightX, this.hammerBounds.bottomRightY, 10, 10);
+                //fill(255, 0, 0);
                 this.hammerBounds.bottomLeftX = this.currX - 20;
                 this.hammerBounds.bottomLeftY = this.currY + 60;
-                ellipse(this.hammerBounds.bottomLeftX, this.hammerBounds.bottomLeftY, 10, 10);
-                fill(0, 255, 0);
+                //ellipse(this.hammerBounds.bottomLeftX, this.hammerBounds.bottomLeftY, 10, 10);
+                //fill(0, 255, 0);
                 this.hammerBounds.topLeftX = this.currX - 10;
                 this.hammerBounds.topLeftY = this.currY + 30;
-                ellipse(this.hammerBounds.topLeftX, this.hammerBounds.topLeftY, 10, 10);
-                fill(255, 0, 255);
+                //ellipse(this.hammerBounds.topLeftX, this.hammerBounds.topLeftY, 10, 10);
+                //fill(255, 0, 255);
                 this.hammerBounds.topRightX = this.currX - 70;
                 this.hammerBounds.topRightY = this.currY + 10;
-                ellipse(this.hammerBounds.topRightX, this.hammerBounds.topRightY, 10, 10);
+                //ellipse(this.hammerBounds.topRightX, this.hammerBounds.topRightY, 10, 10);
                 pop();
             }
             ///////////////////////

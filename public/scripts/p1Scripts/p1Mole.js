@@ -42,35 +42,36 @@ function Mole(posX, posY, img) {
         // Flip the image
         translate(displayWidth, 0);
         scale(-1.0, 1.0);
-        fill(255, 255, 0);
+        //fill(255, 255, 0);
         this.moleBounds.bottomRightX = this.x + 40;
         this.moleBounds.bottomRightY = this.y + 30;
-        rect(this.moleBounds.bottomRightX, this.moleBounds.bottomRightY, 10, 10);
-        fill(255, 0, 0);
+        //rect(this.moleBounds.bottomRightX, this.moleBounds.bottomRightY, 10, 10);
+        //fill(255, 0, 0);
         this.moleBounds.bottomLeftX = this.x + 70;
         this.moleBounds.bottomLeftY = this.y + 30;
-        rect(this.moleBounds.bottomLeftX, this.moleBounds.bottomLeftY, 10, 10);
-        fill(0, 255, 0);
+        //rect(this.moleBounds.bottomLeftX, this.moleBounds.bottomLeftY, 10, 10);
+        //fill(0, 255, 0);
         this.moleBounds.topLeftX = this.x + 70;
         this.moleBounds.topLeftY = this.y;
-        rect(this.moleBounds.topLeftX, this.moleBounds.topLeftY, 10, 10);
-        fill(255, 0, 255);
+        //rect(this.moleBounds.topLeftX, this.moleBounds.topLeftY, 10, 10);
+        //fill(255, 0, 255);
         this.moleBounds.topRightX = this.x + 40;
         this.moleBounds.topRightY = this.y;
-        rect(this.moleBounds.topRightX, this.moleBounds.topRightY, 10, 10);
+        //rect(this.moleBounds.topRightX, this.moleBounds.topRightY, 10, 10);
         pop();
         ////////////////////////////////////////////////////////////
     }
 
     this.hide = function () {
         // Same logic as showing the mole but now we are going down.
+        this.extraCanvas.clear();
         this.extraCanvas.image(this.img, 0, this.hideY, this.img.width / 7, this.img.height / 7);
         image(this.extraCanvas, this.x, this.y);
 
         if (this.hideY >= this.bound) {
             this.y = this.bound;
         } else {
-            this.hideY = this.hideY + this.speed;
+            this.hideY = this.hideY + this.speed * 5;
         }
     }
 }
