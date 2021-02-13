@@ -13,6 +13,7 @@ var grassImg;
 
 var mic;
 var volumeLevel;
+var volumeThreshold = 30;
 
 var holes = [];
 var moles = [];
@@ -78,14 +79,18 @@ function gameStart() {
     image(grassImg, 0, 0, width, height);
     //background(0);
 
-    var volumeThreshold = 15;
     volumeLevel = mic.getVolumeLevel(); // Read the amplitude (volume level).
-    //console.log('volume level = ' + volumeLevel);
 
     // Show moles
     for (var i = 0; i < moles.length; i++) {
         if (!moles[i].hit && volumeLevel > volumeThreshold) {
             moles[i].show();
+            moles[i].out = true;
+            //console.log('mole is not hit AND there is sound ' + volumeLevel);
+        } else if (moles[i].out && volumeLevel <= volumeThreshold) {
+            moles[i].out = false;
+            moles[i].hide();
+            //console.log('no sound moles back in ' + volumeLevel);
         }
     }
     // Show holes
@@ -109,7 +114,7 @@ function isMoleHit() {
     // The x and y directions are flipped because the canvas is flipped when it draws the hammer
     // This is because of the camera mirroring.
     for (var i = 0; i < moles.length; i++) {
-        if (!moles[i].hit &&
+        if (!moles[i].hit && moles[i].out && (
             // Case when the top left of the hammer is between the bounds of the mole.
             (face.hammerBounds.topLeftX <= moles[i].moleBounds.topLeftX && face.hammerBounds.topLeftX >= moles[i].moleBounds.topRightX
                 && face.hammerBounds.topLeftY > moles[i].moleBounds.topLeftY && face.hammerBounds.topLeftY < moles[i].moleBounds.bottomLeftY)
@@ -121,7 +126,7 @@ function isMoleHit() {
             // Case when the entire hammer is touching the mole but all the bounds of the hammer are outside the bounds of the mole's.
             || (face.hammerBounds.bottomRightY >= moles[i].moleBounds.topLeftY && face.hammerBounds.bottomRightY <= moles[i].moleBounds.bottomLeftY
                 && face.hammerBounds.bottomRightX <= moles[i].moleBounds.topRightX && face.hammerBounds.topLeftX >= moles[i].moleBounds.topLeftX
-                && face.hammerBounds.topRightY <= moles[i].moleBounds.topRightY)
+                && face.hammerBounds.topRightY <= moles[i].moleBounds.topRightY))
         ) {
             // I have to do this craziness because everything is reversed due to the video mirrorring thingy.
             // I wish i had time to find a better way to manage the flipping but for now this will do.

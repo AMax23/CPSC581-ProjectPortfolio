@@ -14,6 +14,7 @@ function Mole(posX, posY, img) {
         'bottomRightX': 0,
         'bottomRightY': 0
     };
+    this.out = false;
     this.img = img;
     this.speed = 2;
     this.hit = false;
