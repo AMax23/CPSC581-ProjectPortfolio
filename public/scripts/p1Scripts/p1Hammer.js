@@ -22,6 +22,12 @@ function Hammer(x, y) {
         this.x += map(rotationY, -180, 180, -this.maxSpeed, this.maxSpeed);
         this.y += map(rotationX, -180, 180, -this.maxSpeed, this.maxSpeed);
 
+        ////
+        // temp mouse for testing on laptop.
+        this.x = mouseX;
+        this.y = mouseY;
+        ////
+
         // Make sure that the image stays inside the canvas.
         this.x = constrain(this.x, 100, width - 10);
         this.y = constrain(this.y, 10, height - 100);
@@ -34,22 +40,22 @@ function Hammer(x, y) {
         //Initially for a bit the x and y might be undefined because the camera is still initializing.
         if (this.x != undefined) {
             push();
-            fill(255, 255, 0);
+            //fill(255, 255, 0);
             this.hammerBounds.bottomLeftX = this.x - 70;
             this.hammerBounds.bottomLeftY = this.y + 40;
-            ellipse(this.hammerBounds.bottomLeftX, this.hammerBounds.bottomLeftY, 10, 10);
-            fill(255, 0, 0);
+            //ellipse(this.hammerBounds.bottomLeftX, this.hammerBounds.bottomLeftY, 10, 10);
+            //fill(255, 0, 0);
             this.hammerBounds.topLeftX = this.x - 65;
             this.hammerBounds.topLeftY = this.y + 10;
-            ellipse(this.hammerBounds.topLeftX, this.hammerBounds.topLeftY, 10, 10);
-            fill(0, 255, 0);
+            //ellipse(this.hammerBounds.topLeftX, this.hammerBounds.topLeftY, 10, 10);
+            //fill(0, 255, 0);
             this.hammerBounds.topRightX = this.x - 10;
             this.hammerBounds.topRightY = this.y + 30;
-            ellipse(this.hammerBounds.topRightX, this.hammerBounds.topRightY, 10, 10);
-            fill(255, 0, 255);
+            //ellipse(this.hammerBounds.topRightX, this.hammerBounds.topRightY, 10, 10);
+            //fill(255, 0, 255);
             this.hammerBounds.bottomRightX = this.x - 20;
             this.hammerBounds.bottomRightY = this.y + 60;
-            ellipse(this.hammerBounds.bottomRightX, this.hammerBounds.bottomRightY, 10, 10);
+            //ellipse(this.hammerBounds.bottomRightX, this.hammerBounds.bottomRightY, 10, 10);
             pop();
         }
     }

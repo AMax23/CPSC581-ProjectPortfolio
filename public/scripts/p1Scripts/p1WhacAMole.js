@@ -13,7 +13,7 @@ var bgImg;
 
 var mic;
 var volumeLevel;
-var volumeThreshold = 0;
+var volumeThreshold = -100;
 
 var holes = [];
 var moles = [];
@@ -78,8 +78,6 @@ function draw() {
         gameOver();
     }
 
-    //hammer.show(hammerImg);
-
     showHammer();
 }
 ///////////////////////////////////////////////////////////////////////////////////
@@ -93,10 +91,10 @@ function gameStart() {
 
     // Show moles
     for (var i = 0; i < moles.length; i++) {
-        if (!moles[i].hit && volumeLevel > volumeThreshold || true) {
+        if (!moles[i].hit && volumeLevel > volumeThreshold) {
             moles[i].show();
             moles[i].out = true;
-        } else if (moles[i].out && volumeLevel <= volumeThreshold) {
+        } else if (moles[i].out && volumeLevel >= volumeThreshold) {
             moles[i].hide();
         }
         // Put this extra canvas exactly where the hole is so its aligned.
@@ -126,7 +124,7 @@ function moleHit() {
     // This is because of the camera mirroring.
     for (var i = 0; i < moles.length; i++) {
         if (!moles[i].hit && moles[i].out && (
-            //Case when the top right of the hammer is between the bounds of the mole.
+            // Case when the top right of the hammer is between the bounds of the mole.
             (hammer.hammerBounds.topRightX >= moles[i].moleBounds.topLeftX && hammer.hammerBounds.topRightX <= moles[i].moleBounds.topRightX
                 && hammer.hammerBounds.topRightY > moles[i].moleBounds.topRightY && hammer.hammerBounds.topRightY < moles[i].moleBounds.bottomRightY)
 
@@ -142,7 +140,7 @@ function moleHit() {
         ) {
             // Only set the hit variable to true. I dont wanna delete the object from the array.
             // So the array length will always be the samee regardless of the mole being hit.
-            //moles[i].hit = true;
+            moles[i].hit = true;
             window.navigator.vibrate(100); // Vibrate for 100ms when the mole is hit cos it's fun (or annoying!)
             moles[i].hide();
             console.log('You hit mole ' + i);
