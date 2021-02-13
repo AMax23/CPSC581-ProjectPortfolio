@@ -24,7 +24,7 @@ function preload() {
     // Load the images in a asynchronous way
     hammerImg = loadImage('../images/project 1/thorsHammer.png'); // Load the image of the hammer
     hammerHitImg = loadImage('../images/project 1/thorsHammerHit.png'); // Load the image hammer when its hitting
-    grassImg = loadImage('../images/project 1/grass.jpg'); // Load the image of the grass
+    grassImg = loadImage('../images/project 1/background.png'); // Load the image of the grass
     holeImg = loadImage('../images/project 1/hole.png'); // Load the image of the hole
     moleImg = loadImage('../images/project 1/mole.png'); // Load the image of the mole
 }
@@ -78,9 +78,13 @@ function gameStart() {
     image(grassImg, 0, 0, width, height);
     //background(0);
 
+    var volumeThreshold = 15;
+    volumeLevel = mic.getVolumeLevel(); // Read the amplitude (volume level).
+    //console.log('volume level = ' + volumeLevel);
+
     // Show moles
     for (var i = 0; i < moles.length; i++) {
-        if (!moles[i].hit) {
+        if (!moles[i].hit && volumeLevel > volumeThreshold) {
             moles[i].show();
         }
     }
@@ -91,10 +95,6 @@ function gameStart() {
 }
 
 function hammer() {
-    var volumeThreshold = 15;
-    volumeLevel = mic.getVolumeLevel(); // Read the amplitude (volume level).
-    //console.log('volume level = ' + volumeLevel);
-
     if (isMoleHit()) {
         face.show(hammerHitImg);
     } else {
@@ -149,6 +149,7 @@ function isMoleHit() {
             // Only set the hit variable to true. I dont wanna delete the object from the array.
             // So the array length will always be the samee regardless of the mole being hit.
             moles[tempIndex].hit = true;
+            window.navigator.vibrate(100); // Vibrate for 100ms when the mole is hit cos it's fun (or annoying!)
             moles[tempIndex].hide();
             //console.log('You hit mole ' + tempIndex);
             return true;
