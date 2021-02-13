@@ -6,6 +6,17 @@ function Face(capture) {
     this.currX;
     this.currY;
 
+    this.hammerBounds = {
+        'topLeftX': 0,
+        'topLeftY': 0,
+        'topRightX': 0,
+        'topRightY': 0,
+        'bottomLeftX': 0,
+        'bottomLeftY': 0,
+        'bottomRightX': 0,
+        'bottomRightY': 0
+    };
+
     // Using only 1 keypoint which is the bare minimum for better performance.
     this.VTX = [10]; // This is some point on the face. // VTX468 = new Array(468).fill(0).map((x, i) => i); = full facemesh 468 points.
 
@@ -53,6 +64,28 @@ function Face(capture) {
             // So i am just mapping it to the display width and height so its accurate.
             this.currX = map(x, 0, capture.width, 0, width);
             this.currY = map(y, 0, capture.height, 0, height);
+
+            //Initially for a bit the x and y might be undefined because the camera is still initializing.
+            if (this.currX != undefined) {
+                push();
+                fill(255, 255, 0);
+                this.hammerBounds.bottomRightX = this.currX - 70;
+                this.hammerBounds.bottomRightY = this.currY + 40;
+                ellipse(this.hammerBounds.bottomRightX, this.hammerBounds.bottomRightY, 10, 10);
+                fill(255, 0, 0);
+                this.hammerBounds.bottomLeftX = this.currX - 20;
+                this.hammerBounds.bottomLeftY = this.currY + 60;
+                ellipse(this.hammerBounds.bottomLeftX, this.hammerBounds.bottomLeftY, 10, 10);
+                fill(0, 255, 0);
+                this.hammerBounds.topLeftX = this.currX - 10;
+                this.hammerBounds.topLeftY = this.currY + 30;
+                ellipse(this.hammerBounds.topLeftX, this.hammerBounds.topLeftY, 10, 10);
+                fill(255, 0, 255);
+                this.hammerBounds.topRightX = this.currX - 70;
+                this.hammerBounds.topRightY = this.currY + 10;
+                ellipse(this.hammerBounds.topRightX, this.hammerBounds.topRightY, 10, 10);
+                pop();
+            }
             ///////////////////////
             // Testing
             //stroke(0);
@@ -63,7 +96,7 @@ function Face(capture) {
             //console.log('x and y in face = ' + this.currX + ', ' + this.currY);
             //pop();
             ///////////////////////
-            image(img, this.currX - img.width/7, this.currY, img.width / 7, img.height / 7); // Make the image smaller for mobile devices
+            image(img, this.currX - img.width / 7, this.currY, img.width / 7, img.height / 7); // Make the image smaller for mobile devices
         }
 
         // For testing only. Draw a dot for each keypoint and a red dot for the image.
@@ -103,6 +136,7 @@ function Face(capture) {
     }
 
     this.show = function (img) {
+        push();
         // Flip the image
         translate(displayWidth, 0);
         scale(-1.0, 1.0);
@@ -121,6 +155,7 @@ function Face(capture) {
         //image(capture, 0, 0, capture.width, capture.height);
 
         this.drawFaces(this.myFaces, img);
+        pop();
     }
 
     this.getPos = function () {

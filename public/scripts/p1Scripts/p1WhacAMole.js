@@ -19,17 +19,6 @@ var moles = [];
 
 var screen = 1;
 
-var hammerBounds = {
-    'topLeftX': 0,
-    'topLeftY': 0,
-    'topRightX': 0,
-    'topRightY': 0,
-    'bottomLeftX': 0,
-    'bottomLeftY': 0,
-    'bottomRightX': 0,
-    'bottomRightY': 0
-};
-
 ////////////////////////// BASIC P5 SET UP ////////////////////////////////////////
 function preload() {
     // Load the images in a asynchronous way
@@ -71,6 +60,7 @@ function setup() {
 }
 
 function draw() {
+
     if (screen == 0) {
         startScreen();
     } else if (screen == 1) {
@@ -89,9 +79,16 @@ function gameStart() {
     //background(0);
 
     // Show holes and moles
-    for (var i = 0; i < holes.length; i++) {
+    for (var i = 0; i < moles.length; i++) {
         moles[i].show();
         //moles[i].hide();
+        push();
+        fill(255, 0, 0);
+        text(i, moles[i].x, moles[i].y);
+        pop();
+    }
+    // Show holes and moles
+    for (var i = 0; i < holes.length; i++) {
         holes[i].show();
     }
 }
@@ -101,61 +98,66 @@ function hammer() {
     volumeLevel = mic.getVolumeLevel(); // Read the amplitude (volume level).
     //console.log('volume level = ' + volumeLevel);
 
-    //Initially for a bit the x and y might be undefined because the camera is still initializing.
-    if (face.currX != undefined) {
-        push();
-        // Flip the image
-        translate(displayWidth, 0);
-        scale(-1.0, 1.0);
-        fill(255, 255, 0);
-        hammerBounds.bottomRightX = face.currX - 70;
-        hammerBounds.bottomRightY = face.currY + 40;
-        ellipse(hammerBounds.bottomRightX, hammerBounds.bottomRightY, 10, 10);
-        fill(255, 0, 0);
-        hammerBounds.bottomLeftX = face.currX - 20;
-        hammerBounds.bottomLeftY = face.currY + 60;
-        ellipse(face.currX - 20, face.currY + 60, 10, 10);
-        fill(0, 255, 0);
-        hammerBounds.topLeftX = face.currX - 10;
-        hammerBounds.topLeftY = face.currY + 30;
-        ellipse(face.currX - 10, face.currY + 30, 10, 10);
-        fill(255, 0, 255);
-        hammerBounds.topRightX = face.currX - 70;
-        hammerBounds.topRightY = face.currY + 10;
-        ellipse(face.currX - 70, face.currY + 10, 10, 10);
-        pop();
-    }
-
     if (isMoleHit()) {
         face.show(hammerHitImg);
     } else {
         face.show(hammerImg);
     }
+
+    //// Delete the mole object after they have been hit.
+    //for (let i = moles.length - 1; i >= 0; i--) {
+    //    if (moles[i].hit) {
+    //        moles.splice(i, 1);
+    //    };
+    //}
 }
 
 /* Check if the hammer made contact with the mole.
  * If it does, then it returns true and a differend hammer is drawn.
  */
 function isMoleHit() {
-
     // The x and y directions are flipped because the canvas is flipped when it draws the hammer
     // This is because of the camera mirroring.
     for (var i = 0; i < moles.length; i++) {
         if (
             // Case when the top left of the hammer is between the bounds of the mole.
-            (hammerBounds.topLeftX <= moles[i].moleBounds.topLeftX && hammerBounds.topLeftX >= moles[i].moleBounds.topRightX
-                && hammerBounds.topLeftY > moles[i].moleBounds.topLeftY && hammerBounds.topLeftY < moles[i].moleBounds.bottomLeftY)
+            (face.hammerBounds.topLeftX <= moles[i].moleBounds.topLeftX && face.hammerBounds.topLeftX >= moles[i].moleBounds.topRightX
+                && face.hammerBounds.topLeftY > moles[i].moleBounds.topLeftY && face.hammerBounds.topLeftY < moles[i].moleBounds.bottomLeftY)
 
             // Case when the bottom left of the hammer is between the bounds of the mole.
-            || (hammerBounds.bottomLeftX <= moles[i].moleBounds.topLeftX && hammerBounds.bottomLeftX >= moles[i].moleBounds.topRightX
-                && hammerBounds.bottomLeftY > moles[i].moleBounds.topLeftY && hammerBounds.bottomLeftY < moles[i].moleBounds.bottomLeftY)
+            || (face.hammerBounds.bottomLeftX <= moles[i].moleBounds.topLeftX && face.hammerBounds.bottomLeftX >= moles[i].moleBounds.topRightX
+                && face.hammerBounds.bottomLeftY > moles[i].moleBounds.topLeftY && face.hammerBounds.bottomLeftY < moles[i].moleBounds.bottomLeftY)
 
             // Case when the entire hammer is touching the mole but all the bounds of the hammer are outside the bounds of the mole's.
-            || (hammerBounds.bottomRightY >= moles[i].moleBounds.topLeftY && hammerBounds.bottomRightY <= moles[i].moleBounds.bottomLeftY
-                && hammerBounds.bottomRightX <= moles[i].moleBounds.topRightX && hammerBounds.topLeftX >= moles[i].moleBounds.topLeftX
-                && hammerBounds.topRightY <= moles[i].moleBounds.topRightY
-            )
+            || (face.hammerBounds.bottomRightY >= moles[i].moleBounds.topLeftY && face.hammerBounds.bottomRightY <= moles[i].moleBounds.bottomLeftY
+                && face.hammerBounds.bottomRightX <= moles[i].moleBounds.topRightX && face.hammerBounds.topLeftX >= moles[i].moleBounds.topLeftX
+                && face.hammerBounds.topRightY <= moles[i].moleBounds.topRightY)
         ) {
+            // I have to do this craziness because everything is reversed due to the video mirrorring thingy.
+            // I wish i had time to find a better way to manage the flipping but for now this will do.
+            let tempIndex = 0;
+            switch (i) {
+                case 0:
+                    tempIndex = 3;
+                    break;
+                case 1:
+                    tempIndex = 4;
+                    break;
+                case 2:
+                    tempIndex = 5;
+                    break;
+                case 3:
+                    tempIndex = 0;
+                    break;
+                case 4:
+                    tempIndex = 1;
+                    break;
+                case 5:
+                    tempIndex = 2;
+                    break;
+            }
+            moles[tempIndex].hit = true;
+            console.log('you hit mole ' + tempIndex);
             return true;
         }
     }
@@ -164,7 +166,8 @@ function isMoleHit() {
 
 // Function to create holes in a 2d array. And the moles.
 function createHoles() {
-    // Create 6 mole holes
+    // Create 6 mole holes.
+    // If you change the  num of cols and rows go back and update the switch statement in the hit detectection function.
     let numOfCols = 2;
     let numOfRows = 3;
     let colSpace = width / numOfCols - 60;
