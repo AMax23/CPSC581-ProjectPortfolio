@@ -13,12 +13,18 @@ var bgImg;
 
 var mic;
 var volumeLevel;
-var volumeThreshold = 15;
+var volumeThreshold = 0;
 
 var holes = [];
 var moles = [];
 
 var screen = 1;
+
+var maxSpeed = 15;
+var x, y;
+
+var hammer;
+
 
 ////////////////////////// BASIC P5 SET UP ////////////////////////////////////////
 function preload() {
@@ -44,20 +50,22 @@ function setup() {
     holeImg.loadPixels();
     moleImg.loadPixels();
 
-    // Set up video
-    capture = createCapture(VIDEO);
-    //capture.size(canvasWidth, canvasHeight);
-    capture.hide();
+    //// Set up video
+    //capture = createCapture(VIDEO);
+    ////capture.size(canvasWidth, canvasHeight);
+    //capture.hide();
 
-    // Initialize face tracker.
-    face = new Face(capture);
-    face.init();
+    //// Initialize face tracker.
+    //face = new Face(capture);
+    //face.init();
 
     // Initialize mic and start it.
     mic = new Microphone();
     mic.init();
 
     createHoles();
+
+    hammer = new Hammer(width / 2, height / 2);
 }
 
 function draw() {
@@ -70,7 +78,9 @@ function draw() {
         gameOver();
     }
 
-    hammer();
+    //hammer.show(hammerImg);
+
+    showHammer();
 }
 ///////////////////////////////////////////////////////////////////////////////////
 
@@ -83,7 +93,7 @@ function gameStart() {
 
     // Show moles
     for (var i = 0; i < moles.length; i++) {
-        if (!moles[i].hit && volumeLevel > volumeThreshold) {
+        if (!moles[i].hit && volumeLevel > volumeThreshold || true) {
             moles[i].show();
             moles[i].out = true;
         } else if (moles[i].out && volumeLevel <= volumeThreshold) {
@@ -100,64 +110,42 @@ function gameStart() {
 
 }
 
-function hammer() {
-    if (isMoleHit()) {
-        face.show(hammerHitImg);
+function showHammer() {
+    if (moleHit()) {
+        hammer.show(hammerHitImg);
     } else {
-        face.show(hammerImg);
+        hammer.show(hammerImg);
     }
 }
 
 /* Check if the hammer made contact with the mole.
  * If it does, then it returns true and a differend hammer is drawn.
  */
-function isMoleHit() {
+function moleHit() {
     // The x and y directions are flipped because the canvas is flipped when it draws the hammer
     // This is because of the camera mirroring.
     for (var i = 0; i < moles.length; i++) {
         if (!moles[i].hit && moles[i].out && (
-            // Case when the top left of the hammer is between the bounds of the mole.
-            (face.hammerBounds.topLeftX <= moles[i].moleBounds.topLeftX && face.hammerBounds.topLeftX >= moles[i].moleBounds.topRightX
-                && face.hammerBounds.topLeftY > moles[i].moleBounds.topLeftY && face.hammerBounds.topLeftY < moles[i].moleBounds.bottomLeftY)
+            //Case when the top right of the hammer is between the bounds of the mole.
+            (hammer.hammerBounds.topRightX >= moles[i].moleBounds.topLeftX && hammer.hammerBounds.topRightX <= moles[i].moleBounds.topRightX
+                && hammer.hammerBounds.topRightY > moles[i].moleBounds.topRightY && hammer.hammerBounds.topRightY < moles[i].moleBounds.bottomRightY)
 
-            // Case when the bottom left of the hammer is between the bounds of the mole.
-            || (face.hammerBounds.bottomLeftX <= moles[i].moleBounds.topLeftX && face.hammerBounds.bottomLeftX >= moles[i].moleBounds.topRightX
-                && face.hammerBounds.bottomLeftY > moles[i].moleBounds.topLeftY && face.hammerBounds.bottomLeftY < moles[i].moleBounds.bottomLeftY)
+            // Case when the bottom right makes contact with the mole.
+            || (hammer.hammerBounds.bottomRightY >= moles[i].moleBounds.topRightY && hammer.hammerBounds.bottomRightY <= moles[i].moleBounds.bottomRightY
+                && hammer.hammerBounds.bottomRightX >= moles[i].moleBounds.topLeftX && hammer.hammerBounds.bottomRightX <= moles[i].moleBounds.topRightX)
 
             // Case when the entire hammer is touching the mole but all the bounds of the hammer are outside the bounds of the mole's.
-            || (face.hammerBounds.bottomRightY >= moles[i].moleBounds.topLeftY && face.hammerBounds.bottomRightY <= moles[i].moleBounds.bottomLeftY
-                && face.hammerBounds.bottomRightX <= moles[i].moleBounds.topRightX && face.hammerBounds.topLeftX >= moles[i].moleBounds.topLeftX
-                && face.hammerBounds.topRightY <= moles[i].moleBounds.topRightY))
+            || (hammer.hammerBounds.topRightX > moles[i].moleBounds.topRightX && hammer.hammerBounds.bottomLeftX <= moles[i].moleBounds.topLeftX
+                && hammer.hammerBounds.topLeftY < moles[i].moleBounds.topLeftY
+                && hammer.hammerBounds.bottomLeftY > moles[i].moleBounds.topLeftY)
+        )
         ) {
-            // I have to do this craziness because everything is reversed due to the video mirrorring thingy.
-            // I wish i had time to find a better way to manage the flipping but for now this will do.
-            let tempIndex = 0;
-            switch (i) {
-                case 0:
-                    tempIndex = 3;
-                    break;
-                case 1:
-                    tempIndex = 4;
-                    break;
-                case 2:
-                    tempIndex = 5;
-                    break;
-                case 3:
-                    tempIndex = 0;
-                    break;
-                case 4:
-                    tempIndex = 1;
-                    break;
-                case 5:
-                    tempIndex = 2;
-                    break;
-            }
             // Only set the hit variable to true. I dont wanna delete the object from the array.
             // So the array length will always be the samee regardless of the mole being hit.
-            moles[tempIndex].hit = true;
+            //moles[i].hit = true;
             window.navigator.vibrate(100); // Vibrate for 100ms when the mole is hit cos it's fun (or annoying!)
-            moles[tempIndex].hide();
-            //console.log('You hit mole ' + tempIndex);
+            moles[i].hide();
+            console.log('You hit mole ' + i);
             return true;
         }
     }

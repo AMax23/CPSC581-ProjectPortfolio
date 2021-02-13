@@ -42,24 +42,24 @@ function Mole(posX, posY, img) {
         // Testing boundaries. Trial and error gave these numbers
         push();
         // Flip the image
-        translate(displayWidth, 0);
-        scale(-1.0, 1.0);
-        //fill(255, 255, 0);
-        this.moleBounds.bottomRightX = this.x + 40;
-        this.moleBounds.bottomRightY = this.y + 30;
-        //rect(this.moleBounds.bottomRightX, this.moleBounds.bottomRightY, 10, 10);
-        //fill(255, 0, 0);
-        this.moleBounds.bottomLeftX = this.x + 70;
-        this.moleBounds.bottomLeftY = this.y + 30;
-        //rect(this.moleBounds.bottomLeftX, this.moleBounds.bottomLeftY, 10, 10);
-        //fill(0, 255, 0);
-        this.moleBounds.topLeftX = this.x + 70;
+        //translate(displayWidth, 0);
+        //scale(-1.0, 1.0);
+        fill(255, 255, 0);
+        this.moleBounds.bottomLeftX = this.x + 15;
+        this.moleBounds.bottomLeftY = this.y + 40;
+        rect(this.moleBounds.bottomLeftX, this.moleBounds.bottomLeftY, 10, 10);
+        fill(255, 0, 0);
+        this.moleBounds.topLeftX = this.x + 15;
         this.moleBounds.topLeftY = this.y;
-        //rect(this.moleBounds.topLeftX, this.moleBounds.topLeftY, 10, 10);
-        //fill(255, 0, 255);
-        this.moleBounds.topRightX = this.x + 40;
+        rect(this.moleBounds.topLeftX, this.moleBounds.topLeftY, 10, 10);
+        fill(0, 255, 0);
+        this.moleBounds.topRightX = this.x + 60;
         this.moleBounds.topRightY = this.y;
-        //rect(this.moleBounds.topRightX, this.moleBounds.topRightY, 10, 10);
+        rect(this.moleBounds.topRightX, this.moleBounds.topRightY, 10, 10);
+        fill(255, 0, 255);
+        this.moleBounds.bottomRightX = this.x + 60;
+        this.moleBounds.bottomRightY = this.y + 40;
+        rect(this.moleBounds.bottomRightX, this.moleBounds.bottomRightY, 10, 10);
         pop();
         ////////////////////////////////////////////////////////////
     }
