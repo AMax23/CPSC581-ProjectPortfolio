@@ -3,8 +3,8 @@
 // Comment this out temporarily cos its annoying.
 //if (!window.location.href.toString().includes("https://")) { alert(`You will need "https://" to view this.`) }
 
-var capture; // Video managed by P5
-var face; // For face tracking
+//var capture; // Video managed by P5
+//var face; // For face tracking
 
 var hammerImg;
 var hammerHitImg;
@@ -13,21 +13,21 @@ var bgImg;
 
 var mic;
 var volumeLevel;
-var volumeThreshold = 30;
+// The point of having 2 thresholds is so the player does not keep yelling non stop.
+// Once the player yells to bring out the moles then they need to stop yelling until
+// the volume drops below the bottom threshold and then they can continue again.
+var volumeThresholdTop = 30;
+var volumeThresholdBottom = 20;
+var soundInput = false;
 
 var holes = [];
 var moles = [];
 var numOfHoles = 6;
+var randomMole;
 
 var screen = 1;
 
-var maxSpeed = 15;
-var x, y;
-
 var hammer;
-
-var randomMole;
-
 
 ////////////////////////// BASIC P5 SET UP ////////////////////////////////////////
 function preload() {
@@ -87,15 +87,20 @@ function gameStart() {
     // Pick a random hole for the mole to come out of.
     if (moles[randomMole].hit) {
         randomMole = floor(random(numOfHoles)); // Generate random number between 0 and 5.
-    } 
+    }
 
     // Show the mole that's active.
-    if (!moles[randomMole].hit && volumeLevel >= volumeThreshold) {
-        moles[randomMole].show();
-        moles[randomMole].out = true;
-    } else if (moles[randomMole].out && (volumeLevel < volumeThreshold || moles[randomMole].hit)) {
+    if (!moles[randomMole].hit && volumeLevel >= volumeThresholdTop && !soundInput) {
+        moles[randomMole].out = moles[randomMole].show();
+        soundInput = moles[randomMole].out;
+    } else if (moles[randomMole].out && (volumeLevel < volumeThresholdTop || moles[randomMole].hit)) {
         moles[randomMole].hide();
     }
+
+    if (volumeLevel < volumeThresholdBottom) {
+        soundInput = false;
+    }
+
     // Put this extra canvas exactly where the hole is so its aligned.
     image(moles[randomMole].extraCanvas, moles[randomMole].x, moles[randomMole].y);
 
@@ -103,7 +108,7 @@ function gameStart() {
     for (var i = 0; i < holes.length; i++) {
         holes[i].show();
     }
-    
+
 
 }
 
