@@ -17,6 +17,7 @@ var volumeThreshold = 30;
 
 var holes = [];
 var moles = [];
+var numOfHoles = 6;
 
 var screen = 1;
 
@@ -24,6 +25,8 @@ var maxSpeed = 15;
 var x, y;
 
 var hammer;
+
+var randomMole;
 
 
 ////////////////////////// BASIC P5 SET UP ////////////////////////////////////////
@@ -49,15 +52,6 @@ function setup() {
     bgImg.loadPixels();
     holeImg.loadPixels();
     moleImg.loadPixels();
-
-    //// Set up video
-    //capture = createCapture(VIDEO);
-    ////capture.size(canvasWidth, canvasHeight);
-    //capture.hide();
-
-    //// Initialize face tracker.
-    //face = new Face(capture);
-    //face.init();
 
     // Initialize mic and start it.
     mic = new Microphone();
@@ -90,21 +84,27 @@ function gameStart() {
 
     volumeLevel = mic.getVolumeLevel(); // Read the amplitude (volume level).
 
-    // Show moles
-    for (var i = 0; i < moles.length; i++) {
-        if (!moles[i].hit && volumeLevel >= volumeThreshold) {
-            moles[i].show();
-            moles[i].out = true;
-        } else if (moles[i].out && (volumeLevel < volumeThreshold || moles[i].hit)) {
-            moles[i].hide();
-        }
-        // Put this extra canvas exactly where the hole is so its aligned.
-        image(moles[i].extraCanvas, moles[i].x, moles[i].y);
+    // Pick a random hole for the mole to come out of.
+    if (moles[randomMole].hit) {
+        randomMole = floor(random(numOfHoles)); // Generate random number between 0 and 5.
+    } 
+
+    // Show the mole that's active.
+    if (!moles[randomMole].hit && volumeLevel >= volumeThreshold) {
+        moles[randomMole].show();
+        moles[randomMole].out = true;
+    } else if (moles[randomMole].out && (volumeLevel < volumeThreshold || moles[randomMole].hit)) {
+        moles[randomMole].hide();
     }
+    // Put this extra canvas exactly where the hole is so its aligned.
+    image(moles[randomMole].extraCanvas, moles[randomMole].x, moles[randomMole].y);
+
     // Show holes
     for (var i = 0; i < holes.length; i++) {
         holes[i].show();
     }
+    
+
 }
 
 function showHammer() {
@@ -169,6 +169,14 @@ function createHoles() {
             moles.push(mole);
         }
     }
+
+    // Start of by picking a random hole where the mole will come out of.
+    randomMole = floor(random(6));
+}
+
+// Rseet the game
+function reset() {
+
 }
 
 //// This function fires on every resize of the browser window.
