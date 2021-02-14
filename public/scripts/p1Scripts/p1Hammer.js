@@ -19,6 +19,7 @@ function Hammer(x, y) {
 
         this.setBounds();
 
+        // Device tilt to move the hammer.
         this.x += map(rotationY, -180, 180, -this.maxSpeed, this.maxSpeed);
         this.y += map(rotationX, -180, 180, -this.maxSpeed, this.maxSpeed);
 
@@ -29,8 +30,8 @@ function Hammer(x, y) {
         //////////////////////////////////
 
         // Make sure that the image stays inside the canvas.
-        this.x = constrain(this.x, 100, width - 10);
-        this.y = constrain(this.y, 10, height - 100);
+        this.x = constrain(this.x, img.width / 7, width);
+        this.y = constrain(this.y, 10, height - img.height / 7);
 
         //rect(this.x - img.width / 7, this.y, img.width / 7, img.height / 7);
         image(img, this.x - img.width / 7, this.y, img.width / 7, img.height / 7); // Make the image smaller for mobile devices
