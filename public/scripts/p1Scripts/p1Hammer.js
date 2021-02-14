@@ -25,8 +25,8 @@ function Hammer(x, y) {
 
         //////////////////////////////////
         // temp mouse for testing on laptop.
-        this.x = mouseX;
-        this.y = mouseY;
+        //this.x = mouseX;
+        //this.y = mouseY;
         //////////////////////////////////
 
         // Make sure that the image stays inside the canvas.
