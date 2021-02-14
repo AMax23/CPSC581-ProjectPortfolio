@@ -3,7 +3,7 @@
 function Hammer(x, y) {
     this.x = x;
     this.y = y;
-    this.maxSpeed = 15;
+    this.maxSpeed = 50;
     this.hammerBounds = {
         'topLeftX': 0,
         'topLeftY': 0,

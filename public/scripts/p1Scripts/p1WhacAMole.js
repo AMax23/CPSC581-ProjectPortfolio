@@ -69,6 +69,7 @@ function setup() {
 }
 
 function draw() {
+    frameRate(60);
 
     if (screen == 0) {
         startScreen();
