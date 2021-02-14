@@ -17,7 +17,7 @@ function Hammer(x, y) {
 
     this.show = function (img) {
 
-        this.test();
+        this.setBounds();
 
         this.x += map(rotationY, -180, 180, -this.maxSpeed, this.maxSpeed);
         this.y += map(rotationX, -180, 180, -this.maxSpeed, this.maxSpeed);
@@ -36,7 +36,9 @@ function Hammer(x, y) {
         image(img, this.x - img.width / 7, this.y, img.width / 7, img.height / 7); // Make the image smaller for mobile devices
     }
 
-    this.test = function () {
+    // This is for setting the bounds of the hammer everytime it moves it will be different.
+    // These numbers came from trial and error :)
+    this.setBounds = function () {
         //Initially for a bit the x and y might be undefined because the camera is still initializing.
         if (this.x != undefined) {
             push();

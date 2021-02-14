@@ -91,26 +91,29 @@ function gameStart() {
 
     // Show moles
     for (var i = 0; i < moles.length; i++) {
-        if (!moles[i].hit && volumeLevel > volumeThreshold) {
+        if (!moles[i].hit && volumeLevel >= volumeThreshold) {
             moles[i].show();
             moles[i].out = true;
-        } else if (moles[i].out && volumeLevel >= volumeThreshold) {
+        } else if (moles[i].out && (volumeLevel < volumeThreshold || moles[i].hit)) {
             moles[i].hide();
         }
         // Put this extra canvas exactly where the hole is so its aligned.
         image(moles[i].extraCanvas, moles[i].x, moles[i].y);
     }
-
     // Show holes
     for (var i = 0; i < holes.length; i++) {
         holes[i].show();
     }
-
 }
 
 function showHammer() {
     if (moleHit()) {
+        push();
+        // Slow down the frame rate to show the effect of the hammer hitting.
+        // Otherwise it's too fast.
+        frameRate(10);
         hammer.show(hammerHitImg);
+        pop();
     } else {
         hammer.show(hammerImg);
     }
@@ -120,10 +123,8 @@ function showHammer() {
  * If it does, then it returns true and a differend hammer is drawn.
  */
 function moleHit() {
-    // The x and y directions are flipped because the canvas is flipped when it draws the hammer
-    // This is because of the camera mirroring.
     for (var i = 0; i < moles.length; i++) {
-        if (!moles[i].hit && moles[i].out && (
+        if (!moles[i].hit && (
             // Case when the top right of the hammer is between the bounds of the mole.
             (hammer.hammerBounds.topRightX >= moles[i].moleBounds.topLeftX && hammer.hammerBounds.topRightX <= moles[i].moleBounds.topRightX
                 && hammer.hammerBounds.topRightY > moles[i].moleBounds.topRightY && hammer.hammerBounds.topRightY < moles[i].moleBounds.bottomRightY)
@@ -139,11 +140,11 @@ function moleHit() {
         )
         ) {
             // Only set the hit variable to true. I dont wanna delete the object from the array.
-            // So the array length will always be the samee regardless of the mole being hit.
+            // So the array length will always be the same regardless of the mole being hit.
             moles[i].hit = true;
             window.navigator.vibrate(100); // Vibrate for 100ms when the mole is hit cos it's fun (or annoying!)
             moles[i].hide();
-            console.log('You hit mole ' + i);
+            //console.log('You hit mole ' + i);
             return true;
         }
     }
@@ -153,7 +154,6 @@ function moleHit() {
 // Function to create holes in a 2d array. And the moles.
 function createHoles() {
     // Create 6 mole holes.
-    // If you change the  num of cols and rows go back and update the switch statement in the hit detectection function.
     let numOfCols = 2;
     let numOfRows = 3;
     let colSpace = width / numOfCols - 60;

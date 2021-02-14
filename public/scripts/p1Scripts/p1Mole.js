@@ -65,8 +65,6 @@ function Mole(posX, posY, img) {
     }
 
     this.hide = function () {
-        console.log('hiding');
-
         // Same logic as showing the mole but now we are going down.
         this.extraCanvas.clear();
         this.extraCanvas.image(this.img, 0, this.hideY, this.img.width / 7, this.img.height / 7);
@@ -74,10 +72,8 @@ function Mole(posX, posY, img) {
 
         if (this.hideY >= this.bound) {
             this.hideY = this.bound;
-            console.log('done in');
             this.out = false;
         } else {
-            console.log('how many time');
             this.hideY = this.hideY + this.speed;
         }
     }
