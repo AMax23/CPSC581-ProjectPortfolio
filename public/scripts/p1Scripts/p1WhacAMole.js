@@ -182,14 +182,14 @@ function createHoles() {
 
 function displayScore() {
     let fontSize = 70; //windowWidth * 0.15; // Just trying to get a reasonaable font size bassed on the user's screen size.
-    let xMultiplier = 50;
-    if (score > 9) { xMultiplier = 90; }
-    let xPos = width - xMultiplier; //windowWidth - windowWidth * xMultiplier;
+    //let xMultiplier = 50;
+    //if (score > 9) { xMultiplier = 90; }
+    //let xPos = 10;//width - xMultiplier; //windowWidth - windowWidth * xMultiplier;
     push();
     textSize(fontSize);
     textStyle(BOLD);
     fill(255);
-    text(score, xPos, height - 10);
+    text(score, 10, 60);
     pop();
 }
 
