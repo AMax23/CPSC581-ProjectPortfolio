@@ -27,7 +27,7 @@ var moles = [];
 var numOfHoles = 6;
 var randomMole;
 
-var screen = 0; // Screen 0 = Start screen, 1 = start game, 2 - game over
+var screen = 0; // Screen 0 = Start screen, 1 = start game, 2 = game over
 
 var hammer;
 
@@ -182,7 +182,7 @@ function createHoles() {
 }
 
 function displayScore() {
-    let fontSize = windowWidth * 0.15; // Just trying to get a reasonaable font size bassed on the user's screen size.
+    let fontSize = 70; //windowWidth * 0.15; // Just trying to get a reasonaable font size bassed on the user's screen size.
     let xMultiplier = 0.10;
     if (score > 9) { xMultiplier = 0.20; }
     let xPos = windowWidth - windowWidth * xMultiplier;
@@ -190,7 +190,7 @@ function displayScore() {
     textSize(fontSize);
     textStyle(BOLD);
     fill(255);
-    text(score, xPos, height - 50);
+    text(score, xPos, height - 10);
     pop();
 }
 
@@ -200,9 +200,17 @@ function resetGame() {
 }
 
 function displayTime() {
-    let timeBar = map(millis(), startTime, startTime + timeLimit_ms, 0, width);
+    let timeBar = map(millis(), startTime + timeLimit_ms, startTime, 0, width);
+    push();
     strokeWeight(10);
+    // Change the bar colour depending on how much time is left.
+    if (millis() >= 0.75 * (startTime + timeLimit_ms)) {
+        stroke(255, 0, 0);
+    } else {
+        stroke(0, 255, 0);
+    }
     line(0, 0, timeBar, 0);
+    pop();
     if (millis() >= startTime + timeLimit_ms) {
         screen = 2; // Screen 2 = game over. Time is up.
     } else {
