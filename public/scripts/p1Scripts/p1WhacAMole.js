@@ -11,6 +11,8 @@ var hammerHitImg;
 var holeImg;
 var bgImg;
 
+var startBtn;
+
 var mic;
 var volumeLevel;
 // The point of having 2 thresholds is so the player does not keep yelling non stop.
@@ -25,13 +27,17 @@ var moles = [];
 var numOfHoles = 6;
 var randomMole;
 
-var screen = 1;
+var screen = 0; // Screen 0 = Start screen, 1 = start game, 2 - game over
 
 var hammer;
 
+var score = 0;
+var startTime;
+var timeLimit_ms = 5 * 60 * 1000; // Game time limit in milliseconds. Init to 5 minutes.
+
 ////////////////////////// BASIC P5 SET UP ////////////////////////////////////////
 function preload() {
-    // Load the images in a asynchronous way
+    // Load the images in a asynchronous way. setup() waits until preload() is done.
     hammerImg = loadImage('../images/project 1/thorsHammer.png'); // Load the image of the hammer
     hammerHitImg = loadImage('../images/project 1/thorsHammerHit.png'); // Load the image hammer when its hitting
     bgImg = loadImage('../images/project 1/background.png'); // Load the image of the grass
@@ -44,14 +50,9 @@ function setup() {
     var canvasHeight = displayHeight;
     let cnv = createCanvas(canvasWidth, canvasHeight);
     cnv.id('gameCanvas');
-    cnv.touchStarted(userStartAudio);
 
-    // setup() waits until preload() is done
-    hammerImg.loadPixels();
-    hammerHitImg.loadPixels();
-    bgImg.loadPixels();
-    holeImg.loadPixels();
-    moleImg.loadPixels();
+    startBtn = createButton('Start Game');
+    startBtn.id('startBtn');
 
     // Initialize mic and start it.
     mic = new Microphone();
@@ -70,6 +71,7 @@ function draw() {
     } else if (screen == 1) {
         gameStart();
     } else if (screen == 2) {
+        console.log('game over');
         gameOver();
     }
 
@@ -80,7 +82,9 @@ function draw() {
 function gameStart() {
     // Game background
     image(bgImg, 0, 0, width, height);
-    //background(0);
+
+    displayScore();
+    displayTime();
 
     volumeLevel = mic.getVolumeLevel(); // Read the amplitude (volume level).
 
@@ -108,15 +112,12 @@ function gameStart() {
     for (var i = 0; i < holes.length; i++) {
         holes[i].show();
     }
-
-
 }
 
 function showHammer() {
     if (moleHit()) {
         push();
-        // Slow down the frame rate to show the effect of the hammer hitting.
-        // Otherwise it's too fast.
+        // Slow down the frame rate to show the effect of the hammer hitting. Otherwise it's too fast.
         frameRate(10);
         hammer.show(hammerHitImg);
         pop();
@@ -151,6 +152,7 @@ function moleHit() {
             window.navigator.vibrate(100); // Vibrate for 100ms when the mole is hit cos it's fun (or annoying!)
             moles[i].hide();
             //console.log('You hit mole ' + i);
+            score++;
             return true;
         }
     }
@@ -179,10 +181,59 @@ function createHoles() {
     randomMole = floor(random(6));
 }
 
+function displayScore() {
+    let fontSize = windowWidth * 0.15; // Just trying to get a reasonaable font size bassed on the user's screen size.
+    let xMultiplier = 0.10;
+    if (score > 9) { xMultiplier = 0.20; }
+    let xPos = windowWidth - windowWidth * xMultiplier;
+    push();
+    textSize(fontSize);
+    textStyle(BOLD);
+    fill(255);
+    text(score, xPos, height - 50);
+    pop();
+}
+
 // Rseet the game
-function reset() {
+function resetGame() {
 
 }
+
+function displayTime() {
+    let timeBar = map(millis(), startTime, startTime + timeLimit_ms, 0, width);
+    strokeWeight(10);
+    line(0, 0, timeBar, 0);
+    if (millis() >= startTime + timeLimit_ms) {
+        screen = 2; // Screen 2 = game over. Time is up.
+    } else {
+        screen = 1; // Still playing.
+    }
+}
+
+
+function startScreen() {
+    push();
+    background(0);
+    startBtn.position(100, 165);
+    startBtn.mousePressed(function () {
+        screen = 1; // Start game. Button is hidden after mic is started in Mic.js
+        startTime = millis(); // The time when the game has started. Countdown start time.
+    });
+    pop();
+}
+
+
+function gameOver() {
+    clear();
+    push();
+    background(0);
+    fill(255);
+    textSize(60);
+    textAlign(CENTER);
+    text('Game Over!', width / 2, height / 2);
+    pop();
+}
+
 
 //// This function fires on every resize of the browser window.
 //function windowResized() {

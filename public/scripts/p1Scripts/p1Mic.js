@@ -34,6 +34,7 @@ function Microphone() {
             document.getElementById('startBtn').onclick = function () {
                 self.audioContext.resume();
                 console.log('Mic started');
+                document.getElementById('startBtn').style.display = 'none';
             }
             self.beginRecording();
         }
