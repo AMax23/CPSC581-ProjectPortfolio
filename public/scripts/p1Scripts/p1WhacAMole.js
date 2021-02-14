@@ -13,7 +13,7 @@ var bgImg;
 
 var mic;
 var volumeLevel;
-var volumeThreshold = -100;
+var volumeThreshold = 30;
 
 var holes = [];
 var moles = [];
@@ -125,7 +125,7 @@ function showHammer() {
  */
 function moleHit() {
     for (var i = 0; i < moles.length; i++) {
-        if (!moles[i].hit && (
+        if (!moles[i].hit && moles[i].out && (
             // Case when the top right of the hammer is between the bounds of the mole.
             (hammer.hammerBounds.topRightX >= moles[i].moleBounds.topLeftX && hammer.hammerBounds.topRightX <= moles[i].moleBounds.topRightX
                 && hammer.hammerBounds.topRightY > moles[i].moleBounds.topRightY && hammer.hammerBounds.topRightY < moles[i].moleBounds.bottomRightY)

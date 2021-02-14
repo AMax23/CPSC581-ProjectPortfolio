@@ -24,9 +24,9 @@ function Hammer(x, y) {
         this.y += map(rotationX, -180, 180, -this.maxSpeed, this.maxSpeed);
 
         //////////////////////////////////
-        //// temp mouse for testing on laptop.
-        //this.x = mouseX;
-        //this.y = mouseY;
+        // temp mouse for testing on laptop.
+        this.x = mouseX;
+        this.y = mouseY;
         //////////////////////////////////
 
         // Make sure that the image stays inside the canvas.
