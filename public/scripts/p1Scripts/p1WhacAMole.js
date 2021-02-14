@@ -71,7 +71,6 @@ function draw() {
     } else if (screen == 1) {
         gameStart();
     } else if (screen == 2) {
-        console.log('game over');
         gameOver();
     }
 
@@ -183,9 +182,9 @@ function createHoles() {
 
 function displayScore() {
     let fontSize = 70; //windowWidth * 0.15; // Just trying to get a reasonaable font size bassed on the user's screen size.
-    let xMultiplier = 0.10;
-    if (score > 9) { xMultiplier = 0.20; }
-    let xPos = windowWidth - windowWidth * xMultiplier;
+    let xMultiplier = 50;
+    if (score > 9) { xMultiplier = 90; }
+    let xPos = width - xMultiplier; //windowWidth - windowWidth * xMultiplier;
     push();
     textSize(fontSize);
     textStyle(BOLD);
@@ -196,7 +195,10 @@ function displayScore() {
 
 // Rseet the game
 function resetGame() {
-
+    holes = [];
+    moles = [];
+    score = 0;
+    createHoles();
 }
 
 function displayTime() {
