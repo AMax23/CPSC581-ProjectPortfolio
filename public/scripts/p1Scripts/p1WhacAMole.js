@@ -33,12 +33,12 @@ var hammer;
 
 var score = 0;
 var startTime;
-var timeLimit_ms = 5 * 60 * 1000; // Game time limit in milliseconds. Init to 5 minutes.
+var timeLimit_ms = 1 * 60 * 1000; // Game time limit in milliseconds. Init to 1 minute.
 
-var timeMolesStayOut = 100; // Number of times to be out of the hole.
+var timeMoleStayOut = 100; // Number of times to be out of the hole.
 var timeMoleIsOut = 0;
 var timeMoleIsHidden = 0;
-var timeMolesStayHidden = 100; // Number pf times to stay in the hole.
+var timeMoleStayHidden = 100; // Number pf times to stay in the hole.
 
 
 ////////////////////////// BASIC P5 SET UP ////////////////////////////////////////
@@ -105,26 +105,26 @@ function gameStart() {
 function showMole() {
     // Pick a random hole for the mole to come out of.
     // Do this every time the mole is hit or when the mole goes in the hole.
-    if ((moles[randomMole].hit || timeMoleIsHidden > timeMolesStayHidden) && setMoleOnce) {
+    if ((moles[randomMole].hit || timeMoleIsHidden > timeMoleStayHidden) && setMoleOnce) {
         randomMole = floor(random(numOfHoles)); // Generate random number between 0 and 5.
         setMoleOnce = false;
-        moles[randomMole].active = true;
+        moles[randomMole].active = false; // The mole start off as not being active.
         moles[randomMole].hit = false; // In case the mole was hit, we need to reset the variable.
     }
 
     // Show the mole that's active.
-    if (!moles[randomMole].hit && timeMoleIsOut <= timeMolesStayOut && moles[randomMole].active) {
+    if (!moles[randomMole].hit && timeMoleIsOut <= timeMoleStayOut && moles[randomMole].active) {
         // Mark the time when the mole fully comes out. It will only stay active for a bit and then hide again.
         if (moles[randomMole].show()) {
             timeMoleIsOut++;
             timeMoleIsHidden = 0;
-            moles[randomMole].active = true;
         }
-    } else if (moles[randomMole].out && timeMoleIsHidden <= timeMolesStayHidden) {
+    } else if (moles[randomMole].out && timeMoleIsHidden <= timeMoleStayHidden) {
         moles[randomMole].hide();
     }
-    else if (timeMoleIsHidden > timeMolesStayHidden) {
+    else if (timeMoleIsHidden > timeMoleStayHidden) {
         timeMoleIsOut = 0;
+        moles[randomMole].active = true;
     }
     else if (!moles[randomMole].out) {  // If the mole is fully hidden, then start the timer for mole hiding
         timeMoleIsHidden++;
