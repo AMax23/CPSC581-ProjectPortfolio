@@ -15,12 +15,7 @@ var startBtn;
 
 var mic;
 var volumeLevel;
-// The point of having 2 thresholds is so the player does not keep yelling non stop.
-// Once the player yells to bring out the moles then they need to stop yelling until
-// the volume drops below the bottom threshold and then they can continue again.
-var volumeThresholdTop = 30;
-var volumeThresholdBottom = 20;
-var soundInput = false;
+var volumeThreshold = 30;
 
 var holes = [];
 var moles = [];
@@ -35,11 +30,10 @@ var score = 0;
 var startTime;
 var timeLimit_ms = 1 * 60 * 1000; // Game time limit in milliseconds. Init to 1 minute.
 
-var timeMoleStayOut = 100; // Number of times to be out of the hole.
+var timeMoleStaysOut = 100; // Number of times to be out of the hole.
 var timeMoleIsOut = 0;
 var timeMoleIsHidden = 0;
-var timeMoleStayHidden = 100; // Number pf times to stay in the hole.
-
+var timeMoleStaysHidden = 100; // Number of times to stay in the hole.
 
 ////////////////////////// BASIC P5 SET UP ////////////////////////////////////////
 function preload() {
@@ -105,7 +99,7 @@ function gameStart() {
 function showMole() {
     // Pick a random hole for the mole to come out of.
     // Do this every time the mole is hit or when the mole goes in the hole.
-    if ((moles[randomMole].hit || timeMoleIsHidden > timeMoleStayHidden) && setMoleOnce) {
+    if ((moles[randomMole].hit || timeMoleIsHidden > timeMoleStaysHidden) && setMoleOnce) {
         randomMole = floor(random(numOfHoles)); // Generate random number between 0 and 5.
         setMoleOnce = false;
         moles[randomMole].active = false; // The mole start off as not being active.
@@ -113,16 +107,16 @@ function showMole() {
     }
 
     // Show the mole that's active.
-    if (!moles[randomMole].hit && timeMoleIsOut <= timeMoleStayOut && moles[randomMole].active) {
+    if (!moles[randomMole].hit && timeMoleIsOut <= timeMoleStaysOut && moles[randomMole].active) {
         // Mark the time when the mole fully comes out. It will only stay active for a bit and then hide again.
         if (moles[randomMole].show()) {
             timeMoleIsOut++;
             timeMoleIsHidden = 0;
         }
-    } else if (moles[randomMole].out && timeMoleIsHidden <= timeMoleStayHidden) {
+    } else if (moles[randomMole].out && timeMoleIsHidden <= timeMoleStaysHidden) {
         moles[randomMole].hide();
     }
-    else if (timeMoleIsHidden > timeMoleStayHidden) {
+    else if (timeMoleIsHidden > timeMoleStaysHidden) {
         timeMoleIsOut = 0;
         moles[randomMole].active = true;
     }
@@ -152,7 +146,7 @@ function moleHit() {
     volumeLevel = mic.getVolumeLevel(); // Read the amplitude (volume level).
 
     for (var i = 0; i < moles.length; i++) {
-        if (!moles[i].hit && moles[i].out && volumeLevel >= volumeThresholdTop && (
+        if (!moles[i].hit && moles[i].out && volumeLevel >= volumeThreshold && (
             // Case when the top right of the hammer is between the bounds of the mole.
             (hammer.hammerBounds.topRightX >= moles[i].moleBounds.topLeftX && hammer.hammerBounds.topRightX <= moles[i].moleBounds.topRightX
                 && hammer.hammerBounds.topRightY > moles[i].moleBounds.topRightY && hammer.hammerBounds.topRightY < moles[i].moleBounds.bottomRightY)
@@ -174,6 +168,13 @@ function moleHit() {
             moles[i].hide();
             //console.log('You hit mole ' + i);
             score++;
+            // After each hit, the moles come out faster and go back in fast too!
+            if (timeMoleStaysHidden >= 30) {
+                timeMoleStaysHidden = timeMoleStaysHidden - 5;
+            }
+            if (timeMoleStaysOut > 20) {
+                timeMoleStaysOut = timeMoleStaysOut - 5;
+            }
             // Reset the time for when the mole is out if it's hit.
             timeMoleIsOut = 0;
             timeMoleIsHidden = 0;
