@@ -35,10 +35,10 @@ var score = 0;
 var startTime;
 var timeLimit_ms = 5 * 60 * 1000; // Game time limit in milliseconds. Init to 5 minutes.
 
-var timeLengthMolesStayOut_ms = 100; //5 * 1000; // 5 Seconds
+var timeMolesStayOut = 100; // Number of times to be out of the hole.
 var timeMoleIsOut = 0;
 var timeMoleIsHidden = 0;
-var timeLengthMolesStayHidden_ms = 100; //5 * 1000; // 5 Seconds
+var timeMolesStayHidden = 100; // Number pf times to stay in the hole.
 
 
 ////////////////////////// BASIC P5 SET UP ////////////////////////////////////////
@@ -91,11 +91,6 @@ function gameStart() {
     displayScore();
     displayTime();
 
-    // Pick a random hole for the mole to come out of.
-    if (moles[randomMole].hit) {
-        randomMole = floor(random(numOfHoles)); // Generate random number between 0 and 5.
-    }
-
     showMole();
 
     // Put this extra canvas exactly where the hole is so its aligned.
@@ -108,21 +103,32 @@ function gameStart() {
 }
 
 function showMole() {
+    // Pick a random hole for the mole to come out of.
+    // Do this every time the mole is hit or when the mole goes in the hole.
+    if ((moles[randomMole].hit || timeMoleIsHidden > timeMolesStayHidden) && setMoleOnce) {
+        randomMole = floor(random(numOfHoles)); // Generate random number between 0 and 5.
+        setMoleOnce = false;
+        moles[randomMole].active = true;
+        moles[randomMole].hit = false; // In case the mole was hit, we need to reset the variable.
+    }
+
     // Show the mole that's active.
-    if (!moles[randomMole].hit && timeMoleIsOut <= timeLengthMolesStayOut_ms /*&& volumeLevel >= volumeThresholdTop && !soundInput*/) {
-        //moles[randomMole].out = moles[randomMole].show();
-        //soundInput = moles[randomMole].out;
+    if (!moles[randomMole].hit && timeMoleIsOut <= timeMolesStayOut && moles[randomMole].active) {
+        // Mark the time when the mole fully comes out. It will only stay active for a bit and then hide again.
         if (moles[randomMole].show()) {
-            timeMoleIsOut++; // Mark the time when the mole fully comes out. It will only stay active for a bit and then hide again.
+            timeMoleIsOut++;
             timeMoleIsHidden = 0;
+            moles[randomMole].active = true;
         }
-        //console.log(moles[randomMole].out);
-    } else if (moles[randomMole].out && timeMoleIsHidden <= timeLengthMolesStayHidden_ms/*volumeLevel < volumeThresholdTop ||*/ /*moles[randomMole].hit)) && timeMoleIsOut > timeLengthMolesStayOut_ms*/) {
+    } else if (moles[randomMole].out && timeMoleIsHidden <= timeMolesStayHidden) {
         moles[randomMole].hide();
-    } else if (timeMoleIsHidden > timeLengthMolesStayHidden_ms) {
+    }
+    else if (timeMoleIsHidden > timeMolesStayHidden) {
         timeMoleIsOut = 0;
-    } else if (!moles[randomMole].out) {  // If the mole is fully hidden, then start the timer for mole hiding
+    }
+    else if (!moles[randomMole].out) {  // If the mole is fully hidden, then start the timer for mole hiding
         timeMoleIsHidden++;
+        setMoleOnce = true; // Pick a random hole again once the mole hides.
     }
 }
 
@@ -169,8 +175,9 @@ function moleHit() {
             //console.log('You hit mole ' + i);
             score++;
             // Reset the time for when the mole is out if it's hit.
-            timeMoleIsHidden = 0;
             timeMoleIsOut = 0;
+            timeMoleIsHidden = 0;
+            setMoleOnce = true;
             return true;
         }
     }
