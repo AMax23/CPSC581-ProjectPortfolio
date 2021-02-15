@@ -3,9 +3,6 @@
 // Comment this out temporarily cos its annoying.
 //if (!window.location.href.toString().includes("https://")) { alert(`You will need "https://" to view this.`) }
 
-//var capture; // Video managed by P5
-//var face; // For face tracking
-
 var hammerImg;
 var hammerHitImg;
 var holeImg;
@@ -84,7 +81,6 @@ function gameStart() {
 
     displayScore();
     displayTime();
-
     showMole();
 
     // Put this extra canvas exactly where the hole is so its aligned.
@@ -115,12 +111,10 @@ function showMole() {
         }
     } else if (moles[randomMole].out && timeMoleIsHidden <= timeMoleStaysHidden) {
         moles[randomMole].hide();
-    }
-    else if (timeMoleIsHidden > timeMoleStaysHidden) {
+    } else if (timeMoleIsHidden > timeMoleStaysHidden) {
         timeMoleIsOut = 0;
         moles[randomMole].active = true;
-    }
-    else if (!moles[randomMole].out) {  // If the mole is fully hidden, then start the timer for mole hiding
+    } else if (!moles[randomMole].out) {  // If the mole is not out (fully hidden), then start the timer for mole hiding
         timeMoleIsHidden++;
         setMoleOnce = true; // Pick a random hole again once the mole hides.
     }
@@ -130,6 +124,7 @@ function showHammer() {
     if (moleHit()) {
         push();
         // Slow down the frame rate to show the effect of the hammer hitting. Otherwise it's too fast.
+        // This is changed back in the draw function.
         frameRate(10);
         hammer.show(hammerHitImg);
         pop();
@@ -225,9 +220,14 @@ function resetGame() {
     holes = [];
     moles = [];
     score = 0;
+    timeMoleIsHidden = 0;
+    timeMoleIsOut = 0;
+    timeMoleStaysHidden = 100;
+    timeMoleStaysOut = 100;
     createHoles();
 }
 
+// Show the time remaining at the top.
 function displayTime() {
     let timeBar = map(millis(), startTime + timeLimit_ms, startTime, 0, width);
     push();
