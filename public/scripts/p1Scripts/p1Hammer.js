@@ -23,7 +23,7 @@ function Hammer(x, y) {
 
         // Device tilt to move the hammer.
         this.x += map(rotationY, -10, 16, -this.maxSpeed, this.maxSpeed);
-        this.y += map(rotationX, -30, 120, -this.maxSpeed, this.maxSpeed);
+        this.y += map(rotationX, -60, 170, -this.maxSpeed, this.maxSpeed);
 
         //////////////////////////////////
         // temp mouse for testing on laptop.
