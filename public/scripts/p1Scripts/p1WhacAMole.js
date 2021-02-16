@@ -21,6 +21,8 @@ var moles = [];
 var numOfHoles = 6;
 var randomMole;
 
+var molePicked = false; // The purpose of this is to ensure that the mole is set only once while it's still active.
+
 var screen = 0; // Screen 0 = Start screen, 1 = start game, 2 = game over
 
 var hammer;
@@ -86,9 +88,6 @@ function gameStart() {
     displayTime();
     showMole();
 
-    // Put this extra canvas exactly where the hole is so its aligned.
-    image(moles[randomMole].extraCanvas, moles[randomMole].x, moles[randomMole].y);
-
     // Show holes
     for (var i = 0; i < holes.length; i++) {
         holes[i].show();
@@ -96,12 +95,20 @@ function gameStart() {
 }
 
 function showMole() {
+
     // Pick a random hole for the mole to come out of.
     // Do this every time the mole is hit or when the mole goes in the hole.
-    if ((moles[randomMole].hit || timeMoleIsHidden > timeMoleStaysHidden) && setMoleOnce) {
-        randomMole = floor(random(numOfHoles)); // Generate random number between 0 and 5.
-        setMoleOnce = false;
-        moles[randomMole].active = false; // The mole start off as not being active.
+    if ((moles[randomMole].hit || timeMoleIsHidden > timeMoleStaysHidden) && !molePicked) {
+        // Pick a new hole, not same as previous one.
+        while (true) {
+            let newRandNum = floor(random(numOfHoles)); // Generate random number between 0 and 5.
+            if (newRandNum != randomMole) {
+                randomMole = newRandNum;
+                break;
+            }
+        }
+        molePicked = true;
+        moles[randomMole].active = false; // The mole start off as not being active. This means it will start off hidden.
         moles[randomMole].hit = false; // In case the mole was hit, we need to reset the variable.
     }
 
@@ -119,13 +126,19 @@ function showMole() {
         moles[randomMole].active = true;
     } else if (!moles[randomMole].out) {  // If the mole is not out (fully hidden), then start the timer for mole hiding
         timeMoleIsHidden++;
-        setMoleOnce = true; // Pick a random hole again once the mole hides.
+        molePicked = false; // Pick a random hole again once the mole hides.
     }
+
+    // Put this extra canvas exactly where the hole is so its aligned.
+    image(moles[randomMole].extraCanvas, moles[randomMole].x, moles[randomMole].y);
 }
 
 function showHammer() {
     if (moleHit()) {
         push();
+        // Play a sound when the hammer hits the mole.
+        mic.whackSound.play();
+        mic.whackSound.currentTime = 0;
         // Slow down the frame rate to show the effect of the hammer hitting. Otherwise it's too fast.
         // This is changed back in the draw function.
         frameRate(10);
@@ -163,20 +176,20 @@ function moleHit() {
             // So the array length will always be the same regardless of the mole being hit.
             moles[i].hit = true;
             window.navigator.vibrate(100); // Vibrate for 100ms when the mole is hit cos it's fun (or annoying!)
-            moles[i].hide();
+            //moles[i].hide();
             //console.log('You hit mole ' + i);
             score++;
             // After each hit, the moles come out faster and go back in fast too!
             if (timeMoleStaysHidden >= 30) {
                 timeMoleStaysHidden = timeMoleStaysHidden - 5;
             }
-            if (timeMoleStaysOut > 20) {
+            if (timeMoleStaysOut >= 20) {
                 timeMoleStaysOut = timeMoleStaysOut - 5;
             }
             // Reset the time for when the mole is out if it's hit.
-            timeMoleIsOut = 0;
+            //timeMoleIsOut = 0;
             timeMoleIsHidden = 0;
-            setMoleOnce = true;
+            molePicked = false;
             return true;
         }
     }
@@ -271,7 +284,12 @@ function gameOver() {
     fill(255);
     textSize(20);
     textAlign(CENTER);
-    text('Your score is ' + score, width / 2, height / 2);
+    //molesMissed = molesMissed - score;
+    //text('Your score is ' + score
+    //    + '\n Hits = ' + score
+    //    + '\n Misses = ' + (molesMissed)
+    //    + '\n Accuracy = ' + score / (score + molesMissed - score)
+    //    , width / 2, height / 2);
     pop();
 }
 
