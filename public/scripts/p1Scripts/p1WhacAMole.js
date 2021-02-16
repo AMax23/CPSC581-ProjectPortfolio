@@ -7,6 +7,8 @@ var hammerImg;
 var hammerHitImg;
 var holeImg;
 var bgImg;
+var startScreenImg;
+var gameOverScreenImg;
 
 var startBtn;
 
@@ -19,7 +21,7 @@ var moles = [];
 var numOfHoles = 6;
 var randomMole;
 
-var screen = 0; // Screen 0 = Start screen, 1 = start game, 2 = game over
+var screen = 2; // Screen 0 = Start screen, 1 = start game, 2 = game over
 
 var hammer;
 
@@ -40,6 +42,8 @@ function preload() {
     bgImg = loadImage('../images/project 1/background.png'); // Load the image of the grass
     holeImg = loadImage('../images/project 1/hole.png'); // Load the image of the hole
     moleImg = loadImage('../images/project 1/mole.png'); // Load the image of the mole
+    startScreenImg = loadImage('../images/project 1/startScreen.png'); // Load game start screen image
+    gameOverScreenImg = loadImage('../images/project 1/gameOverScreen.png'); // Load game over screen image
 }
 
 function setup() {
@@ -67,11 +71,10 @@ function draw() {
         startScreen();
     } else if (screen == 1) {
         gameStart();
+        showHammer();
     } else if (screen == 2) {
         gameOver();
     }
-
-    showHammer();
 }
 ///////////////////////////////////////////////////////////////////////////////////
 
@@ -250,8 +253,9 @@ function displayTime() {
 
 function startScreen() {
     push();
-    background(0);
-    startBtn.position(100, 165);
+    //background(0);
+    image(startScreenImg, 0, 0, width, height);
+    startBtn.position(width / 2, height / 2);
     startBtn.mousePressed(function () {
         screen = 1; // Start game. Button is hidden after mic is started in Mic.js
         startTime = millis(); // The time when the game has started. Countdown start time.
@@ -263,11 +267,11 @@ function startScreen() {
 function gameOver() {
     clear();
     push();
-    background(0);
+    image(gameOverScreenImg, 0, 0, width, height);
     fill(255);
-    textSize(60);
+    textSize(20);
     textAlign(CENTER);
-    text('Game Over!', width / 2, height / 2);
+    text('Your score is ' + score, width / 2, height / 2);
     pop();
 }
 
