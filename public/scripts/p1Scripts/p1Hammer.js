@@ -19,7 +19,7 @@ function Hammer(x, y) {
 
         this.setBounds();
 
-        console.log('x = ' + rotationY + ' Y = ' + rotationX);
+        //console.log('x = ' + rotationY + ' Y = ' + rotationX);
 
         // Device tilt to move the hammer.
         this.x += map(rotationY, -10, 10, -this.maxSpeed, this.maxSpeed);
@@ -27,8 +27,8 @@ function Hammer(x, y) {
 
         //////////////////////////////////
         // temp mouse for testing on laptop.
-        //this.x = mouseX;
-        //this.y = mouseY;
+        this.x = mouseX;
+        this.y = mouseY;
         //////////////////////////////////
 
         // Make sure that the image stays inside the canvas.
