@@ -22,8 +22,8 @@ function Hammer(x, y) {
         console.log('x = ' + rotationY + ' Y = ' + rotationX);
 
         // Device tilt to move the hammer.
-        this.x += map(rotationY, -30, 30, -this.maxSpeed, this.maxSpeed);
-        this.y += map(rotationX, 20, 60, -this.maxSpeed, this.maxSpeed);
+        this.x += map(rotationY, -10, 16, -this.maxSpeed, this.maxSpeed);
+        this.y += map(rotationX, -30, 120, -this.maxSpeed, this.maxSpeed);
 
         //////////////////////////////////
         // temp mouse for testing on laptop.
