@@ -15,22 +15,21 @@ var restartBtn;
 
 var mic;
 var volumeLevel;
-var volumeThreshold = 30;
+var volumeThreshold = 30; // This number came from trial and error.
 
+var hammer;
 var holes = [];
 var moles = [];
 var numOfHoles = 6;
-var randomMole;
+var randomMole; // Initialized when creating new holes and then updates everytime the mole is hit or when it hides.
 
 var molePicked = false; // The purpose of this is to ensure that the mole is set only once while it's still active.
 
-var screen = 2; // Screen 0 = Start screen, 1 = start game, 2 = game over
-
-var hammer;
+var screen = 0; // Screen 0 = Start screen, 1 = start game, 2 = game over
 
 var score = 0;
 var molesMissed = 0;
-var startTime;
+var startTime; // The start time of the program. Used to get the time remaining.
 var timeLimit_ms = 1 * 60 * 1000; // Game time limit in milliseconds. Init to 1 minute.
 
 var timeMoleStaysOut = 100; // Number of times to be out of the hole.
@@ -99,10 +98,6 @@ function gameStart() {
 }
 
 function showMole() {
-
-    //console.log('check mole hit ' + moles[0].hit + moles[1].hit + moles[2].hit + moles[3].hit + moles[4].hit + moles[5].hit);
-
-
     // Pick a random hole for the mole to come out of.
     // Do this every time the mole is hit or when the mole goes in the hole.
     if ((moles[randomMole].hit || timeMoleIsHidden > timeMoleStaysHidden) && !moles[randomMole].active && !molePicked) {
@@ -111,52 +106,42 @@ function showMole() {
             let newRandNum = floor(random(numOfHoles)); // Generate random number between 0 and 5.
             if (newRandNum != randomMole) {
                 randomMole = newRandNum;
-                molesMissed++;
-                //console.log('New random mole picked');
+                molesMissed++; // Assume the mole will not be hit, and then if it is then its updated in moleHit().
                 break;
             }
         }
         molePicked = true;
-        moles[randomMole].active = false; // The mole start off as not being active. This means it will start off hidden.
+        moles[randomMole].active = false; // The mole starts off as not being active. This means it will start off hidden.
         moles[randomMole].hit = false; // In case the mole was hit, we need to reset the variable.
-        //console.log('first if statement.');
     }
 
     // Show the mole that's active.
     if (!moles[randomMole].hit && timeMoleIsOut <= timeMoleStaysOut && moles[randomMole].active) {
-        //console.log('gonna show mole');
         // Mark the time when the mole fully comes out. It will only stay active for a bit and then hide again.
         if (moles[randomMole].show()) {
             timeMoleIsOut++;
             timeMoleIsHidden = 0;
-            //moles[randomMole].active = false;
-            //console.log('Mole fully out - Show mole');
         }
     } else if (moles[randomMole].out && timeMoleIsHidden <= timeMoleStaysHidden) {
-        //console.log('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<Before Hiding. Mole is hit = ' + moles[randomMole].hit);
         moles[randomMole].hide();
-        //console.log('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<Hiding Mole. Mole is hit = ' + moles[randomMole].hit);
     } else if (timeMoleIsHidden > timeMoleStaysHidden) {
         timeMoleIsOut = 0;
         moles[randomMole].active = true;
-        //console.log('Time for new mole to come out');
-    }
-
-    else if (!moles[randomMole].out) {  // If the mole is not out (fully hidden), then start the timer for mole hiding
+    } else if (!moles[randomMole].out) {  // If the mole is not out (fully hidden), then start the timer for mole hiding.
         timeMoleIsHidden++;
         molePicked = false; // Pick a random hole again once the mole hides.
-        //console.log('Mole is hiding ');
     }
 
+    // If the mole has been out, then it becomes active and a new mole will be picked randomly.
     if (timeMoleIsOut > timeMoleStaysOut) {
         moles[randomMole].active = false;
-        //console.log('mole is gonna become active again');
     }
 
+    // This is when the mole is hit, we need to show the effect of the mole hiding.
+    // When the mole is hidden, then a new random mole/hole will be picked.
     if (moles[randomMole].hit && timeMoleIsHidden > timeMoleStaysHidden) {
         moles[randomMole].active = false;
         molePicked = false;
-        //console.log('new mole should be picked now');
     }
 
     // Put this extra canvas exactly where the hole is so its aligned.
@@ -184,11 +169,9 @@ function showHammer() {
  * To hit the mole you must also have some sound input otherwise the hammer will not hit.
  */
 function moleHit() {
-    //console.log('check mole hit');
     volumeLevel = mic.getVolumeLevel(); // Read the amplitude (volume level).
 
     for (var i = 0; i < moles.length; i++) {
-        //console.log('check mole hit ' + i + ' is hit = ' + moles[i].hit);
         if (!moles[i].hit && moles[i].out && volumeLevel >= volumeThreshold && (
             // Case when the top right of the hammer is between the bounds of the mole.
             (hammer.hammerBounds.topRightX >= moles[i].moleBounds.topLeftX && hammer.hammerBounds.topRightX <= moles[i].moleBounds.topRightX
@@ -208,7 +191,6 @@ function moleHit() {
             // So the array length will always be the same regardless of the mole being hit.
             moles[i].hit = true;
             window.navigator.vibrate(100); // Vibrate for 100ms when the mole is hit cos it's fun (or annoying!)
-            //moles[i].hide();
             //console.log('You hit mole ' + i);
             score++;
             molesMissed--;
@@ -225,10 +207,7 @@ function moleHit() {
             molePicked = false;
             return true;
         }
-        //console.log('check mole hit ' + i + ' is hit = ' + moles[i].hit);
-
     }
-
     return false;
 }
 
@@ -249,9 +228,8 @@ function createHoles() {
             moles.push(mole);
         }
     }
-
     // Start of by picking a random hole where the mole will come out of.
-    randomMole = floor(random(6));
+    randomMole = floor(random(numOfHoles));
 }
 
 function displayScore() {
@@ -272,6 +250,7 @@ function resetGame() {
     holes = [];
     moles = [];
     score = 0;
+    molesMissed = 0;
     timeMoleIsHidden = 0;
     timeMoleIsOut = 0;
     timeMoleStaysHidden = 100;
@@ -299,7 +278,6 @@ function displayTime() {
     }
 }
 
-
 function startScreen() {
     push();
     //background(0);
@@ -312,7 +290,6 @@ function startScreen() {
     pop();
 }
 
-
 function gameOver() {
     clear();
     push();
@@ -320,19 +297,20 @@ function gameOver() {
     fill(255);
     textSize(20);
     textAlign(CENTER);
-    let accuracy = (score != 0) ? (score / (score + molesMissed) * 100).toFixed(2) : 0;
+    let accuracy = (score != 0) ? (score / (score + molesMissed) * 100).toFixed(0) : 0;
     text('Your score is ' + score
         + '\n Hits = ' + score
         + '\n Misses = ' + (molesMissed)
         + '\n Accuracy = ' + accuracy + '%'
         , width / 2, height / 2);
-
+    document.getElementById('restartBtn').style.display = 'block';
     restartBtn.position(width / 2, 0.75 * height);
     restartBtn.mousePressed(function () {
         screen = 0; // Start screen.
         document.getElementById('restartBtn').style.display = 'none';
+        document.getElementById('startBtn').style.display = 'block';
+        resetGame();
     });
-
     pop();
 }
 
