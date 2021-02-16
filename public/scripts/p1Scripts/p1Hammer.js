@@ -22,7 +22,7 @@ function Hammer(x, y) {
         console.log('x = ' + rotationY + ' Y = ' + rotationX);
 
         // Device tilt to move the hammer.
-        this.x += map(rotationY, -10, 16, -this.maxSpeed, this.maxSpeed);
+        this.x += map(rotationY, -10, 10, -this.maxSpeed, this.maxSpeed);
         this.y += map(rotationX, 20, 35, -this.maxSpeed, this.maxSpeed);
 
         //////////////////////////////////
