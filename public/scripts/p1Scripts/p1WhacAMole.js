@@ -12,6 +12,8 @@ var gameOverScreenImg;
 
 var startBtn;
 var restartBtn;
+var inputBox;
+var submitBtn;
 
 var mic;
 var volumeLevel;
@@ -25,7 +27,7 @@ var randomMole; // Initialized when creating new holes and then updates everytim
 
 var molePicked = false; // The purpose of this is to ensure that the mole is set only once while it's still active.
 
-var screen = 2; // Screen 0 = Start screen, 1 = start game, 2 = game over
+var screen = 0; // Screen 0 = Start screen, 1 = start game, 2 = game over
 
 var score = 0;
 var molesMissed = 0;
@@ -55,10 +57,14 @@ function setup() {
     let cnv = createCanvas(canvasWidth, canvasHeight);
     cnv.id('gameCanvas');
 
+    // Create buttons and input for the different screens
     startBtn = createButton('Start');
     startBtn.id('startBtn');
     restartBtn = createButton('Back to main menu');
     restartBtn.id('restartBtn');
+    inputBox = createInput('').attribute('placeholder', 'Your Name');
+    submitBtn = createButton('Submit Score');
+    document.getElementById('leaderboard').style.display = 'none'; // Hide the leaderboard until the game ends.
 
     // Initialize mic and start it.
     mic = new Microphone();
@@ -296,7 +302,7 @@ function startScreen() {
     //rect(width / 2 - width / 2 * 0.14, height / 2 - height / 2 * 0.07, 10, 10);
 
     // If the start button is clicked.
-    if (mouseIsPressed && mouseX >= width / 2 - width / 2 * 0.14 && mouseX <= width / 2 + width / 2 * 0.13
+    if (screen == 0 && mouseIsPressed && mouseX >= width / 2 - width / 2 * 0.14 && mouseX <= width / 2 + width / 2 * 0.13
         && mouseY >= height / 2 - height / 2 * 0.07 && mouseY <= height / 2 + height / 2 * 0.07) {
         screen = 1; // Start game. Button is hidden after mic is started in Mic.js
         startTime = millis(); // The time when the game has started. Countdown start time.
@@ -316,7 +322,7 @@ function startScreen() {
     //rect(width / 2 - width / 2 * 0.31, height / 2 + height / 2 * 0.13, 10, 10);
 
     // If the instructions button is clicked
-    if (mouseIsPressed && mouseX >= width / 2 - width / 2 * 0.31 && mouseX <= width / 2 + width / 2 * 0.30
+    if (screen == 0 && mouseIsPressed && mouseX >= width / 2 - width / 2 * 0.31 && mouseX <= width / 2 + width / 2 * 0.30
         && mouseY >= height / 2 - height / 2 * 0.08 && mouseY <= height / 2 + height / 2 * 0.13) {
         console.log('Instructions button clicked');
     }
@@ -333,6 +339,7 @@ function gameOver() {
     clear();
     push();
     image(gameOverScreenImg, 0, 0, width, height);
+
     fill(255);
     textSize(20);
     textAlign(CENTER);
@@ -340,18 +347,36 @@ function gameOver() {
     text('Your score is ' + score
         + '\n Missed = ' + (molesMissed)
         + '\n Accuracy = ' + accuracy + '%'
-        , width / 2, height / 2);
+        , width / 2, height / 2 - height / 2 * 0.2);
     document.getElementById('restartBtn').style.display = 'block';
-    restartBtn.position(width / 2, 0.75 * height);
+
+    pop();
+
+    inputBox.position(width / 2 - width / 2 * 0.73, height / 2);
+    submitBtn.position(inputBox.x + inputBox.width + 1, inputBox.y);
+    inputBox.show();
+    submitBtn.show();
+    submitBtn.mousePressed(function () {
+        //inputBox.hide();
+        //submitBtn.hide();
+        inputBox.value('');
+        console.log('Do something with ' + inputBox.value());
+    });
+
+    // Show the leaderboard
+    document.getElementById('leaderboard').style.display = '';
+
+    restartBtn.position(width / 2 - width / 2 * 0.3, 0.9 * height);
     restartBtn.mousePressed(function () {
         screen = 0; // Start screen.
         document.getElementById('restartBtn').style.display = 'none';
         document.getElementById('startBtn').style.display = 'block';
+        inputBox.hide();
+        submitBtn.hide();
+        document.getElementById('leaderboard').style.display = 'none';
         resetGame();
     });
-    pop();
 }
-
 
 //// This function fires on every resize of the browser window.
 //function windowResized() {
