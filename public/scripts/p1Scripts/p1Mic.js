@@ -32,7 +32,7 @@ function Microphone() {
         function processSound(stream) {
             self.mic = self.audioContext.createMediaStreamSource(stream);
             self.mic.connect(self.analyser);
-            document.getElementById('startBtn').onclick = function () {
+            document.getElementById('body').onclick = function () {
                 self.audioContext.resume();
                 console.log('Mic started');
                 document.getElementById('startBtn').style.display = 'none';

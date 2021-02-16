@@ -25,7 +25,7 @@ var randomMole; // Initialized when creating new holes and then updates everytim
 
 var molePicked = false; // The purpose of this is to ensure that the mole is set only once while it's still active.
 
-var screen = 0; // Screen 0 = Start screen, 1 = start game, 2 = game over
+var screen = 2; // Screen 0 = Start screen, 1 = start game, 2 = game over
 
 var score = 0;
 var molesMissed = 0;
@@ -42,7 +42,7 @@ function preload() {
     // Load the images in a asynchronous way. setup() waits until preload() is done.
     hammerImg = loadImage('../images/project 1/thorsHammer.png'); // Load the image of the hammer
     hammerHitImg = loadImage('../images/project 1/thorsHammerHit.png'); // Load the image hammer when its hitting
-    bgImg = loadImage('../images/project 1/background.png'); // Load the image of the grass
+    bgImg = loadImage('../images/project 1/background2.png'); // Load the image of the grass
     holeImg = loadImage('../images/project 1/hole.png'); // Load the image of the hole
     moleImg = loadImage('../images/project 1/mole.png'); // Load the image of the mole
     startScreenImg = loadImage('../images/project 1/startScreen.png'); // Load game start screen image
@@ -55,7 +55,7 @@ function setup() {
     let cnv = createCanvas(canvasWidth, canvasHeight);
     cnv.id('gameCanvas');
 
-    startBtn = createButton('Start Game');
+    startBtn = createButton('Start');
     startBtn.id('startBtn');
     restartBtn = createButton('Back to main menu');
     restartBtn.id('restartBtn');
@@ -282,11 +282,50 @@ function startScreen() {
     push();
     //background(0);
     image(startScreenImg, 0, 0, width, height);
-    startBtn.position(width / 2, height / 2);
-    startBtn.mousePressed(function () {
+    ////let startLeft = 
+    //fill(255, 0, 0);
+    //rect(width / 2 + width / 2 * 0.13, height / 2, 10, 10);
+    //fill(255, 255, 0);
+
+    //rect(width / 2 + width / 2 * 0.13, height / 2 - height / 2 * 0.07, 10, 10);
+    //fill(255, 0, 255);
+
+    //rect(width / 2 - width / 2 * 0.14, height / 2, 10, 10);
+    //fill(0, 0, 255);
+
+    //rect(width / 2 - width / 2 * 0.14, height / 2 - height / 2 * 0.07, 10, 10);
+
+    // If the start button is clicked.
+    if (mouseIsPressed && mouseX >= width / 2 - width / 2 * 0.14 && mouseX <= width / 2 + width / 2 * 0.13
+        && mouseY >= height / 2 - height / 2 * 0.07 && mouseY <= height / 2 + height / 2 * 0.07) {
         screen = 1; // Start game. Button is hidden after mic is started in Mic.js
         startTime = millis(); // The time when the game has started. Countdown start time.
-    });
+    }
+
+    // Do stuff
+    //fill(255, 0, 0);
+    //rect(width / 2 + width / 2 * 0.30, height / 2 + height / 2 * 0.13, 10, 10);
+    //fill(255, 255, 0);
+
+    //rect(width / 2 + width / 2 * 0.30, height / 2 + height / 2 * 0.08, 10, 10);
+    //fill(255, 0, 255);
+
+    //rect(width / 2 - width / 2 * 0.31, height / 2 + height / 2 * 0.08, 10, 10);
+    //fill(0, 0, 255);
+
+    //rect(width / 2 - width / 2 * 0.31, height / 2 + height / 2 * 0.13, 10, 10);
+
+    // If the instructions button is clicked
+    if (mouseIsPressed && mouseX >= width / 2 - width / 2 * 0.31 && mouseX <= width / 2 + width / 2 * 0.30
+        && mouseY >= height / 2 - height / 2 * 0.08 && mouseY <= height / 2 + height / 2 * 0.13) {
+        console.log('Instructions button clicked');
+    }
+
+    //startBtn.position(width / 2, height / 2);
+    //startBtn.mousePressed(function () {
+    //    screen = 1; // Start game. Button is hidden after mic is started in Mic.js
+    //    startTime = millis(); // The time when the game has started. Countdown start time.
+    //});
     pop();
 }
 
@@ -299,8 +338,7 @@ function gameOver() {
     textAlign(CENTER);
     let accuracy = (score != 0) ? (score / (score + molesMissed) * 100).toFixed(0) : 0;
     text('Your score is ' + score
-        + '\n Hits = ' + score
-        + '\n Misses = ' + (molesMissed)
+        + '\n Missed = ' + (molesMissed)
         + '\n Accuracy = ' + accuracy + '%'
         , width / 2, height / 2);
     document.getElementById('restartBtn').style.display = 'block';
