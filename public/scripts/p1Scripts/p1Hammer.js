@@ -3,7 +3,7 @@
 function Hammer(x, y) {
     this.x = x;
     this.y = y;
-    this.maxSpeed = 50;
+    this.maxSpeed = 30;
     this.hammerBounds = {
         'topLeftX': 0,
         'topLeftY': 0,
@@ -25,8 +25,8 @@ function Hammer(x, y) {
 
         //////////////////////////////////
         // temp mouse for testing on laptop.
-        this.x = mouseX;
-        this.y = mouseY;
+        //this.x = mouseX;
+        //this.y = mouseY;
         //////////////////////////////////
 
         // Make sure that the image stays inside the canvas.
