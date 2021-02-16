@@ -53,7 +53,7 @@ function Mole(posX, posY, img) {
         if (this.hideY >= this.bound) {
             this.hideY = this.bound;
             this.out = false;
-            this.hit = false; // If the mole is back in, then 'reset'.
+            //this.hit = false; // If the mole is back in, then 'reset'.
         } else {
             this.hideY = this.hideY + this.speed;
         }
