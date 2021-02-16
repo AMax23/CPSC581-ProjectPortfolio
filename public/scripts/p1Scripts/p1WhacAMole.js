@@ -366,8 +366,20 @@ function gameOver() {
     // Show the leaderboard
     document.getElementById('leaderboard').style.display = '';
 
-    restartBtn.position(width / 2 - width / 2 * 0.3, 0.9 * height);
-    restartBtn.mousePressed(function () {
+    //fill(255, 0, 0);
+    //rect(width / 2 + width / 2 * 0.23, height / 2 + height / 2 * 0.92, 10, 10);
+    //fill(255, 255, 0);
+
+    //rect(width / 2 + width / 2 * 0.23, height / 2 + height / 2 * 0.81, 10, 10);
+    //fill(255, 0, 255);
+
+    //rect(width / 2 - width / 2 * 0.23, height / 2 + height / 2 * 0.81, 10, 10);
+    //fill(0, 0, 255);
+
+    //rect(width / 2 - width / 2 * 0.23, height / 2 + height / 2 * 0.92, 10, 10);
+
+    if (screen == 2 && mouseIsPressed && mouseX >= width / 2 - width / 2 * 0.23 && mouseX <= width / 2 + width / 2 * 0.23
+        && mouseY >= height / 2 + height / 2 * 0.81 && mouseY <= height / 2 + height / 2 * 0.92) {
         screen = 0; // Start screen.
         document.getElementById('restartBtn').style.display = 'none';
         document.getElementById('startBtn').style.display = 'block';
@@ -375,7 +387,18 @@ function gameOver() {
         submitBtn.hide();
         document.getElementById('leaderboard').style.display = 'none';
         resetGame();
-    });
+    }
+
+    //restartBtn.position(width / 2 - width / 2 * 0.3, 0.9 * height);
+    //restartBtn.mousePressed(function () {
+    //    screen = 0; // Start screen.
+    //    document.getElementById('restartBtn').style.display = 'none';
+    //    document.getElementById('startBtn').style.display = 'block';
+    //    inputBox.hide();
+    //    submitBtn.hide();
+    //    document.getElementById('leaderboard').style.display = 'none';
+    //    resetGame();
+    //});
 }
 
 //// This function fires on every resize of the browser window.
