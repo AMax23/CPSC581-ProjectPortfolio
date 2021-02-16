@@ -21,7 +21,7 @@ var moles = [];
 var numOfHoles = 6;
 var randomMole;
 
-var screen = 2; // Screen 0 = Start screen, 1 = start game, 2 = game over
+var screen = 0; // Screen 0 = Start screen, 1 = start game, 2 = game over
 
 var hammer;
 
