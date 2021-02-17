@@ -31,8 +31,8 @@ var screen = 0; // Screen 0 = Start screen, 1 = start game, 2 = game over
 
 var score = 0;
 var molesMissed = 0;
-var startTime; // The start time of the program. Used to get the time remaining.
-var timeLimit_ms = 1 * 60 * 1000; // Game time limit in milliseconds. Init to 1 minute.
+var startTime = 0; // The start time of the program. Used to get the time remaining.
+var gameTimeLimit = 3546; // ~ 1 min. This is a count of how many times the game loop runs until it's game over. There was a problem using millis()...
 
 var timeMoleStaysOut = 100; // Number of times to be out of the hole.
 var timeMoleIsOut = 0;
@@ -266,22 +266,26 @@ function resetGame() {
 
 // Show the time remaining at the top.
 function displayTime() {
-    let timeBar = map(millis(), startTime + timeLimit_ms, startTime, 0, width);
     push();
     strokeWeight(10);
+
+    startTime--;
+    let timeBar = map(startTime, 0, gameTimeLimit, 0, width);
+
+    //console.log(countdown, timeLimit_ms);
     // Change the bar colour depending on how much time is left.
-    if (millis() >= 0.75 * (startTime + timeLimit_ms)) {
-        stroke(255, 0, 0);
-    } else {
-        stroke(0, 255, 0);
-    }
+    startTime <= 0.25 * gameTimeLimit ? stroke(255, 0, 0) : stroke(0, 255, 0);
+
+    //if (millis()-startTime >= 0.75 * (startTime + timeLimit_ms)) {
+    //    stroke(255, 0, 0);
+    //} else {
+    //    stroke(0, 255, 0);
+    //}
     line(0, 0, timeBar, 0);
     pop();
-    if (millis() >= startTime + timeLimit_ms) {
-        screen = 2; // Screen 2 = game over. Time is up.
-    } else {
-        screen = 1; // Still playing.
-    }
+
+    // Either time is up or still playing. 
+    screen = startTime < 0 ? 2 : 1;
 }
 
 function startScreen() {
@@ -305,7 +309,7 @@ function startScreen() {
     if (screen == 0 && mouseIsPressed && mouseX >= width / 2 - width / 2 * 0.14 && mouseX <= width / 2 + width / 2 * 0.13
         && mouseY >= height / 2 - height / 2 * 0.07 && mouseY <= height / 2 + height / 2 * 0.07) {
         screen = 1; // Start game. Button is hidden after mic is started in Mic.js
-        startTime = millis(); // The time when the game has started. Countdown start time.
+        startTime = gameTimeLimit; // The time when the game has started. Countdown start time.
     }
 
     // Do stuff
