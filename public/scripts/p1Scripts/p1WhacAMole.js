@@ -27,7 +27,7 @@ var randomMole; // Initialized when creating new holes and then updates everytim
 
 var molePicked = false; // The purpose of this is to ensure that the mole is set only once while it's still active.
 
-var screen = 2; // Screen 0 = Start screen, 1 = start game, 2 = game over
+var screen = 0; // Screen 0 = Start screen, 1 = start game, 2 = game over
 
 var score = 0;
 var molesMissed = 0;
@@ -58,10 +58,10 @@ function setup() {
     cnv.id('gameCanvas');
 
     // Create buttons and input for the different screens
-    startBtn = createButton('Start');
-    startBtn.id('startBtn');
-    restartBtn = createButton('Back to main menu');
-    restartBtn.id('restartBtn');
+    //startBtn = createButton('Start');
+    //startBtn.id('startBtn');
+    //restartBtn = createButton('Back to main menu');
+    //restartBtn.id('restartBtn');
     inputBox = createInput('').attribute('placeholder', 'Your Name');
     submitBtn = createButton('Submit Score');
     document.getElementById('leaderboard').style.display = 'none'; // Hide the leaderboard until the game ends.
@@ -347,8 +347,8 @@ function gameOver() {
     text('Your score is ' + score
         + '\n Missed = ' + (molesMissed)
         + '\n Accuracy = ' + accuracy + '%'
-        , width / 2, height / 2 - height / 2 * 0.2);
-    document.getElementById('restartBtn').style.display = 'block';
+        , width / 2, height / 2 - height / 2 * 0.3);
+    //document.getElementById('restartBtn').style.display = 'block';
 
     pop();
 
@@ -367,22 +367,22 @@ function gameOver() {
     document.getElementById('leaderboard').style.display = '';
 
     //fill(255, 0, 0);
-    //rect(width / 2 + width / 2 * 0.23, height / 2 + height / 2 * 0.92, 10, 10);
+    //rect(width / 2 + width / 2 * 0.23, height / 2 + height / 2 * 0.82, 10, 10);
     //fill(255, 255, 0);
 
-    //rect(width / 2 + width / 2 * 0.23, height / 2 + height / 2 * 0.81, 10, 10);
+    //rect(width / 2 + width / 2 * 0.23, height / 2 + height / 2 * 0.71, 10, 10);
     //fill(255, 0, 255);
 
-    //rect(width / 2 - width / 2 * 0.23, height / 2 + height / 2 * 0.81, 10, 10);
+    //rect(width / 2 - width / 2 * 0.23, height / 2 + height / 2 * 0.71, 10, 10);
     //fill(0, 0, 255);
 
-    //rect(width / 2 - width / 2 * 0.23, height / 2 + height / 2 * 0.92, 10, 10);
+    //rect(width / 2 - width / 2 * 0.23, height / 2 + height / 2 * 0.82, 10, 10);
 
     if (screen == 2 && mouseIsPressed && mouseX >= width / 2 - width / 2 * 0.23 && mouseX <= width / 2 + width / 2 * 0.23
-        && mouseY >= height / 2 + height / 2 * 0.81 && mouseY <= height / 2 + height / 2 * 0.92) {
+        && mouseY >= height / 2 + height / 2 * 0.1 && mouseY <= height / 2 + height / 2 * 0.82) {
         screen = 0; // Start screen.
-        document.getElementById('restartBtn').style.display = 'none';
-        document.getElementById('startBtn').style.display = 'block';
+        //document.getElementById('restartBtn').style.d7isplay = 'none';
+        //document.getElementById('startBtn').style.display = 'block';
         inputBox.hide();
         submitBtn.hide();
         document.getElementById('leaderboard').style.display = 'none';
