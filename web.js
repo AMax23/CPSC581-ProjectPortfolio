@@ -41,7 +41,7 @@ const client = new Client({
     }
 });
 
-console.log(client.connectionString);
+console.log('client conn string = ' + client.connectionString);
 
 //client.connect();
 
