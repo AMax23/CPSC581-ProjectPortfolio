@@ -27,7 +27,7 @@ var randomMole; // Initialized when creating new holes and then updates everytim
 
 var molePicked = false; // The purpose of this is to ensure that the mole is set only once while it's still active.
 
-var screen = 0; // Screen 0 = Start screen, 1 = start game, 2 = game over
+var screen = 2; // Screen 0 = Start screen, 1 = start game, 2 = game over
 
 var score = 0;
 var molesMissed = 0;
