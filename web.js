@@ -7,8 +7,8 @@ const PORT = process.env.PORT || 5000;  // Port should be 5000 by default
 const { Client } = require('pg');
 
 // For local testing
-//var connectionString = 'postgres://hkxgwfwgoliqme:d22829be8625e7347d87184bda71cbb6a068dba4b2c260932bc184974d1d0226@ec2-52-7-168-69.compute-1.amazonaws.com:5432/d2o94nape5edke';
-var connectionString = process.env.DATABASE_URL;
+var connectionString = 'postgres://hkxgwfwgoliqme:d22829be8625e7347d87184bda71cbb6a068dba4b2c260932bc184974d1d0226@ec2-52-7-168-69.compute-1.amazonaws.com:5432/d2o94nape5edke';
+//var connectionString = process.env.DATABASE_URL;
 
 connectionString = {
     connectionString: connectionString,
@@ -30,7 +30,7 @@ app.use(express.json());
 app.get('/leaderboard', (req, res) => {
     let q = 'SELECT PlayerName, Score, Accuracy FROM leaderboard ORDER BY Score DESC LIMIT 3;'
     client.query(q, (error, response) => {
-        console.log(error, response)
+        //console.log(error, response)
         res.send(response);
     });
 })
@@ -44,7 +44,7 @@ app.post('/score', (req, res) => {
     // PostgreSQL interprets " as being quotes for identifiers, ' as being quotes for strings.
     let q = 'INSERT INTO leaderboard (playername, score, accuracy) VALUES (\'' + name + '\'' + ', ' + score + ', ' + accuracy + ')';
     client.query(q, (err, res) => {
-        console.log(err, res)
+        //console.log(err, res)
     })
 })
 

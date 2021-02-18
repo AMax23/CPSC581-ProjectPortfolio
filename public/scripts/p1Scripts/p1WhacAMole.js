@@ -27,12 +27,13 @@ var randomMole; // Initialized when creating new holes and then updates everytim
 
 var molePicked = false; // The purpose of this is to ensure that the mole is set only once while it's still active.
 
-var screen = 0; // Screen 0 = Start screen, 1 = start game, 2 = game over
+var screen = 2; // Screen 0 = Start screen, 1 = start game, 2 = game over
 
 var score = 0;
 var molesMissed = 0;
 var startTime = 0; // The start time of the program. Used to get the time remaining.
 var gameTimeLimit = 3546; // ~ 1 min. This is a count of how many times the game loop runs until it's game over. There was a problem using millis()...
+var leaderboard = new Leaderboard();
 
 var timeMoleStaysOut = 100; // Number of times to be out of the hole.
 var timeMoleIsOut = 0;
@@ -64,7 +65,7 @@ function setup() {
     //restartBtn.id('restartBtn');
     inputBox = createInput('').attribute('placeholder', 'Your Name');
     submitBtn = createButton('Submit Score');
-    document.getElementById('leaderboard').style.display = 'none'; // Hide the leaderboard until the game ends.
+    //document.getElementById('leaderboard').style.display = 'none'; // Hide the leaderboard until the game ends.
 
     // Initialize mic and start it.
     mic = new Microphone();
@@ -363,12 +364,16 @@ function gameOver() {
     submitBtn.mousePressed(function () {
         //inputBox.hide();
         //submitBtn.hide();
-        inputBox.value('');
+        // Will need to sanitize input a bit...
         console.log('Do something with ' + inputBox.value());
+        let name = inputBox.value();
+        leaderboard.postScore(name, 400, accuracy);
+        inputBox.value('');
     });
 
     // Show the leaderboard
-    document.getElementById('leaderboard').style.display = '';
+    document.getElementById('leaderboard').style.visibility = "visible";
+    leaderboard.getScores();
 
     //fill(255, 0, 0);
     //rect(width / 2 + width / 2 * 0.23, height / 2 + height / 2 * 0.82, 10, 10);
@@ -382,6 +387,7 @@ function gameOver() {
 
     //rect(width / 2 - width / 2 * 0.23, height / 2 + height / 2 * 0.82, 10, 10);
 
+    // If user presses the 'back to menu button'.
     if (screen == 2 && mouseIsPressed && mouseX >= width / 2 - width / 2 * 0.23 && mouseX <= width / 2 + width / 2 * 0.23
         && mouseY >= height / 2 + height / 2 * 0.1 && mouseY <= height / 2 + height / 2 * 0.82) {
         screen = 0; // Start screen.
@@ -389,7 +395,7 @@ function gameOver() {
         //document.getElementById('startBtn').style.display = 'block';
         inputBox.hide();
         submitBtn.hide();
-        document.getElementById('leaderboard').style.display = 'none';
+        document.getElementById('leaderboard').style.visibility = "hidden";
         resetGame();
     }
 
