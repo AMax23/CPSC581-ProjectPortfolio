@@ -53,6 +53,6 @@ class Leaderboard {
 
 
 // Testing
-let a = new Leaderboard();
-a.postScore('Ahmed', 200, 1);
-a.getScores();
+//let a = new Leaderboard();
+//a.postScore('Ahmed', 200, 1);
+//a.getScores();
