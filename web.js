@@ -31,18 +31,36 @@ const PORT = process.env.PORT || 5000;  // Port should be 5000 by default
 //    })
 //})
 
-
-const { Client } = require('pg');
-
-const client = new Client({
+const { Pool } = require('pg');
+const env = process.env.NODE_ENV || 'development';
+connectionString = {
     connectionString: process.env.DATABASE_URL,
-    ssl: {
-        rejectUnauthorized: false
-    }
-});
+    ssl: true
+};
 
-client.connect();
-console.log('process  port = ' + process.env.DB_PORT);
+// checking to know the environment and suitable connection string to use
+if (env === 'development') {
+    connectionString.database = connectionString.connectionString;
+} else {
+    connectionString = {
+        connectionString: process.env.DATABASE_URL,
+        ssl: true
+    };
+};
+const pool = new Pool(connectionString);
+pool.on('connect', () => console.log('connected to db'));
+
+//const { Client } = require('pg');
+
+//const client = new Client({
+//    connectionString: process.env.DATABASE_URL,
+//    ssl: {
+//        rejectUnauthorized: false
+//    }
+//});
+
+////client.connect();
+//console.log('process  port = ' + process.env.DB_PORT);
 
 //client.connect();
 
