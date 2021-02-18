@@ -32,25 +32,23 @@ const PORT = process.env.PORT || 5000;  // Port should be 5000 by default
 //})
 
 const { Pool } = require('pg');
-const env = process.env.NODE_ENV || 'development';
+//const env = process.env.NODE_ENV || 'development';
+//connectionString = {
+//    connectionString: process.env.DATABASE_URL,
+//    ssl: true
+//};
+
 connectionString = {
     connectionString: process.env.DATABASE_URL,
     ssl: true
 };
 
-// checking to know the environment and suitable connection string to use
-if (env === 'development') {
-    connectionString.database = connectionString.connectionString;
-} else {
-    connectionString = {
-        connectionString: process.env.DATABASE_URL,
-        ssl: true
-    };
-};
+console.log(process.env.DATABASE_URL);
+
 const pool = new Pool(connectionString);
 pool.on('connect', () => console.log('connected to db'));
 
-pool.connect();
+//pool.connect();
 
 //const { Client } = require('pg');
 
@@ -77,8 +75,8 @@ pool.connect();
 
 app.use(express.static(path.join(__dirname, 'public'))) // lets us serve static files from the "public" directory
     .get('/', (req, res) => {                           // respond to HTTP GET request. '/' is the root endpoint.
-            res.sendFile(path.join(__dirname, 'public/pages/index.html')) // serve the landing static page
-        })
+        res.sendFile(path.join(__dirname, 'public/pages/index.html')) // serve the landing static page
+    })
     .listen(PORT); // keep the server listening on port 5000
 
 
