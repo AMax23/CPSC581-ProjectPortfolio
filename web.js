@@ -31,7 +31,8 @@ const PORT = process.env.PORT || 5000;  // Port should be 5000 by default
 //    })
 //})
 
-const {Client} = require('pg');
+const { Client } = require('pg');
+const { connect } = require('tls');
 //const env = process.env.NODE_ENV || 'development';
 //connectionString = {
 //    connectionString: process.env.DATABASE_URL,
@@ -70,14 +71,37 @@ client.connect();
 
 //client.connect();
 
-//client.query('SELECT  PlayerName , Score , Accuracy  FROM leaderboard;', (err, res) => {
+//client.query('select  playername , score , accuracy  from leaderboard;', (err, res) => {
 //    if (err) throw err;
 //    for (let row of res.rows) {
-//        console.log(JSON.stringify(row));
+//        console.log((row));
 //    }
 //    client.end();
 //});
 
+// middleware
+app.use(express.json());
+//app.use(express.urlencoded());
+
+app.get('/leaderboard', (req, res) => {
+    let q = 'SELECT PlayerName, Score, Accuracy FROM leaderboard ORDER BY Score DESC LIMIT 3;'
+    client.query(q, (error, response) => {
+        console.log(error, response)
+        res.send(response);
+    });
+})
+
+app.post('/score', (req, res) => {
+    let name = req.body.playername;
+    let score = req.body.score;
+    let accuracy = req.body.accuracy;
+    console.log(name, score, accuracy);
+    // PostgreSQL interprets " as being quotes for identifiers, ' as being quotes for strings.
+    let q = 'INSERT INTO leaderboard (playername, score, accuracy) VALUES (\''+name+'\'' + ', ' + score + ', ' + accuracy + ')';
+    client.query(q, (err, res) => {
+        console.log(err, res)
+    })
+})
 
 app.use(express.static(path.join(__dirname, 'public'))) // lets us serve static files from the "public" directory
     .get('/', (req, res) => {                           // respond to HTTP GET request. '/' is the root endpoint.
