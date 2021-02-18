@@ -41,7 +41,8 @@ const client = new Client({
     }
 });
 
-console.log('client conn string = ' + client.connectionString);
+client.connect();
+console.log('process port = ' + process.env.DB_PORT);
 
 //client.connect();
 
