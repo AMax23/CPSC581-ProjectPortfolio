@@ -50,6 +50,8 @@ if (env === 'development') {
 const pool = new Pool(connectionString);
 pool.on('connect', () => console.log('connected to db'));
 
+pool.connect();
+
 //const { Client } = require('pg');
 
 //const client = new Client({
