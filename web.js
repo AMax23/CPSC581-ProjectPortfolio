@@ -42,7 +42,7 @@ const client = new Client({
 });
 
 client.connect();
-console.log('process port = ' + process.env.DB_PORT);
+console.log('process  port = ' + process.env.DB_PORT);
 
 //client.connect();
 
