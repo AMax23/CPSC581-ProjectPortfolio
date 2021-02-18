@@ -30,7 +30,7 @@ app.use(express.json());
 app.get('/leaderboard', (req, res) => {
     let q = 'SELECT PlayerName, Score, Accuracy FROM leaderboard ORDER BY Score DESC LIMIT 3;'
     client.query(q, (error, response) => {
-        console.log(error, response)
+        //console.log(error, response)
         res.send(response);
     });
 })
@@ -44,7 +44,7 @@ app.post('/score', (req, res) => {
     // PostgreSQL interprets " as being quotes for identifiers, ' as being quotes for strings.
     let q = 'INSERT INTO leaderboard (playername, score, accuracy) VALUES (\'' + name + '\'' + ', ' + score + ', ' + accuracy + ')';
     client.query(q, (err, res) => {
-        console.log(err, res)
+        //console.log(err, res)
     })
 })
 
