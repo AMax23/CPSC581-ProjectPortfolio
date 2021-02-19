@@ -201,9 +201,7 @@ function moleHit() {
             // Only set the hit variable to true. I dont wanna delete the object from the array.
             // So the array length will always be the same regardless of the mole being hit.
             moles[i].hit = true;
-            if (!hammer.iosDevice) {
-                window.navigator.vibrate(100); // Vibrate for 100ms when the mole is hit cos it's fun (or annoying!)
-            }
+
             //console.log('You hit mole ' + i);
             score++;
             molesMissed--;

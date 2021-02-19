@@ -14,7 +14,6 @@ function Hammer(x, y) {
         'bottomRightX': 0,
         'bottomRightY': 0
     };
-    this.iosDevice = false; // Just to know which device it is. Some features like vibrate do not work on ios.
 
     this.show = function (img) {
 
@@ -73,7 +72,6 @@ function Hammer(x, y) {
             document.body.addEventListener('click', function () {
                 DeviceOrientationEvent.requestPermission()
                     .then(function () {
-                        this.iosDevice = true;
                         console.log('DeviceOrientationEvent, DeviceMotionEvent enabled');
                     })
                     .catch(function (error) {
