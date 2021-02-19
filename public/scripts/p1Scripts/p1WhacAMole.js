@@ -24,7 +24,13 @@ var numOfHoles = 6;
 var randomMole; // Initialized when creating new holes and then updates everytime the mole is hit or when it hides.
 var molePicked = false; // The purpose of this is to ensure that the mole is set only once while it's still active.
 
-var screen = 0; // Screen 0 = Start screen, 1 = start game, 2 = game over
+var screen = 0; // Screen 0 = Start screen, 1 = start game, 2 = game over, 3 = tutorial Mode
+
+var tutorialMode = false;
+var messageTime = 0;
+var instructions = ['TILT YOUR PHONE TO MOVE HAMMER', 'YELL TO HIT THE MOLE', 'TIME REMAINING IS THE TOP BAR', 'TOP LEFT IS YOUR SCORE',
+    'THE MOLES GET FASTER \nAS YOUR SCORE INCREASES', 'GO BACK TO START MENU \n WHEN YOU ARE READY'];
+var nextInsMsg = 0;
 
 var score = 0;
 var molesMissed = 0;
@@ -43,7 +49,7 @@ function preload() {
     // Load the images in a asynchronous way. setup() waits until preload() is done.
     hammerImg = loadImage('../images/project 1/thorsHammer.png'); // Load the image of the hammer
     hammerHitImg = loadImage('../images/project 1/thorsHammerHit.png'); // Load the image hammer when its hitting
-    bgImg = loadImage('../images/project 1/background2.png'); // Load the image of the grass
+    bgImg = loadImage('../images/project 1/background.png'); // Load the image of the grass
     holeImg = loadImage('../images/project 1/hole.png'); // Load the image of the hole
     moleImg = loadImage('../images/project 1/mole.png'); // Load the image of the mole
     startScreenImg = loadImage('../images/project 1/startScreen.png'); // Load game start screen image
@@ -78,8 +84,11 @@ function draw() {
     } else if (screen == 1) {
         gameStart();
         showHammer();
+        quitGame();
     } else if (screen == 2) {
         gameOver();
+    } else if (screen == 3) {
+        tutorial();
     }
 }
 ///////////////////////////////////////////////////////////////////////////////////
@@ -253,6 +262,8 @@ function resetGame() {
     timeMoleIsOut = 0;
     timeMoleStaysHidden = 100;
     timeMoleStaysOut = 100;
+    messageTime = 0;
+    nextInsMsg = 0;
     createHoles();
 }
 
@@ -270,8 +281,8 @@ function displayTime() {
     line(0, 0, timeBar, 0);
     pop();
 
-    // Either time is up or still playing. 
-    screen = startTime < 0 ? 2 : 1;
+    // Either time is up or still playing. 2 = game over screen
+    screen = startTime < 0 && !tutorialMode ? 2 : screen;
 }
 
 function startScreen() {
@@ -319,6 +330,9 @@ function startScreen() {
         mic.whackSound.play();
         mic.whackSound.currentTime = 0;
         console.log('Instructions button clicked');
+        screen = 3; // Tutorial mode is on.
+        startTime = gameTimeLimit;
+        tutorialMode = true;
     }
     pop();
 }
@@ -419,6 +433,98 @@ function gameOver() {
         inputBox.hide();
         submitBtn.hide();
         document.getElementById('leaderboard').style.visibility = "hidden";
+        resetGame();
+    }
+}
+
+// Small sample game play for the users who click on instructions.
+// To show how the game works.
+function tutorial() {
+    // Game background
+    image(bgImg, 0, 0, width, height);
+
+    displayScore();
+
+    displayTime();
+    // If time runs out, just restart it.
+    startTime = startTime <= 0 ? gameTimeLimit : startTime;
+    showMole();
+
+    // Show holes
+    for (var i = 0; i < holes.length; i++) {
+        holes[i].show();
+    }
+
+    // Keep the mole speed the same while in tutorial.
+    timeMoleStaysHidden = 50;
+    timeMoleStaysOut = 100;
+
+    push();
+    stroke(2);
+    strokeWeight(3);
+    textSize(18);
+    fill("#ffffff");
+    rect(width / 2 - 400 / 2, height / 2 - height / 2 * 0.5, 400, 100);
+    pop();
+
+    push();
+    fill(0);
+    textSize(20);
+    textStyle(BOLD);
+    textAlign(CENTER);
+    if (messageTime <= 500) {
+        text(instructions[nextInsMsg], width / 2, height / 2 - height / 2 * 0.49 + 50);
+        messageTime++;
+    } else {
+        // Show the next instruction after whacking mole twice.
+        if (score >= 2 || nextInsMsg == 0 || (score >= 2 && nextInsMsg == 1)) {
+            nextInsMsg = nextInsMsg == instructions.length - 1 ? 0 : nextInsMsg + 1;
+        }
+        // Reset the time the message is displayed.
+        messageTime = 0;
+    }
+    pop();
+
+    showHammer();
+
+    quitGame();
+
+}
+
+function quitGame() {
+    let quitBtn = {
+        "bottomLeftX": 0,
+        "bottomLeftY": 0,
+        "bottomRightX": 0,
+        "bottomRightY": 0,
+        "topLeftX": 0,
+        "topLeftY": 0,
+        "topRightX": 0,
+        "topRightY": 0
+    }
+
+    quitBtn.bottomRightX = width / 2 + width / 2 * 0.94;
+    quitBtn.bottomRightY = height / 2 - height / 2 * 0.86;
+    quitBtn.topRightX = width / 2 + width / 2 * 0.94;
+    quitBtn.topRightY = height / 2 - height / 2 * 0.93;
+    quitBtn.topLeftX = width / 2 + width / 2 * 0.55;
+    quitBtn.topLeftY = height / 2 - height / 2 * 0.93;
+    quitBtn.bottomLeftX = width / 2 + width / 2 * 0.55;
+    quitBtn.bottomLeftY = height / 2 - height / 2 * 0.86;
+
+    //fill(255, 0, 0);
+    //rect(quitBtn.bottomRightX, quitBtn.bottomRightY, 10, 10);
+    //fill(255, 255, 0);
+    //rect(quitBtn.topRightX, quitBtn.topRightY, 10, 10);
+    //fill(255, 0, 255);
+    //rect(quitBtn.topLeftX, quitBtn.topLeftY, 10, 10);
+    //fill(0, 0, 255);
+    //rect(quitBtn.bottomLeftX, quitBtn.bottomLeftY, 10, 10);
+
+    // If the quit button is pressed then go back to main menu.
+    if (mouseIsPressed && mouseX >= quitBtn.bottomLeftX && mouseX <= quitBtn.bottomRightX
+        && mouseY >= quitBtn.topRightY && mouseY <= quitBtn.bottomRightY) {
+        screen = 0; // Start screen.
         resetGame();
     }
 }
