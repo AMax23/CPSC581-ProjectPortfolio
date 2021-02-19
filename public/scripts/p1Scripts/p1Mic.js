@@ -30,6 +30,7 @@ function Microphone() {
             .then(function (stream) {
                 self.mic = self.audioContext.createMediaStreamSource(stream);
                 self.mic.connect(self.analyser);
+                self.analyser.connect(self.audioContext.destination); // Output mic input to device speakers. Testing.
                 self.beginRecording();
             })
             .catch(function (err) {
