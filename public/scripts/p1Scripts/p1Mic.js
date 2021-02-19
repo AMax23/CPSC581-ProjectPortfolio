@@ -8,10 +8,10 @@ function Microphone() {
     this.constraints = { audio: true };
     this.whackSound = new Audio('../sounds/project 1/whackSound.wav');
 
-    var self = this;
-
     this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    this.analyser = self.audioContext.createAnalyser();
+    this.analyser = this.audioContext.createAnalyser();
+
+    var self = this;
 
     //window.addEventListener('load', init, false);
 
@@ -32,11 +32,11 @@ function Microphone() {
         function processSound(stream) {
             self.mic = self.audioContext.createMediaStreamSource(stream);
             self.mic.connect(self.analyser);
-            document.getElementById('body').onclick = function () {
-                self.audioContext.resume();
-                console.log('Mic started');
-                //document.getElementById('startBtn').style.display = 'none';
-            }
+            //document.getElementById('body').onclick = function () {
+            //    self.audioContext.resume();
+            //    console.log('Mic started');
+            //    //document.getElementById('startBtn').style.display = 'none';
+            //}
             self.beginRecording();
         }
 
@@ -46,6 +46,9 @@ function Microphone() {
     }
 
     this.beginRecording = function () {
+        // The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page.
+        // This is to fix the error on Chrome browsers.
+        self.audioContext.resume();
         self.analyser.fftSize = self.FFT_SIZE;
         var bufferLength = self.analyser.fftSize;
 
