@@ -315,6 +315,9 @@ function startScreen() {
     // If the instructions button is clicked
     if (screen == 0 && mouseIsPressed && mouseX >= width / 2 - width / 2 * 0.31 && mouseX <= width / 2 + width / 2 * 0.30
         && mouseY >= height / 2 - height / 2 * 0.08 && mouseY <= height / 2 + height / 2 * 0.13) {
+        // Play a sound when player presses the button.
+        mic.whackSound.play();
+        mic.whackSound.currentTime = 0;
         console.log('Instructions button clicked');
     }
     pop();
@@ -409,6 +412,9 @@ function gameOver() {
     // If user presses the 'back to menu button'.
     if (screen == 2 && mouseIsPressed && mouseX >= backToMenuBtn.bottomLeftX && mouseX <= backToMenuBtn.bottomRightX
         && mouseY >= backToMenuBtn.topRightY && mouseY <= backToMenuBtn.bottomRightY) {
+        // Play a sound when player presses the button.
+        mic.whackSound.play();
+        mic.whackSound.currentTime = 0;
         screen = 0; // Start screen.
         inputBox.hide();
         submitBtn.hide();
