@@ -321,6 +321,8 @@ function gameOver() {
     push();
     image(gameOverScreenImg, 0, 0, width, height);
 
+    let leaderboardPos = document.getElementById('leaderboard').getBoundingClientRect();
+
     fill(255);
     textSize(20);
     textAlign(CENTER);
@@ -331,8 +333,6 @@ function gameOver() {
         , width / 2, height / 2 - height / 2 * 0.3);
 
     pop();
-
-    let leaderboardPos = document.getElementById('leaderboard').getBoundingClientRect();
 
     inputBox.position(leaderboardPos.x - 10, leaderboardPos.y - 50);
     submitBtn.position(inputBox.x + inputBox.width + 1, inputBox.y);
@@ -349,7 +349,6 @@ function gameOver() {
     document.getElementById('leaderboard').style.visibility = "visible";
     leaderboard.getScores();
 
-    //fill(255, 0, 0);
     let backToMenuBtn = {
         "bottomLeftX": 0,
         "bottomLeftY": 0,
@@ -360,26 +359,28 @@ function gameOver() {
         "topRightX": 0,
         "topRightY": 0
     }
+    //fill(255, 0, 0);
+
     backToMenuBtn.bottomRightX = width / 2 + width / 2 * 0.23;
-    backToMenuBtn.bottomRightY = height / 2 + height / 2 * 0.82;
+    backToMenuBtn.bottomRightY = height / 2 - height/2 * 0.4;
 
     //rect(backToMenuBtn.bottomRightX, backToMenuBtn.bottomRightY, 10, 10);
     //fill(255, 255, 0);
 
     backToMenuBtn.topRightX = width / 2 + width / 2 * 0.23;
-    backToMenuBtn.topRightY = height / 2 + height / 2 * 0.71;
+    backToMenuBtn.topRightY = height / 2 - height / 2 * 0.5;
 
     //rect(backToMenuBtn.topRightX, backToMenuBtn.topRightY, 10, 10);
     //fill(255, 0, 255);
 
-    backToMenuBtn.topLeftX = width / 2 - width / 2 * 0.23;
-    backToMenuBtn.topLeftY = height / 2 + height / 2 * 0.71;
+    backToMenuBtn.topLeftX = width / 2 - width / 2 * 0.24;
+    backToMenuBtn.topLeftY = height / 2 - height / 2 * 0.5;
 
     //rect(backToMenuBtn.topLeftX, backToMenuBtn.topLeftY, 10, 10);
     //fill(0, 0, 255);
 
-    backToMenuBtn.bottomLeftX = width / 2 - width / 2 * 0.23;
-    backToMenuBtn.bottomLeftY = height / 2 + height / 2 * 0.82;
+    backToMenuBtn.bottomLeftX = width / 2 - width / 2 * 0.24;
+    backToMenuBtn.bottomLeftY = height / 2 - height / 2 * 0.4;
 
     //rect(backToMenuBtn.bottomLeftX, backToMenuBtn.bottomLeftY, 10, 10);
 
