@@ -25,7 +25,7 @@ var randomMole; // Initialized when creating new holes and then updates everytim
 
 var molePicked = false; // The purpose of this is to ensure that the mole is set only once while it's still active.
 
-var screen = 0; // Screen 0 = Start screen, 1 = start game, 2 = game over
+var screen = 2; // Screen 0 = Start screen, 1 = start game, 2 = game over
 
 var score = 0;
 var molesMissed = 0;
@@ -329,11 +329,12 @@ function gameOver() {
         + '\n Missed = ' + (molesMissed)
         + '\n Accuracy = ' + accuracy + '%'
         , width / 2, height / 2 - height / 2 * 0.3);
-    //document.getElementById('restartBtn').style.display = 'block';
 
     pop();
 
-    inputBox.position(width / 2 - width / 2 * 0.73, height / 2);
+    let leaderboardPos = document.getElementById('leaderboard').getBoundingClientRect();
+
+    inputBox.position(leaderboardPos.x - 10, leaderboardPos.y - 50);
     submitBtn.position(inputBox.x + inputBox.width + 1, inputBox.y);
     inputBox.show();
     submitBtn.show();
