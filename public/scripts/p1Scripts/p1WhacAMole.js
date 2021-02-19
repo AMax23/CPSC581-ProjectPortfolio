@@ -288,22 +288,50 @@ function displayTime() {
 function startScreen() {
     push();
     image(startScreenImg, 0, 0, width, height);
-    ////let startLeft = 
+
+    let startBtn = {
+        "bottomLeftX": 0,
+        "bottomLeftY": 0,
+        "bottomRightX": 0,
+        "bottomRightY": 0,
+        "topLeftX": 0,
+        "topLeftY": 0,
+        "topRightX": 0,
+        "topRightY": 0
+    }
+
+    let instructionsBtn = {
+        "bottomLeftX": 0,
+        "bottomLeftY": 0,
+        "bottomRightX": 0,
+        "bottomRightY": 0,
+        "topLeftX": 0,
+        "topLeftY": 0,
+        "topRightX": 0,
+        "topRightY": 0
+    }
+
+    startBtn.bottomRightX = width / 2 + width / 2 * 0.13;
+    startBtn.bottomRightY = height / 2;
+    startBtn.topRightX = width / 2 + width / 2 * 0.13;
+    startBtn.topRightY = height / 2 - height / 2 * 0.07;
+    startBtn.bottomLeftX = width / 2 - width / 2 * 0.14;
+    startBtn.bottomLeftY = height / 2;
+    startBtn.topLeftX = width / 2 - width / 2 * 0.14;
+    startBtn.topLeftY = height / 2 - height / 2 * 0.07;
+
     //fill(255, 0, 0);
-    //rect(width / 2 + width / 2 * 0.13, height / 2, 10, 10);
+    //rect(startBtn.bottomRightX, startBtn.bottomRightY, 10, 10);
     //fill(255, 255, 0);
-
-    //rect(width / 2 + width / 2 * 0.13, height / 2 - height / 2 * 0.07, 10, 10);
+    //rect(startBtn.topRightX, startBtn.topRightY, 10, 10);
     //fill(255, 0, 255);
-
-    //rect(width / 2 - width / 2 * 0.14, height / 2, 10, 10);
+    //rect(startBtn.bottomLeftX, startBtn.bottomLeftY, 10, 10);
     //fill(0, 0, 255);
-
-    //rect(width / 2 - width / 2 * 0.14, height / 2 - height / 2 * 0.07, 10, 10);
+    //rect(startBtn.topLeftX, startBtn.topLeftY, 10, 10);
 
     // If the start button is clicked.
-    if (screen == 0 && mouseIsPressed && mouseX >= width / 2 - width / 2 * 0.14 && mouseX <= width / 2 + width / 2 * 0.13
-        && mouseY >= height / 2 - height / 2 * 0.07 && mouseY <= height / 2 + height / 2 * 0.07) {
+    if (screen == 0 && mouseIsPressed && mouseX >= startBtn.topLeftX && mouseX <= startBtn.topRightX
+        && mouseY >= startBtn.topLeftY && mouseY <= startBtn.bottomLeftY) {
         // Play a sound when player presses start.
         mic.whackSound.play();
         mic.whackSound.currentTime = 0;
@@ -311,25 +339,30 @@ function startScreen() {
         startTime = gameTimeLimit; // The time when the game has started. Countdown start time.
     }
 
+    instructionsBtn.bottomRightX = width / 2 + width / 2 * 0.30;
+    instructionsBtn.bottomRightY = height / 2 + height / 2 * 0.13;
+    instructionsBtn.topRightX = width / 2 + width / 2 * 0.30;
+    instructionsBtn.topRightY = height / 2 + height / 2 * 0.08;
+    instructionsBtn.bottomLeftX = width / 2 - width / 2 * 0.31;
+    instructionsBtn.bottomLeftY = height / 2 + height / 2 * 0.13;
+    instructionsBtn.topLeftX = width / 2 - width / 2 * 0.31;
+    instructionsBtn.topLeftY = height / 2 + height / 2 * 0.08;
+
     //fill(255, 0, 0);
-    //rect(width / 2 + width / 2 * 0.30, height / 2 + height / 2 * 0.13, 10, 10);
+    //rect(instructionsBtn.bottomRightX, instructionsBtn.bottomRightY, 10, 10);
     //fill(255, 255, 0);
-
-    //rect(width / 2 + width / 2 * 0.30, height / 2 + height / 2 * 0.08, 10, 10);
+    //rect(instructionsBtn.topRightX, instructionsBtn.topRightY, 10, 10);
     //fill(255, 0, 255);
-
-    //rect(width / 2 - width / 2 * 0.31, height / 2 + height / 2 * 0.08, 10, 10);
+    //rect(instructionsBtn.topLeftX, instructionsBtn.topLeftY, 10, 10);
     //fill(0, 0, 255);
-
-    //rect(width / 2 - width / 2 * 0.31, height / 2 + height / 2 * 0.13, 10, 10);
+    //rect(instructionsBtn.bottomLeftX, instructionsBtn.bottomLeftY, 10, 10);
 
     // If the instructions button is clicked
-    if (screen == 0 && mouseIsPressed && mouseX >= width / 2 - width / 2 * 0.31 && mouseX <= width / 2 + width / 2 * 0.30
-        && mouseY >= height / 2 - height / 2 * 0.08 && mouseY <= height / 2 + height / 2 * 0.13) {
+    if (screen == 0 && mouseIsPressed && mouseX >= instructionsBtn.topLeftX && mouseX <= instructionsBtn.topRightX
+        && mouseY >= instructionsBtn.topLeftY && mouseY <= instructionsBtn.bottomLeftY) {
         // Play a sound when player presses the button.
         mic.whackSound.play();
         mic.whackSound.currentTime = 0;
-        console.log('Instructions button clicked');
         screen = 3; // Tutorial mode is on.
         startTime = gameTimeLimit;
         tutorialMode = true;
@@ -398,29 +431,23 @@ function gameOver() {
         "topRightX": 0,
         "topRightY": 0
     }
-    //fill(255, 0, 0);
 
     backToMenuBtn.bottomRightX = width / 2 + width / 2 * 0.23;
     backToMenuBtn.bottomRightY = height / 2 - height / 2 * 0.4;
-
-    //rect(backToMenuBtn.bottomRightX, backToMenuBtn.bottomRightY, 10, 10);
-    //fill(255, 255, 0);
-
     backToMenuBtn.topRightX = width / 2 + width / 2 * 0.23;
     backToMenuBtn.topRightY = height / 2 - height / 2 * 0.5;
-
-    //rect(backToMenuBtn.topRightX, backToMenuBtn.topRightY, 10, 10);
-    //fill(255, 0, 255);
-
     backToMenuBtn.topLeftX = width / 2 - width / 2 * 0.24;
     backToMenuBtn.topLeftY = height / 2 - height / 2 * 0.5;
-
-    //rect(backToMenuBtn.topLeftX, backToMenuBtn.topLeftY, 10, 10);
-    //fill(0, 0, 255);
-
     backToMenuBtn.bottomLeftX = width / 2 - width / 2 * 0.24;
     backToMenuBtn.bottomLeftY = height / 2 - height / 2 * 0.4;
 
+    //fill(255, 0, 0);
+    //rect(backToMenuBtn.bottomRightX, backToMenuBtn.bottomRightY, 10, 10);
+    //fill(255, 255, 0);
+    //rect(backToMenuBtn.topRightX, backToMenuBtn.topRightY, 10, 10);
+    //fill(255, 0, 255);
+    //rect(backToMenuBtn.topLeftX, backToMenuBtn.topLeftY, 10, 10);
+    //fill(0, 0, 255);
     //rect(backToMenuBtn.bottomLeftX, backToMenuBtn.bottomLeftY, 10, 10);
 
     // If user presses the 'back to menu button'.
