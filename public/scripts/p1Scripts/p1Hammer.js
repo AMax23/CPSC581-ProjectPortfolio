@@ -14,7 +14,6 @@ function Hammer(x, y) {
         'bottomRightX': 0,
         'bottomRightY': 0
     };
-    this.permissionGranted = false;
 
     this.show = function (img) {
 
@@ -66,40 +65,20 @@ function Hammer(x, y) {
         }
     }
 
-    this.requestPermission = function (){
-        // DeviceOrientationEvent, DeviceMotionEvent
-        if (typeof (DeviceOrientationEvent) !== 'undefined' && typeof (DeviceOrientationEvent.requestPermission) === 'function') {
-            // IOS device
-            DeviceOrientationEvent.requestPermission()
-                .catch(() => {
-                    // Show permission dialog only the first time
-                    let button = createButton("click to allow access to sensors");
-                    button.style("font-size", "24px");
-                    button.center();
-                    button.mousePressed(requestAccess); background(0, 255, 0);
-                    throw error;
-                })
-                .then(() => {
-                    // on any subsequent visits
-                    this.permissionGranted = true;
-                })
-        } else {
-            // Non IOS device
-            this.permissionGranted = true;
+    this.requestPermission = function () {
+        // This is needed for IOS devices. Permission to access device orientation.
+        // https://krpano.com/forum/wbb/index.php?page=Thread&threadID=17044
+        if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+            document.body.addEventListener('click', function () {
+                DeviceOrientationEvent.requestPermission()
+                    .then(function () {
+                        console.log('DeviceOrientationEvent, DeviceMotionEvent enabled');
+                    })
+                    .catch(function (error) {
+                        alert('DeviceOrientationEvent, DeviceMotionEvent not enabled', error);
+                    })
+            }, { once: true });
+            return;
         }
-    }
-
-    this.requestAccess = function () {
-        DeviceOrientationEvent.requestPermission()
-            .then(response => {
-                if (response == 'granted') {
-                    permissionGranted = true;
-                } else {
-                    permissionGranted = false;
-                }
-            })
-            .catch(console.error);
-
-        this.remove();
     }
 }
