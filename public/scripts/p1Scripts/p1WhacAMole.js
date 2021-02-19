@@ -22,13 +22,13 @@ var holes = [];
 var moles = [];
 var numOfHoles = 6;
 var randomMole; // Initialized when creating new holes and then updates everytime the mole is hit or when it hides.
-
 var molePicked = false; // The purpose of this is to ensure that the mole is set only once while it's still active.
 
 var screen = 0; // Screen 0 = Start screen, 1 = start game, 2 = game over
 
 var score = 0;
 var molesMissed = 0;
+var accuracy; // accuracy = score / (score + molesMissed)
 var startTime = 0; // The start time of the program. Used to get the time remaining.
 var gameTimeLimit = 3546; // ~ 1 min. This is a count of how many times the game loop runs until it's game over. There was a problem using millis()...
 var leaderboard = new Leaderboard();
@@ -58,6 +58,7 @@ function setup() {
 
     // Create buttons and input for the different screens
     inputBox = createInput('').attribute('placeholder', 'Your Name');
+    inputBox.attribute('maxlength', 10); // set the max char limit for the input.
     submitBtn = createButton('Submit Score');
 
     // Initialize mic and start it.
@@ -323,10 +324,14 @@ function gameOver() {
 
     let leaderboardPos = document.getElementById('leaderboard').getBoundingClientRect();
 
+    // Show the leaderboard
+    document.getElementById('leaderboard').style.visibility = "visible";
+    leaderboard.getScores();
+
     fill(255);
     textSize(20);
     textAlign(CENTER);
-    let accuracy = (score != 0) ? (score / (score + molesMissed) * 100).toFixed(0) : 0;
+    accuracy = (score != 0) ? (score / (score + molesMissed) * 100).toFixed(0) : 0;
     text('Your score is ' + score
         + '\n Missed = ' + (molesMissed)
         + '\n Accuracy = ' + accuracy + '%'
@@ -334,20 +339,36 @@ function gameOver() {
 
     pop();
 
-    inputBox.position(leaderboardPos.x - 10, leaderboardPos.y - 50);
-    submitBtn.position(inputBox.x + inputBox.width + 1, inputBox.y);
-    inputBox.show();
-    submitBtn.show();
-    submitBtn.mousePressed(function () {
-        // Will need to sanitize input a bit...
-        let name = inputBox.value();
-        leaderboard.postScore(name, score, accuracy);
-        inputBox.value(''); // Clear the input box after submitting
-    });
-
-    // Show the leaderboard
-    document.getElementById('leaderboard').style.visibility = "visible";
-    leaderboard.getScores();
+    // Only allow the player to submit their score if their score is greater than the last player's.
+    // Otherwise there is no point in submitting if they get a low score. It will never be shown.
+    var lastPlayerScore = Number(document.getElementById("3Score").innerText);
+    console.log(Number(lastPlayerScore), score);
+    if (score > lastPlayerScore) {
+        console.log('last players score = ' + lastPlayerScore);
+        inputBox.position(leaderboardPos.x - 10, leaderboardPos.y - 50);
+        submitBtn.position(inputBox.x + inputBox.width + 1, inputBox.y);
+        inputBox.show();
+        submitBtn.show();
+        submitBtn.mousePressed(function () {
+            let name = inputBox.value();
+            // The name must be at least 1 character.
+            if (name.length > 0) {
+                leaderboard.postScore(name, score, accuracy);
+                inputBox.value(''); // Clear the input box after submitting
+            }
+        });
+    } else {
+        // Initially the get leaderboard request takes a while so the input btn is shown for a second or so.
+        // So it goes into the first if and displays the input and the submit btn. So, we need to hide it again.
+        inputBox.hide();
+        submitBtn.hide();
+        push();
+        fill(255);
+        textSize(20);
+        textAlign(CENTER);
+        text('Beat one of these scores \nand submit your high score!', width / 2, leaderboardPos.y - 50);
+        pop();
+    }
 
     let backToMenuBtn = {
         "bottomLeftX": 0,
@@ -362,7 +383,7 @@ function gameOver() {
     //fill(255, 0, 0);
 
     backToMenuBtn.bottomRightX = width / 2 + width / 2 * 0.23;
-    backToMenuBtn.bottomRightY = height / 2 - height/2 * 0.4;
+    backToMenuBtn.bottomRightY = height / 2 - height / 2 * 0.4;
 
     //rect(backToMenuBtn.bottomRightX, backToMenuBtn.bottomRightY, 10, 10);
     //fill(255, 255, 0);

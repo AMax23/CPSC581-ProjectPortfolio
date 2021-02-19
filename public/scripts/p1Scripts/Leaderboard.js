@@ -1,3 +1,5 @@
+// Javascript code for the client side to send and receive data via POST anf GET requests.
+// Look at Web,js for the SQL queries and endpoints.
 class Leaderboard {
 
     constructor() {
