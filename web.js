@@ -3,7 +3,8 @@ var express = require('express');	    // Use the express module
 var app = express();			        // This is our express.js instance
 const PORT = process.env.PORT || 5000;  // Port should be 5000 by default
 
-// First set up the PG client – the PG server is hosted elsewhere. https://devcenter.heroku.com/articles/heroku-postgresql#connecting-in-node-js
+// First set up the PG client – the PG server is hosted elsewhere.
+// https://devcenter.heroku.com/articles/heroku-postgresql#connecting-in-node-js
 const { Client } = require('pg');
 
 // For local testing
@@ -28,7 +29,7 @@ app.use(express.json());
 
 // Endpoint for getting the leaderbooard names and scores. Only top 3 players are returned
 app.get('/leaderboard', (req, res) => {
-    let q = 'SELECT PlayerName, Score, Accuracy FROM leaderboard ORDER BY Score DESC LIMIT 3;'
+    let q = 'SELECT DISTINCT PlayerName, Score, Accuracy FROM leaderboard ORDER BY Score DESC LIMIT 3;'
     client.query(q, (error, response) => {
         //console.log(error, response)
         res.send(response);
