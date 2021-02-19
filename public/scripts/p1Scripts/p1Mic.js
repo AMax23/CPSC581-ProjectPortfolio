@@ -26,23 +26,15 @@ function Microphone() {
     }
 
     this.startMic = function () {
-
-        navigator.getUserMedia(self.constraints, processSound, error);
-
-        function processSound(stream) {
-            self.mic = self.audioContext.createMediaStreamSource(stream);
-            self.mic.connect(self.analyser);
-            //document.getElementById('body').onclick = function () {
-            //    self.audioContext.resume();
-            //    console.log('Mic started');
-            //    //document.getElementById('startBtn').style.display = 'none';
-            //}
-            self.beginRecording();
-        }
-
-        function error() {
-            console.log('Error: ' + arguments);
-        }
+        navigator.mediaDevices.getUserMedia(self.constraints)
+            .then(function (stream) {
+                self.mic = self.audioContext.createMediaStreamSource(stream);
+                self.mic.connect(self.analyser);
+                self.beginRecording();
+            })
+            .catch(function (err) {
+                console.log('Error: ' + err);
+            });
     }
 
     this.beginRecording = function () {
