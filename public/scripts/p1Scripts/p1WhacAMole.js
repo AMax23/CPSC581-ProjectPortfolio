@@ -28,7 +28,7 @@ var screen = 0; // Screen 0 = Start screen, 1 = start game, 2 = game over, 3 = t
 
 var tutorialMode = false;
 var messageTime = 0;
-var instructions = ['TILT YOUR PHONE TO MOVE HAMMER', 'YELL TO HIT THE MOLE', 'TIME REMAINING IS THE TOP BAR', 'TOP LEFT IS YOUR SCORE',
+var instructions = ['TILT YOUR PHONE TO MOVE HAMMER', 'YELL TO HIT THE MOLE', 'TIME REMAINING IS THE TOP BAR \n YOU HAVE 60 SECONDS', 'TOP LEFT IS YOUR SCORE',
     'THE MOLES GET FASTER \nAS YOUR SCORE INCREASES', 'GO BACK TO START MENU \n WHEN YOU ARE READY'];
 var nextInsMsg = 0;
 
@@ -113,7 +113,7 @@ function showMole() {
     if ((moles[randomMole].hit || timeMoleIsHidden > timeMoleStaysHidden) && !moles[randomMole].active && !molePicked) {
         // Pick a new hole, not same as previous one.
         while (true) {
-            let newRandNum = floor(random(numOfHoles)); // Generate random number between 0 and 5.
+            let newRandNum = tutorialMode ? random([1, 2, 4, 5]) : floor(random(numOfHoles)); // Generate random number between 0 and 5.
             if (newRandNum != randomMole) {
                 randomMole = newRandNum;
                 molesMissed++; // Assume the mole will not be hit, and then if it is then its updated in moleHit().
@@ -472,7 +472,7 @@ function tutorial() {
     textSize(20);
     textStyle(BOLD);
     textAlign(CENTER);
-    if (messageTime <= 500) {
+    if (messageTime <= 300) {
         text(instructions[nextInsMsg], width / 2, height / 2 - height / 2 * 0.49 + 50);
         messageTime++;
     } else {
