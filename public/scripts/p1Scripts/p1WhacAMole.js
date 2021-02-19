@@ -10,8 +10,6 @@ var bgImg;
 var startScreenImg;
 var gameOverScreenImg;
 
-var startBtn;
-var restartBtn;
 var inputBox;
 var submitBtn;
 
@@ -27,7 +25,7 @@ var randomMole; // Initialized when creating new holes and then updates everytim
 
 var molePicked = false; // The purpose of this is to ensure that the mole is set only once while it's still active.
 
-var screen = 2; // Screen 0 = Start screen, 1 = start game, 2 = game over
+var screen = 0; // Screen 0 = Start screen, 1 = start game, 2 = game over
 
 var score = 0;
 var molesMissed = 0;
@@ -59,13 +57,8 @@ function setup() {
     cnv.id('gameCanvas');
 
     // Create buttons and input for the different screens
-    //startBtn = createButton('Start');
-    //startBtn.id('startBtn');
-    //restartBtn = createButton('Back to main menu');
-    //restartBtn.id('restartBtn');
     inputBox = createInput('').attribute('placeholder', 'Your Name');
     submitBtn = createButton('Submit Score');
-    //document.getElementById('leaderboard').style.display = 'none'; // Hide the leaderboard until the game ends.
 
     // Initialize mic and start it.
     mic = new Microphone();
@@ -240,10 +233,7 @@ function createHoles() {
 }
 
 function displayScore() {
-    let fontSize = 70; //windowWidth * 0.15; // Just trying to get a reasonaable font size bassed on the user's screen size.
-    //let xMultiplier = 50;
-    //if (score > 9) { xMultiplier = 90; }
-    //let xPos = 10;//width - xMultiplier; //windowWidth - windowWidth * xMultiplier;
+    let fontSize = 70;
     push();
     textSize(fontSize);
     textStyle(BOLD);
@@ -273,15 +263,9 @@ function displayTime() {
     startTime--;
     let timeBar = map(startTime, 0, gameTimeLimit, 0, width);
 
-    //console.log(countdown, timeLimit_ms);
     // Change the bar colour depending on how much time is left.
     startTime <= 0.25 * gameTimeLimit ? stroke(255, 0, 0) : stroke(0, 255, 0);
 
-    //if (millis()-startTime >= 0.75 * (startTime + timeLimit_ms)) {
-    //    stroke(255, 0, 0);
-    //} else {
-    //    stroke(0, 255, 0);
-    //}
     line(0, 0, timeBar, 0);
     pop();
 
@@ -291,7 +275,6 @@ function displayTime() {
 
 function startScreen() {
     push();
-    //background(0);
     image(startScreenImg, 0, 0, width, height);
     ////let startLeft = 
     //fill(255, 0, 0);
@@ -313,7 +296,6 @@ function startScreen() {
         startTime = gameTimeLimit; // The time when the game has started. Countdown start time.
     }
 
-    // Do stuff
     //fill(255, 0, 0);
     //rect(width / 2 + width / 2 * 0.30, height / 2 + height / 2 * 0.13, 10, 10);
     //fill(255, 255, 0);
@@ -331,12 +313,6 @@ function startScreen() {
         && mouseY >= height / 2 - height / 2 * 0.08 && mouseY <= height / 2 + height / 2 * 0.13) {
         console.log('Instructions button clicked');
     }
-
-    //startBtn.position(width / 2, height / 2);
-    //startBtn.mousePressed(function () {
-    //    screen = 1; // Start game. Button is hidden after mic is started in Mic.js
-    //    startTime = millis(); // The time when the game has started. Countdown start time.
-    //});
     pop();
 }
 
@@ -362,20 +338,17 @@ function gameOver() {
     inputBox.show();
     submitBtn.show();
     submitBtn.mousePressed(function () {
-        //inputBox.hide();
-        //submitBtn.hide();
         // Will need to sanitize input a bit...
-        console.log('Do something with ' + inputBox.value());
         let name = inputBox.value();
-        leaderboard.postScore(name, 400, accuracy);
-        inputBox.value('');
+        leaderboard.postScore(name, score, accuracy);
+        inputBox.value(''); // Clear the input box after submitting
     });
 
     // Show the leaderboard
     document.getElementById('leaderboard').style.visibility = "visible";
     leaderboard.getScores();
 
-    fill(255, 0, 0);
+    //fill(255, 0, 0);
     let backToMenuBtn = {
         "bottomLeftX": 0,
         "bottomLeftY": 0,
@@ -389,48 +362,35 @@ function gameOver() {
     backToMenuBtn.bottomRightX = width / 2 + width / 2 * 0.23;
     backToMenuBtn.bottomRightY = height / 2 + height / 2 * 0.82;
 
-    rect(backToMenuBtn.bottomRightX, backToMenuBtn.bottomRightY, 10, 10);
-    fill(255, 255, 0);
+    //rect(backToMenuBtn.bottomRightX, backToMenuBtn.bottomRightY, 10, 10);
+    //fill(255, 255, 0);
 
     backToMenuBtn.topRightX = width / 2 + width / 2 * 0.23;
     backToMenuBtn.topRightY = height / 2 + height / 2 * 0.71;
 
-    rect(backToMenuBtn.topRightX, backToMenuBtn.topRightY, 10, 10);
-    fill(255, 0, 255);
+    //rect(backToMenuBtn.topRightX, backToMenuBtn.topRightY, 10, 10);
+    //fill(255, 0, 255);
 
     backToMenuBtn.topLeftX = width / 2 - width / 2 * 0.23;
     backToMenuBtn.topLeftY = height / 2 + height / 2 * 0.71;
 
-    rect(backToMenuBtn.topLeftX, backToMenuBtn.topLeftY, 10, 10);
-    fill(0, 0, 255);
+    //rect(backToMenuBtn.topLeftX, backToMenuBtn.topLeftY, 10, 10);
+    //fill(0, 0, 255);
 
     backToMenuBtn.bottomLeftX = width / 2 - width / 2 * 0.23;
     backToMenuBtn.bottomLeftY = height / 2 + height / 2 * 0.82;
 
-    rect(backToMenuBtn.bottomLeftX, backToMenuBtn.bottomLeftY, 10, 10);
+    //rect(backToMenuBtn.bottomLeftX, backToMenuBtn.bottomLeftY, 10, 10);
 
     // If user presses the 'back to menu button'.
     if (screen == 2 && mouseIsPressed && mouseX >= backToMenuBtn.bottomLeftX && mouseX <= backToMenuBtn.bottomRightX
         && mouseY >= backToMenuBtn.topRightY && mouseY <= backToMenuBtn.bottomRightY) {
         screen = 0; // Start screen.
-        //document.getElementById('restartBtn').style.d7isplay = 'none';
-        //document.getElementById('startBtn').style.display = 'block';
         inputBox.hide();
         submitBtn.hide();
         document.getElementById('leaderboard').style.visibility = "hidden";
         resetGame();
     }
-
-    //restartBtn.position(width / 2 - width / 2 * 0.3, 0.9 * height);
-    //restartBtn.mousePressed(function () {
-    //    screen = 0; // Start screen.
-    //    document.getElementById('restartBtn').style.display = 'none';
-    //    document.getElementById('startBtn').style.display = 'block';
-    //    inputBox.hide();
-    //    submitBtn.hide();
-    //    document.getElementById('leaderboard').style.display = 'none';
-    //    resetGame();
-    //});
 }
 
 //// This function fires on every resize of the browser window.
