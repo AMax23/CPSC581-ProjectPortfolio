@@ -27,7 +27,7 @@ var randomMole; // Initialized when creating new holes and then updates everytim
 
 var molePicked = false; // The purpose of this is to ensure that the mole is set only once while it's still active.
 
-var screen = 0; // Screen 0 = Start screen, 1 = start game, 2 = game over
+var screen = 2; // Screen 0 = Start screen, 1 = start game, 2 = game over
 
 var score = 0;
 var molesMissed = 0;
@@ -375,21 +375,43 @@ function gameOver() {
     document.getElementById('leaderboard').style.visibility = "visible";
     leaderboard.getScores();
 
-    //fill(255, 0, 0);
-    //rect(width / 2 + width / 2 * 0.23, height / 2 + height / 2 * 0.82, 10, 10);
-    //fill(255, 255, 0);
+    fill(255, 0, 0);
+    let backToMenuBtn = {
+        "bottomLeftX": 0,
+        "bottomLeftY": 0,
+        "bottomRightX": 0,
+        "bottomRightY": 0,
+        "topLeftX": 0,
+        "topLeftY": 0,
+        "topRightX": 0,
+        "topRightY": 0
+    }
+    backToMenuBtn.bottomRightX = width / 2 + width / 2 * 0.23;
+    backToMenuBtn.bottomRightY = height / 2 + height / 2 * 0.82;
 
-    //rect(width / 2 + width / 2 * 0.23, height / 2 + height / 2 * 0.71, 10, 10);
-    //fill(255, 0, 255);
+    rect(backToMenuBtn.bottomRightX, backToMenuBtn.bottomRightY, 10, 10);
+    fill(255, 255, 0);
 
-    //rect(width / 2 - width / 2 * 0.23, height / 2 + height / 2 * 0.71, 10, 10);
-    //fill(0, 0, 255);
+    backToMenuBtn.topRightX = width / 2 + width / 2 * 0.23;
+    backToMenuBtn.topRightY = height / 2 + height / 2 * 0.71;
 
-    //rect(width / 2 - width / 2 * 0.23, height / 2 + height / 2 * 0.82, 10, 10);
+    rect(backToMenuBtn.topRightX, backToMenuBtn.topRightY, 10, 10);
+    fill(255, 0, 255);
+
+    backToMenuBtn.topLeftX = width / 2 - width / 2 * 0.23;
+    backToMenuBtn.topLeftY = height / 2 + height / 2 * 0.71;
+
+    rect(backToMenuBtn.topLeftX, backToMenuBtn.topLeftY, 10, 10);
+    fill(0, 0, 255);
+
+    backToMenuBtn.bottomLeftX = width / 2 - width / 2 * 0.23;
+    backToMenuBtn.bottomLeftY = height / 2 + height / 2 * 0.82;
+
+    rect(backToMenuBtn.bottomLeftX, backToMenuBtn.bottomLeftY, 10, 10);
 
     // If user presses the 'back to menu button'.
-    if (screen == 2 && mouseIsPressed && mouseX >= width / 2 - width / 2 * 0.23 && mouseX <= width / 2 + width / 2 * 0.23
-        && mouseY >= height / 2 + height / 2 * 0.1 && mouseY <= height / 2 + height / 2 * 0.82) {
+    if (screen == 2 && mouseIsPressed && mouseX >= backToMenuBtn.bottomLeftX && mouseX <= backToMenuBtn.bottomRightX
+        && mouseY >= backToMenuBtn.topRightY && mouseY <= backToMenuBtn.bottomRightY) {
         screen = 0; // Start screen.
         //document.getElementById('restartBtn').style.d7isplay = 'none';
         //document.getElementById('startBtn').style.display = 'block';
