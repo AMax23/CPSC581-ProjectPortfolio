@@ -14,6 +14,7 @@ function Hammer(x, y) {
         'bottomRightX': 0,
         'bottomRightY': 0
     };
+    this.permissionGranted = false;
 
     this.show = function (img) {
 
@@ -65,4 +66,40 @@ function Hammer(x, y) {
         }
     }
 
+    this.requestPermission = function (){
+        // DeviceOrientationEvent, DeviceMotionEvent
+        if (typeof (DeviceOrientationEvent) !== 'undefined' && typeof (DeviceOrientationEvent.requestPermission) === 'function') {
+            // IOS device
+            DeviceOrientationEvent.requestPermission()
+                .catch(() => {
+                    // Show permission dialog only the first time
+                    let button = createButton("click to allow access to sensors");
+                    button.style("font-size", "24px");
+                    button.center();
+                    button.mousePressed(requestAccess); background(0, 255, 0);
+                    throw error;
+                })
+                .then(() => {
+                    // on any subsequent visits
+                    this.permissionGranted = true;
+                })
+        } else {
+            // Non IOS device
+            this.permissionGranted = true;
+        }
+    }
+
+    this.requestAccess = function () {
+        DeviceOrientationEvent.requestPermission()
+            .then(response => {
+                if (response == 'granted') {
+                    permissionGranted = true;
+                } else {
+                    permissionGranted = false;
+                }
+            })
+            .catch(console.error);
+
+        this.remove();
+    }
 }

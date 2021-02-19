@@ -74,6 +74,7 @@ function setup() {
     createHoles();
 
     hammer = new Hammer(width / 2, height / 2);
+    hammer.requestPermission();
 }
 
 function draw() {
