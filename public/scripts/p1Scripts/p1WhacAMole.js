@@ -293,6 +293,9 @@ function startScreen() {
     // If the start button is clicked.
     if (screen == 0 && mouseIsPressed && mouseX >= width / 2 - width / 2 * 0.14 && mouseX <= width / 2 + width / 2 * 0.13
         && mouseY >= height / 2 - height / 2 * 0.07 && mouseY <= height / 2 + height / 2 * 0.07) {
+        // Play a sound when player presses start.
+        mic.whackSound.play();
+        mic.whackSound.currentTime = 0;
         screen = 1; // Start game. Button is hidden after mic is started in Mic.js
         startTime = gameTimeLimit; // The time when the game has started. Countdown start time.
     }
@@ -342,9 +345,7 @@ function gameOver() {
     // Only allow the player to submit their score if their score is greater than the last player's.
     // Otherwise there is no point in submitting if they get a low score. It will never be shown.
     var lastPlayerScore = Number(document.getElementById("3Score").innerText);
-    console.log(Number(lastPlayerScore), score);
     if (score > lastPlayerScore) {
-        console.log('last players score = ' + lastPlayerScore);
         inputBox.position(leaderboardPos.x - 10, leaderboardPos.y - 50);
         submitBtn.position(inputBox.x + inputBox.width + 1, inputBox.y);
         inputBox.show();
