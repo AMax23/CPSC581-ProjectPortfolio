@@ -36,7 +36,7 @@ var score = 0;
 var molesMissed = 0;
 var accuracy; // accuracy = score / (score + molesMissed)
 var startTime = 0; // The start time of the program. Used to get the time remaining.
-var gameTimeLimit = 3546; // ~ 1 min. This is a count of how many times the game loop runs until it's game over. There was a problem using millis()...
+var gameTimeLimit = 200;//3546; // ~ 1 min. This is a count of how many times the game loop runs until it's game over. There was a problem using millis()...
 var leaderboard = new Leaderboard();
 
 var timeMoleStaysOut = 100; // Number of times to be out of the hole.
@@ -387,10 +387,12 @@ function gameOver() {
     accuracy = (score != 0) ? (score / (score + molesMissed)).toFixed(0) : 0;
     text('Your score is ' + score
         + '\n Missed = ' + (molesMissed)
-        + '\n Accuracy = ' + accuracy + '%'
+        + '\n Accuracy = ' + accuracy*100 + '%'
         , width / 2, height / 2 - height / 2 * 0.3);
 
     pop();
+
+    console.log(accuracy);
 
     // Only allow the player to submit their score if their score is greater than the last player's.
     // Otherwise there is no point in submitting if they get a low score. It will never be shown.
