@@ -267,6 +267,8 @@ function resetGame() {
     holes = [];
     moles = [];
     score = 0;
+    scorePosted = false;
+    leaderBoardRequested = false;
     molesMissed = 0;
     timeMoleIsHidden = 0;
     timeMoleIsOut = 0;
