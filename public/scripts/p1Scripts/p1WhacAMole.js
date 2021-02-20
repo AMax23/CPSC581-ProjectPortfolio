@@ -36,8 +36,10 @@ var score = 0;
 var molesMissed = 0;
 var accuracy; // accuracy = score / (score + molesMissed)
 var startTime = 0; // The start time of the program. Used to get the time remaining.
-var gameTimeLimit = 200;//3546; // ~ 1 min. This is a count of how many times the game loop runs until it's game over. There was a problem using millis()...
+var gameTimeLimit = 3546; // ~ 1 min. This is a count of how many times the game loop runs until it's game over. There was a problem using millis()...
 var leaderboard = new Leaderboard();
+var scorePosted = false;
+var leaderBoardRequested = false;
 
 var timeMoleStaysOut = 100; // Number of times to be out of the hole.
 var timeMoleIsOut = 0;
@@ -379,35 +381,40 @@ function gameOver() {
 
     // Show the leaderboard
     document.getElementById('leaderboard').style.visibility = "visible";
-    leaderboard.getScores();
+    // Only get the leaderboard once 
+    if (!leaderBoardRequested) {
+        leaderboard.getScores();
+        leaderBoardRequested = true;
+    }
 
     fill(255);
     textSize(20);
     textAlign(CENTER);
-    accuracy = (score != 0) ? (score / (score + molesMissed)).toFixed(0) : 0;
+    accuracy = (score != 0) ? (score / (score + molesMissed) * 100).toFixed(0) : 0;
     text('Your score is ' + score
         + '\n Missed = ' + (molesMissed)
-        + '\n Accuracy = ' + accuracy*100 + '%'
+        + '\n Accuracy = ' + accuracy + '%'
         , width / 2, height / 2 - height / 2 * 0.3);
 
     pop();
 
-    console.log(accuracy);
-
     // Only allow the player to submit their score if their score is greater than the last player's.
     // Otherwise there is no point in submitting if they get a low score. It will never be shown.
     var lastPlayerScore = Number(document.getElementById("3Score").innerText);
-    if (score > lastPlayerScore) {
+    if (score > lastPlayerScore && !scorePosted) {
         inputBox.position(leaderboardPos.x - 10, leaderboardPos.y - 50);
         submitBtn.position(inputBox.x + inputBox.width + 1, inputBox.y);
         inputBox.show();
         submitBtn.show();
         submitBtn.mousePressed(function () {
-            let name = inputBox.value();
+            let name = inputBox.value().trim();
             // The name must be at least 1 character.
             if (name.length > 0) {
-                leaderboard.postScore(name, score, accuracy);
+                leaderboard.postScore(name, score, accuracy/100);
                 inputBox.value(''); // Clear the input box after submitting
+                scorePosted = true;
+                // Update the leaderboatd and show it again.
+                leaderboard.getScores();
             }
         });
     } else {
