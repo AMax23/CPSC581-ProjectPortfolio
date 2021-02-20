@@ -28,7 +28,7 @@ var screen = 0; // Screen 0 = Start screen, 1 = start game, 2 = game over, 3 = t
 
 var tutorialMode = false;
 var messageTime = 0;
-var instructions = ['TILT YOUR PHONE TO MOVE HAMMER', 'YELL TO HIT THE MOLE', 'TIME REMAINING IS THE TOP BAR \n YOU HAVE 60 SECONDS', 'TOP LEFT IS YOUR SCORE',
+var instructions = ['TILT YOUR DEVICE TO MOVE HAMMER', 'YELL TO HIT THE MOLE', 'TIME REMAINING IS THE TOP BAR \n YOU HAVE 60 SECONDS', 'TOP LEFT IS YOUR SCORE',
     'THE MOLES GET FASTER \nAS YOUR SCORE INCREASES', 'GO BACK TO START MENU \n WHEN YOU ARE READY'];
 var nextInsMsg = 0;
 
