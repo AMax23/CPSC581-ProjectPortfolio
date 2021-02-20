@@ -119,7 +119,7 @@ function showMole() {
             let newRandNum = tutorialMode ? random([1, 2, 4, 5]) : floor(random(numOfHoles)); // Generate random number between 0 and 5.
             if (newRandNum != randomMole) {
                 randomMole = newRandNum;
-                molesMissed++; // Assume the mole will not be hit, and then if it is then its updated in moleHit().
+                //molesMissed++; // Assume the mole will not be hit, and then if it is then its updated in moleHit().
                 break;
             }
         }
@@ -136,7 +136,13 @@ function showMole() {
             timeMoleIsHidden = 0;
         }
     } else if (moles[randomMole].out && timeMoleIsHidden <= timeMoleStaysHidden) {
-        moles[randomMole].hide();
+        // Hide the mole
+        // And if the mole is fully hidden and the mole was never hit, increase the missed counter.
+        if (!moles[randomMole].hide()) {
+            if (!moles[randomMole].hit) {
+                molesMissed++;
+            }
+        }
     } else if (timeMoleIsHidden > timeMoleStaysHidden) {
         timeMoleIsOut = 0;
         moles[randomMole].active = true;
@@ -206,7 +212,7 @@ function moleHit() {
 
             //console.log('You hit mole ' + i);
             score++;
-            molesMissed--;
+            //molesMissed--;
 
             // After each hit, the moles come out faster and go back in fast too!
             timeMoleStaysHidden = timeMoleStaysHidden > 30 ? timeMoleStaysHidden - 5 : timeMoleStaysHidden;
