@@ -1,7 +1,7 @@
 // P5 JavaScript source code for the main sketch.
 
 // Comment this out temporarily cos its annoying.
-//if (!window.location.href.toString().includes("https://")) { alert(`You will need "https://" to view this.`) }
+if (!window.location.href.toString().includes("https://")) { alert(`You will need "https://" to view this.`) }
 
 var hammerImg;
 var hammerHitImg;
@@ -15,7 +15,7 @@ var submitBtn;
 
 var mic;
 var volumeLevel;
-var volumeThreshold = 30; // This number came from trial and error.
+var volumeThreshold = 20; // This number came from trial and error.
 
 var hammer;
 var holes = [];
@@ -28,8 +28,8 @@ var screen = 0; // Screen 0 = Start screen, 1 = start game, 2 = game over, 3 = t
 
 var tutorialMode = false;
 var messageTime = 0;
-var instructions = ['TILT YOUR DEVICE TO MOVE HAMMER', 'YELL TO HIT THE MOLE', 'TIME REMAINING IS THE TOP BAR \n YOU HAVE 60 SECONDS', 'TOP LEFT IS YOUR SCORE',
-    'THE MOLES GET FASTER \nAS YOUR SCORE INCREASES', 'GO BACK TO START MENU \n WHEN YOU ARE READY'];
+var instructions = ['TILT/ROTATE YOUR DEVICE \nTO MOVE MALLET', 'YELL TO HIT THE MOLE', 'TIME REMAINING IS THE TOP BAR \n YOU HAVE 60 SECONDS',
+    'TOP LEFT IS YOUR SCORE', 'THE MOLES GET FASTER \nAS YOUR SCORE INCREASES', 'GO BACK TO START MENU \n WHEN YOU ARE READY'];
 var nextInsMsg = 0;
 
 var score = 0;
@@ -49,8 +49,8 @@ var timeMoleStaysHidden = 100; // Number of times to stay in the hole.
 ////////////////////////// BASIC P5 SET UP ////////////////////////////////////////
 function preload() {
     // Load the images in a asynchronous way. setup() waits until preload() is done.
-    hammerImg = loadImage('../images/project 1/thorsHammer.png'); // Load the image of the hammer
-    hammerHitImg = loadImage('../images/project 1/thorsHammerHit.png'); // Load the image hammer when its hitting
+    hammerImg = loadImage('../images/project 1/mallet.png'); // Load the image of the hammer
+    hammerHitImg = loadImage('../images/project 1/malletHit.png'); // Load the image hammer when its hitting
     bgImg = loadImage('../images/project 1/background.png'); // Load the image of the grass
     holeImg = loadImage('../images/project 1/hole.png'); // Load the image of the hole
     moleImg = loadImage('../images/project 1/mole.png'); // Load the image of the mole
@@ -116,10 +116,10 @@ function showMole() {
     if ((moles[randomMole].hit || timeMoleIsHidden > timeMoleStaysHidden) && !moles[randomMole].active && !molePicked) {
         // Pick a new hole, not same as previous one.
         while (true) {
+            // The tutorial mode have instructions which cover the top 2 holes.
             let newRandNum = tutorialMode ? random([1, 2, 4, 5]) : floor(random(numOfHoles)); // Generate random number between 0 and 5.
             if (newRandNum != randomMole) {
                 randomMole = newRandNum;
-                //molesMissed++; // Assume the mole will not be hit, and then if it is then its updated in moleHit().
                 break;
             }
         }
@@ -172,11 +172,11 @@ function showHammer() {
         push();
         // Play a sound when the hammer hits the mole.
         mic.whackSound.play();
-        mic.whackSound.currentTime = 0;
         // Slow down the frame rate to show the effect of the hammer hitting. Otherwise it's too fast.
         // This is changed back in the draw function.
         frameRate(10);
         hammer.show(hammerHitImg);
+        mic.whackSound.currentTime = 0; // Set the sound back to position 0.
         pop();
     } else {
         hammer.show(hammerImg);
@@ -212,7 +212,6 @@ function moleHit() {
 
             //console.log('You hit mole ' + i);
             score++;
-            //molesMissed--;
 
             // After each hit, the moles come out faster and go back in fast too!
             timeMoleStaysHidden = timeMoleStaysHidden > 30 ? timeMoleStaysHidden - 5 : timeMoleStaysHidden;
@@ -416,7 +415,7 @@ function gameOver() {
             let name = inputBox.value().trim();
             // The name must be at least 1 character.
             if (name.length > 0) {
-                leaderboard.postScore(name, score, accuracy/100);
+                leaderboard.postScore(name, score, accuracy / 100);
                 inputBox.value(''); // Clear the input box after submitting
                 scorePosted = true;
                 // Update the leaderboatd and show it again.
@@ -515,7 +514,7 @@ function tutorial() {
     textStyle(BOLD);
     textAlign(CENTER);
     if (messageTime <= 300) {
-        text(instructions[nextInsMsg], width / 2, height / 2 - height / 2 * 0.49 + 50);
+        text(instructions[nextInsMsg], width / 2, height / 2 - height / 2 * 0.49 + 40);
         messageTime++;
     } else {
         // Show the next instruction after whacking mole twice.
@@ -530,9 +529,9 @@ function tutorial() {
     showHammer();
 
     quitGame();
-
 }
 
+// Check to see if the quit button was pressed anytime during the game.
 function quitGame() {
     let quitBtn = {
         "bottomLeftX": 0,
