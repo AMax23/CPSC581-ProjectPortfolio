@@ -379,6 +379,7 @@ function startScreen() {
 }
 
 function gameOver() {
+    score = 100;
     clear();
     push();
     image(gameOverScreenImg, 0, 0, width, height);
@@ -408,7 +409,7 @@ function gameOver() {
     // Otherwise there is no point in submitting if they get a low score. It will never be shown.
     var lastPlayerScore = Number(document.getElementById("3Score").innerText);
     if (score > lastPlayerScore && !scorePosted) {
-        inputBox.position(leaderboardPos.x - 10, leaderboardPos.y - 50);
+        inputBox.position(leaderboardPos.x + 10, leaderboardPos.y - 50);
         submitBtn.position(inputBox.x + inputBox.width + 1, inputBox.y);
         inputBox.show();
         submitBtn.show();
