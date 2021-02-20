@@ -53,7 +53,7 @@ function Microphone() {
             self.freqBin = self.getIndexOfMax(freqBinDataArray);
         }
 
-        setInterval(checkAudio, 30); // Match with the FPS for the canvas update otherwise there is a lag.
+        setInterval(checkAudio, 60); // Match with the FPS for the canvas update otherwise there is a lag.
     }
 
     this.getRMS = function (spectrum) {
