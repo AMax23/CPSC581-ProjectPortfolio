@@ -9,6 +9,7 @@ var holeImg;
 var bgImg;
 var startScreenImg;
 var gameOverScreenImg;
+var highScoresScreenImg;
 
 var inputBox;
 var submitBtn;
@@ -24,7 +25,7 @@ var numOfHoles = 6;
 var randomMole; // Initialized when creating new holes and then updates everytime the mole is hit or when it hides.
 var molePicked = false; // The purpose of this is to ensure that the mole is set only once while it's still active.
 
-var screen = 0; // Screen 0 = Start screen, 1 = start game, 2 = game over, 3 = tutorial Mode
+var screen = 0; // Screen 0 = Start screen, 1 = start game, 2 = game over, 3 = tutorial Mode, 4 = players' high scores 
 
 var tutorialMode = false;
 var messageTime = 0;
@@ -56,6 +57,7 @@ function preload() {
     moleImg = loadImage('../images/project 1/mole.png'); // Load the image of the mole
     startScreenImg = loadImage('../images/project 1/startScreen.png'); // Load game start screen image
     gameOverScreenImg = loadImage('../images/project 1/gameOverScreen.png'); // Load game over screen image
+    highScoresScreenImg = loadImage('../images/project 1/HighScoresScreen.png'); // Load game over screen image
 }
 
 function setup() {
@@ -92,6 +94,8 @@ function draw() {
         gameOver();
     } else if (screen == 3) {
         tutorial();
+    } else if (screen == 4) {
+        highScores();
     }
 }
 ///////////////////////////////////////////////////////////////////////////////////
@@ -324,14 +328,25 @@ function startScreen() {
         "topRightY": 0
     }
 
+    let highScoreBtn = {
+        "bottomLeftX": 0,
+        "bottomLeftY": 0,
+        "bottomRightX": 0,
+        "bottomRightY": 0,
+        "topLeftX": 0,
+        "topLeftY": 0,
+        "topRightX": 0,
+        "topRightY": 0
+    }
+
     startBtn.bottomRightX = width / 2 + width / 2 * 0.13;
-    startBtn.bottomRightY = height / 2;
+    startBtn.bottomRightY = height / 2 - height / 2 * 0.13;
     startBtn.topRightX = width / 2 + width / 2 * 0.13;
-    startBtn.topRightY = height / 2 - height / 2 * 0.07;
+    startBtn.topRightY = height / 2 - height / 2 * 0.20;
     startBtn.bottomLeftX = width / 2 - width / 2 * 0.14;
-    startBtn.bottomLeftY = height / 2;
+    startBtn.bottomLeftY = height / 2 - height / 2 * 0.13;
     startBtn.topLeftX = width / 2 - width / 2 * 0.14;
-    startBtn.topLeftY = height / 2 - height / 2 * 0.07;
+    startBtn.topLeftY = height / 2 - height / 2 * 0.20;
 
     //fill(255, 0, 0);
     //rect(startBtn.bottomRightX, startBtn.bottomRightY, 10, 10);
@@ -341,6 +356,43 @@ function startScreen() {
     //rect(startBtn.bottomLeftX, startBtn.bottomLeftY, 10, 10);
     //fill(0, 0, 255);
     //rect(startBtn.topLeftX, startBtn.topLeftY, 10, 10);
+
+    instructionsBtn.bottomRightX = width / 2 + width / 2 * 0.30;
+    instructionsBtn.bottomRightY = height / 2;
+    instructionsBtn.topRightX = width / 2 + width / 2 * 0.30;
+    instructionsBtn.topRightY = height / 2 - height / 2 * 0.07;
+    instructionsBtn.bottomLeftX = width / 2 - width / 2 * 0.31;
+    instructionsBtn.bottomLeftY = height / 2 ;
+    instructionsBtn.topLeftX = width / 2 - width / 2 * 0.31;
+    instructionsBtn.topLeftY = height / 2 - height / 2 * 0.07;
+
+    //fill(255, 0, 0);
+    //rect(instructionsBtn.bottomRightX, instructionsBtn.bottomRightY, 10, 10);
+    //fill(255, 255, 0);
+    //rect(instructionsBtn.topRightX, instructionsBtn.topRightY, 10, 10);
+    //fill(255, 0, 255);
+    //rect(instructionsBtn.topLeftX, instructionsBtn.topLeftY, 10, 10);
+    //fill(0, 0, 255);
+    //rect(instructionsBtn.bottomLeftX, instructionsBtn.bottomLeftY, 10, 10);
+
+    highScoreBtn.bottomRightX = width / 2 + width / 2 * 0.27;
+    highScoreBtn.bottomRightY = height / 2 + height / 2 * 0.13;
+    highScoreBtn.topRightX = width / 2 + width / 2 * 0.27;
+    highScoreBtn.topRightY = height / 2 + height / 2 * 0.08;
+    highScoreBtn.bottomLeftX = width / 2 - width / 2 * 0.31;
+    highScoreBtn.bottomLeftY = height / 2 + height / 2 * 0.13;
+    highScoreBtn.topLeftX = width / 2 - width / 2 * 0.31;
+    highScoreBtn.topLeftY = height / 2 + height / 2 * 0.08;
+
+    //fill(255, 0, 0);
+    //rect(highScoreBtn.bottomRightX, highScoreBtn.bottomRightY, 10, 10);
+    //fill(255, 255, 0);
+    //rect(highScoreBtn.topRightX, highScoreBtn.topRightY, 10, 10);
+    //fill(255, 0, 255);
+    //rect(highScoreBtn.topLeftX, highScoreBtn.topLeftY, 10, 10);
+    //fill(0, 0, 255);
+    //rect(highScoreBtn.bottomLeftX, highScoreBtn.bottomLeftY, 10, 10);
+
 
     // If the start button is clicked.
     if (screen == 0 && mouseIsPressed && mouseX >= startBtn.topLeftX && mouseX <= startBtn.topRightX
@@ -352,24 +404,6 @@ function startScreen() {
         startTime = gameTimeLimit; // The time when the game has started. Countdown start time.
     }
 
-    instructionsBtn.bottomRightX = width / 2 + width / 2 * 0.30;
-    instructionsBtn.bottomRightY = height / 2 + height / 2 * 0.13;
-    instructionsBtn.topRightX = width / 2 + width / 2 * 0.30;
-    instructionsBtn.topRightY = height / 2 + height / 2 * 0.08;
-    instructionsBtn.bottomLeftX = width / 2 - width / 2 * 0.31;
-    instructionsBtn.bottomLeftY = height / 2 + height / 2 * 0.13;
-    instructionsBtn.topLeftX = width / 2 - width / 2 * 0.31;
-    instructionsBtn.topLeftY = height / 2 + height / 2 * 0.08;
-
-    //fill(255, 0, 0);
-    //rect(instructionsBtn.bottomRightX, instructionsBtn.bottomRightY, 10, 10);
-    //fill(255, 255, 0);
-    //rect(instructionsBtn.topRightX, instructionsBtn.topRightY, 10, 10);
-    //fill(255, 0, 255);
-    //rect(instructionsBtn.topLeftX, instructionsBtn.topLeftY, 10, 10);
-    //fill(0, 0, 255);
-    //rect(instructionsBtn.bottomLeftX, instructionsBtn.bottomLeftY, 10, 10);
-
     // If the instructions button is clicked
     if (screen == 0 && mouseIsPressed && mouseX >= instructionsBtn.topLeftX && mouseX <= instructionsBtn.topRightX
         && mouseY >= instructionsBtn.topLeftY && mouseY <= instructionsBtn.bottomLeftY) {
@@ -379,6 +413,15 @@ function startScreen() {
         screen = 3; // Tutorial mode is on.
         startTime = gameTimeLimit;
         tutorialMode = true;
+    }
+
+    // If the high scores button is clicked.
+    if (screen == 0 && mouseIsPressed && mouseX >= highScoreBtn.topLeftX && mouseX <= highScoreBtn.topRightX
+        && mouseY >= highScoreBtn.topLeftY && mouseY <= highScoreBtn.bottomLeftY) {
+        // Play a sound when player presses start.
+        mic.whackSound.play();
+        mic.whackSound.currentTime = 0;
+        screen = 4; // Go to high scores screen.
     }
     pop();
 }
@@ -479,6 +522,67 @@ function gameOver() {
         screen = 0; // Start screen.
         inputBox.hide();
         submitBtn.hide();
+        document.getElementById('leaderboard').style.visibility = "hidden";
+        resetGame();
+    }
+}
+
+// Display the leaderboard table.
+function highScores() {
+    clear();
+    image(highScoresScreenImg, 0, 0, width, height);
+
+    let scoreBoard = document.getElementById('leaderboard');
+
+    // Show the leaderboard
+    document.getElementById('leaderboard').style.visibility = "visible";
+    // Only get the leaderboard once 
+    if (!leaderBoardRequested) {
+        leaderboard.getScores();
+        scoreBoard.style.top = '70%';
+        scoreBoard.style.height = '65%';
+        leaderBoardRequested = true;
+    }
+
+    let backToMenuBtn = {
+        "bottomLeftX": 0,
+        "bottomLeftY": 0,
+        "bottomRightX": 0,
+        "bottomRightY": 0,
+        "topLeftX": 0,
+        "topLeftY": 0,
+        "topRightX": 0,
+        "topRightY": 0
+    }
+
+    backToMenuBtn.bottomRightX = width / 2 + width / 2 * 0.23;
+    backToMenuBtn.bottomRightY = height / 2 - height / 2 * 0.4;
+    backToMenuBtn.topRightX = width / 2 + width / 2 * 0.23;
+    backToMenuBtn.topRightY = height / 2 - height / 2 * 0.5;
+    backToMenuBtn.topLeftX = width / 2 - width / 2 * 0.24;
+    backToMenuBtn.topLeftY = height / 2 - height / 2 * 0.5;
+    backToMenuBtn.bottomLeftX = width / 2 - width / 2 * 0.24;
+    backToMenuBtn.bottomLeftY = height / 2 - height / 2 * 0.4;
+
+    //fill(255, 0, 0);
+    //rect(backToMenuBtn.bottomRightX, backToMenuBtn.bottomRightY, 10, 10);
+    //fill(255, 255, 0);
+    //rect(backToMenuBtn.topRightX, backToMenuBtn.topRightY, 10, 10);
+    //fill(255, 0, 255);
+    //rect(backToMenuBtn.topLeftX, backToMenuBtn.topLeftY, 10, 10);
+    //fill(0, 0, 255);
+    //rect(backToMenuBtn.bottomLeftX, backToMenuBtn.bottomLeftY, 10, 10);
+
+    // If user presses the 'back to menu button'.
+    if (screen == 4 && mouseIsPressed && mouseX >= backToMenuBtn.bottomLeftX && mouseX <= backToMenuBtn.bottomRightX
+        && mouseY >= backToMenuBtn.topRightY && mouseY <= backToMenuBtn.bottomRightY) {
+        // Play a sound when player presses the button.
+        mic.whackSound.play();
+        mic.whackSound.currentTime = 0;
+        screen = 0; // Start screen.
+        // Change it back to what it was originally. This matches whats in p1Styles for Leaderboard.
+        scoreBoard.style.top = '80%';
+        scoreBoard.style.height = '30%';
         document.getElementById('leaderboard').style.visibility = "hidden";
         resetGame();
     }
