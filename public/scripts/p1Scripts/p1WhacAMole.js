@@ -384,7 +384,7 @@ function gameOver() {
     fill(255);
     textSize(20);
     textAlign(CENTER);
-    accuracy = (score != 0) ? (score / (score + molesMissed) * 100).toFixed(0) : 0;
+    accuracy = (score != 0) ? (score / (score + molesMissed)).toFixed(0) : 0;
     text('Your score is ' + score
         + '\n Missed = ' + (molesMissed)
         + '\n Accuracy = ' + accuracy + '%'
