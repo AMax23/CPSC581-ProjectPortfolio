@@ -209,7 +209,7 @@ function moleHit() {
             // After each hit, the moles come out faster and go back in fast too!
             timeMoleStaysHidden = timeMoleStaysHidden > 30 ? timeMoleStaysHidden - 5 : timeMoleStaysHidden;
             timeMoleStaysOut = timeMoleStaysOut > 20 ? timeMoleStaysOut - 5 : 23;
-            
+
             // Reset the time for when the mole is out if it's hit.
             timeMoleIsOut = 0;
             timeMoleIsHidden = 0;
@@ -263,6 +263,7 @@ function resetGame() {
     timeMoleStaysOut = 100;
     messageTime = 0;
     nextInsMsg = 0;
+    tutorialMode = false;
     createHoles();
 }
 
