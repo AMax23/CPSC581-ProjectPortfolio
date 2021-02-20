@@ -28,7 +28,7 @@ var screen = 0; // Screen 0 = Start screen, 1 = start game, 2 = game over, 3 = t
 
 var tutorialMode = false;
 var messageTime = 0;
-var instructions = ['TILT/ROTATE YOUR DEVICE \nTO MOVE MALLET', 'YELL TO HIT THE MOLE', 'TIME REMAINING IS THE TOP BAR \n YOU HAVE 60 SECONDS',
+var instructions = ['TILT/ROTATE YOUR DEVICE \nTO MOVE HAMMER', 'YELL TO HIT THE MOLE', 'TIME REMAINING IS THE TOP BAR \n YOU HAVE 60 SECONDS',
     'TOP LEFT IS YOUR SCORE', 'THE MOLES GET FASTER \nAS YOUR SCORE INCREASES', 'GO BACK TO START MENU \n WHEN YOU ARE READY'];
 var nextInsMsg = 0;
 
@@ -49,7 +49,7 @@ var timeMoleStaysHidden = 100; // Number of times to stay in the hole.
 ////////////////////////// BASIC P5 SET UP ////////////////////////////////////////
 function preload() {
     // Load the images in a asynchronous way. setup() waits until preload() is done.
-    hammerImg = loadImage('../images/project 1/thorsHammer.png'); // Load the image of the hammer
+    hammerImg = loadImage('../images/project 1/thorsHammer.png'); // *** IF THIS IMAGE IS CHANGED, HAMMER BOUNDS NEED TO BE UPDATED ***
     hammerHitImg = loadImage('../images/project 1/thorsHammerHit.png'); // Load the image hammer when its hitting
     bgImg = loadImage('../images/project 1/background.png'); // Load the image of the grass
     holeImg = loadImage('../images/project 1/hole.png'); // Load the image of the hole
@@ -66,7 +66,7 @@ function setup() {
 
     // Create buttons and input for the different screens
     inputBox = createInput('').attribute('placeholder', 'Your Name');
-    inputBox.attribute('maxlength', 10); // set the max char limit for the input.
+    inputBox.attribute('maxlength', 10); // Set the max char limit for the input.
     submitBtn = createButton('Submit');
 
     // Initialize mic and start it.
@@ -231,11 +231,12 @@ function moleHit() {
 
 // Function to create holes in a 2d array. And the moles.
 function createHoles() {
-    // Create 6 mole holes.
-    let numOfCols = 2;
+    // Create mole holes.
+    let numOfCols = width > 900 ? 3 : 2;
     let numOfRows = 3;
-    let colSpace = width / numOfCols - 60;
-    let rowSpace = height / 2 / numOfRows;
+    numOfHoles = numOfCols * numOfRows;
+    let colSpace = width / numOfCols - (holeImg.width/7/2); // 60
+    let rowSpace = height / 2 / numOfRows + (height*0.1);
     for (let i = 0; i < numOfCols; i++) {
         for (let j = 0; j < numOfRows; j++) {
             let x = (colSpace * i) + (colSpace / 2) + 10; // These numbers came from trial and error to see what centers the holes.
