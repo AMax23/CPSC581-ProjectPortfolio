@@ -48,7 +48,7 @@ class Leaderboard {
         for (let i = 1; i <= result.rows.length; i++) {
             document.getElementById(i + "Name").innerText = result.rows[i - 1].playername;
             document.getElementById(i + "Score").innerText = result.rows[i - 1].score;
-            document.getElementById(i + "Acc").innerText = result.rows[i - 1].accuracy * 100 + "%";
+            document.getElementById(i + "Acc").innerText = (result.rows[i - 1].accuracy * 100).toFixed(0) + "%";
         }
     }
 }
