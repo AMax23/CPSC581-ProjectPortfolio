@@ -15,7 +15,7 @@ var submitBtn;
 
 var mic;
 var volumeLevel;
-var volumeThreshold = 20; // This number came from trial and error.
+var volumeThreshold = 15; // This number came from trial and error.
 
 var hammer;
 var holes = [];
@@ -410,7 +410,7 @@ function gameOver() {
     // Otherwise there is no point in submitting if they get a low score. It will never be shown.
     var lastPlayerScore = Number(document.getElementById("10Score").innerText);
     if (score > lastPlayerScore && !scorePosted) {
-        inputBox.position(leaderboardPos.x + 10, leaderboardPos.y - 50);
+        inputBox.position(leaderboardPos.x + 5, leaderboardPos.y - 50);
         submitBtn.position(inputBox.x + inputBox.width + 1, inputBox.y);
         inputBox.show();
         submitBtn.show();
