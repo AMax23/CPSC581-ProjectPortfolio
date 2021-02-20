@@ -24,7 +24,7 @@ var numOfHoles = 6;
 var randomMole; // Initialized when creating new holes and then updates everytime the mole is hit or when it hides.
 var molePicked = false; // The purpose of this is to ensure that the mole is set only once while it's still active.
 
-var screen = 3; // Screen 0 = Start screen, 1 = start game, 2 = game over, 3 = tutorial Mode
+var screen = 0; // Screen 0 = Start screen, 1 = start game, 2 = game over, 3 = tutorial Mode
 
 var tutorialMode = false;
 var messageTime = 0;
@@ -406,7 +406,7 @@ function gameOver() {
 
     // Only allow the player to submit their score if their score is greater than the last player's.
     // Otherwise there is no point in submitting if they get a low score. It will never be shown.
-    var lastPlayerScore = Number(document.getElementById("3Score").innerText);
+    var lastPlayerScore = Number(document.getElementById("10Score").innerText);
     if (score > lastPlayerScore && !scorePosted) {
         inputBox.position(leaderboardPos.x + 10, leaderboardPos.y - 50);
         submitBtn.position(inputBox.x + inputBox.width + 1, inputBox.y);
