@@ -32,7 +32,7 @@ function Hammer(x, y) {
         //////////////////////////////////
 
         // Make sure that the image stays inside the canvas.
-        this.x = constrain(this.x, img.width / 5, width);
+        this.x = constrain(this.x, img.width / 7, width);
         this.y = constrain(this.y, 10, height - img.height / 7);
 
         //rect(this.x - img.width / 5, this.y, img.width / 5, img.height / 5);
