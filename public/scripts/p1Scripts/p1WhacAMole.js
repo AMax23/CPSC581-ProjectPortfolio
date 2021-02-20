@@ -67,7 +67,7 @@ function setup() {
     // Create buttons and input for the different screens
     inputBox = createInput('').attribute('placeholder', 'Your Name');
     inputBox.attribute('maxlength', 10); // set the max char limit for the input.
-    submitBtn = createButton('Submit Score');
+    submitBtn = createButton('Submit');
 
     // Initialize mic and start it.
     mic = new Microphone();
@@ -210,7 +210,7 @@ function moleHit() {
 
             // After each hit, the moles come out faster and go back in fast too!
             timeMoleStaysHidden = timeMoleStaysHidden > 30 ? timeMoleStaysHidden - 5 : timeMoleStaysHidden;
-            timeMoleStaysOut = timeMoleStaysOut > 20 ? timeMoleStaysOut - 5 : 23;
+            timeMoleStaysOut = timeMoleStaysOut > 20 ? timeMoleStaysOut - 5 : timeMoleStaysOut;
 
             // Reset the time for when the mole is out if it's hit.
             timeMoleIsOut = 0;
