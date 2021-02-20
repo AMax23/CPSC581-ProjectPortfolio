@@ -25,6 +25,14 @@ function Hammer(x, y) {
         this.x += map(rotationY, -10, 10, -this.maxSpeed, this.maxSpeed);
         this.y += map(rotationX, 20, 35, -this.maxSpeed, this.maxSpeed);
 
+        // P5 system variable deviceOrientation returns the orientation of the device.
+        // The x and y will need to be swapped if the device is in landscape mode.
+        if (deviceOrientation == 'landscape') {
+            let temp = this.y;
+            this.y = this.x;
+            this.x = temp;
+        }
+
         //////////////////////////////////
         // temp mouse for testing on laptop.
         //this.x = mouseX;
