@@ -236,11 +236,11 @@ function createHoles() {
     let numOfRows = 3;
     numOfHoles = numOfCols * numOfRows;
     let colSpace = width / numOfCols - (holeImg.width/7/2); // 60
-    let rowSpace = height / 2 / numOfRows + (height*0.1);
+    let rowSpace = height / 2 / numOfRows ;
     for (let i = 0; i < numOfCols; i++) {
         for (let j = 0; j < numOfRows; j++) {
             let x = (colSpace * i) + (colSpace / 2) + 10; // These numbers came from trial and error to see what centers the holes.
-            let y = (rowSpace * j) + (rowSpace / 2) + 150;
+            let y = (rowSpace * j) + (rowSpace / 2) + (height * 0.2);
             let hole = new Hole(x, y, holeImg);
             let mole = new Mole(x, y, moleImg);
             holes.push(hole);
