@@ -49,8 +49,8 @@ var timeMoleStaysHidden = 100; // Number of times to stay in the hole.
 ////////////////////////// BASIC P5 SET UP ////////////////////////////////////////
 function preload() {
     // Load the images in a asynchronous way. setup() waits until preload() is done.
-    hammerImg = loadImage('../images/project 1/mallet.png'); // Load the image of the hammer
-    hammerHitImg = loadImage('../images/project 1/malletHit.png'); // Load the image hammer when its hitting
+    hammerImg = loadImage('../images/project 1/thorsHammer.png'); // Load the image of the hammer
+    hammerHitImg = loadImage('../images/project 1/thorsHammerHit.png'); // Load the image hammer when its hitting
     bgImg = loadImage('../images/project 1/background.png'); // Load the image of the grass
     holeImg = loadImage('../images/project 1/hole.png'); // Load the image of the hole
     moleImg = loadImage('../images/project 1/mole.png'); // Load the image of the mole
@@ -76,7 +76,7 @@ function setup() {
     createHoles();
 
     hammer = new Hammer(width / 2, height / 2);
-    hammer.requestPermission();
+    hammer.requestOrientationPermission();
 }
 
 function draw() {
