@@ -36,7 +36,7 @@ app.use(express.json());
 
 // Endpoint for getting the leaderbooard names and scores. Only top 3 players are returned
 app.get('/leaderboard', (req, res) => {
-    let q = 'SELECT DISTINCT PlayerName, Score, Accuracy FROM leaderboard ORDER BY Score DESC LIMIT 3;'
+    let q = 'SELECT DISTINCT PlayerName, Score, Accuracy FROM leaderboard ORDER BY Score DESC LIMIT 10;'
     client.query(q, (error, response) => {
         //console.log(error, response)
         res.send(response);
