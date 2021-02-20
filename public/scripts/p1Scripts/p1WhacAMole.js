@@ -118,7 +118,7 @@ function showMole() {
         // Pick a new hole, not same as previous one.
         while (true) {
             // The tutorial mode have instructions which cover the top 2 holes.
-            let newRandNum = tutorialMode ? random([1, 2, 4, 5]) : floor(random(numOfHoles)); // Generate random number between 0 and 5.
+            let newRandNum = floor(random(numOfHoles)); // Generate random number between 0 and 5.
             if (newRandNum != randomMole) {
                 randomMole = newRandNum;
                 break;
@@ -231,9 +231,6 @@ function moleHit() {
 
 // Function to create holes in a 2d array. And the moles.
 function createHoles() {
-
-    console.log(holeImg.width);
-
     // Create mole holes.
     let numOfCols = width > 900 ? 3 : 2;
     let numOfRows = height > 500 ? 3 : 2;
@@ -512,7 +509,9 @@ function tutorial() {
     strokeWeight(3);
     textSize(18);
     fill("#ffffff");
-    rect(width / 2 - 400 / 2, height / 2 - height / 2 * 0.5, 400, 100);
+    let rectStartY = height - (height * 0.17);
+    let rectHeight = height * 0.15;
+    rect(0, rectStartY, width, rectHeight);
     pop();
 
     push();
@@ -521,7 +520,7 @@ function tutorial() {
     textStyle(BOLD);
     textAlign(CENTER);
     if (messageTime <= 300) {
-        text(instructions[nextInsMsg], width / 2, height / 2 - height / 2 * 0.49 + 40);
+        text(instructions[nextInsMsg], width / 2, rectStartY + (rectHeight / 2));
         messageTime++;
     } else {
         // Show the next instruction after whacking mole twice.
