@@ -110,6 +110,7 @@ function gameStart() {
     }
 }
 
+// Randomly pick a new mole, show it and then hide it again.
 function showMole() {
     // Pick a random hole for the mole to come out of.
     // Do this every time the mole is hit or when the mole goes in the hole.
@@ -167,6 +168,7 @@ function showMole() {
     image(moles[randomMole].extraCanvas, moles[randomMole].x, moles[randomMole].y);
 }
 
+// Show hammer and check if mole was hit.
 function showHammer() {
     if (moleHit()) {
         push();
@@ -236,7 +238,7 @@ function createHoles() {
     let rowSpace = height / 2 / numOfRows;
     for (let i = 0; i < numOfCols; i++) {
         for (let j = 0; j < numOfRows; j++) {
-            let x = (colSpace * i) + (colSpace / 2) + 10; // 50, 150, and 60 came from trial and error to see what centers the holes.
+            let x = (colSpace * i) + (colSpace / 2) + 10; // These numbers came from trial and error to see what centers the holes.
             let y = (rowSpace * j) + (rowSpace / 2) + 150;
             let hole = new Hole(x, y, holeImg);
             let mole = new Mole(x, y, moleImg);
@@ -248,6 +250,7 @@ function createHoles() {
     randomMole = floor(random(numOfHoles));
 }
 
+// Display the player's current score.
 function displayScore() {
     let fontSize = 70;
     push();
@@ -478,7 +481,7 @@ function gameOver() {
     }
 }
 
-// Small sample game play for the users who click on instructions.
+// Sample game play for the users who click on instructions.
 // To show how the game works.
 function tutorial() {
     // Game background
@@ -570,7 +573,7 @@ function quitGame() {
     }
 }
 
-//// This function fires on every resize of the browser window.
-//function windowResized() {
-//    resizeCanvas(windowWidth, windowHeight);
-//}
+// This function fires on every resize of the browser window.
+function windowResized() {
+    resizeCanvas(windowWidth, windowHeight);
+}
