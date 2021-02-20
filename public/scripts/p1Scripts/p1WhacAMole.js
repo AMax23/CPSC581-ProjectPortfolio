@@ -379,7 +379,6 @@ function startScreen() {
 }
 
 function gameOver() {
-    score = 100;
     clear();
     push();
     image(gameOverScreenImg, 0, 0, width, height);
