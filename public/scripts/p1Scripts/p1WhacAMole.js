@@ -6,7 +6,8 @@ if (!window.location.href.toString().includes("https://")) { alert(`You will nee
 var hammerImg;
 var hammerHitImg;
 var holeImg;
-var bgImg;
+var holeImg;
+var bombImg;
 var startScreenImg;
 var gameOverScreenImg;
 var highScoresScreenImg;
@@ -21,6 +22,7 @@ var volumeThreshold = 15; // This number came from trial and error.
 var hammer;
 var holes = [];
 var moles = [];
+var bombs = [];
 var numOfHoles = 6;
 var randomMole; // Initialized when creating new holes and then updates everytime the mole is hit or when it hides.
 var molePicked = false; // The purpose of this is to ensure that the mole is set only once while it's still active.
@@ -57,6 +59,7 @@ function preload() {
     bgImg = loadImage('../images/project 1/background.png'); // Load the image of the grass
     holeImg = loadImage('../images/project 1/hole.png'); // Load the image of the hole
     moleImg = loadImage('../images/project 1/mole.png'); // Load the image of the mole
+    bombImg = loadImage('../images/project 1/bomb.png'); // Load the image of the mole
     startScreenImg = loadImage('../images/project 1/startScreen.png'); // Load game start screen image
     gameOverScreenImg = loadImage('../images/project 1/gameOverScreen.png'); // Load game over screen image
     highScoresScreenImg = loadImage('../images/project 1/HighScoresScreen.png'); // Load game over screen image
@@ -109,6 +112,8 @@ function gameStart() {
     displayScore();
     displayTime();
     showMole();
+
+    //bombs[0].show();
 
     // Show holes
     for (var i = 0; i < holes.length; i++) {
@@ -251,10 +256,13 @@ function createHoles() {
             let y = (rowSpace * j) + (rowSpace / 2) + (height * 0.2);
             let hole = new Hole(x, y, holeImg);
             let mole = new Mole(x, y, moleImg);
+            let bomb = new Bomb(x + 15, y - 30, bombImg);
             holes.push(hole);
             moles.push(mole);
+            bombs.push(bomb);
         }
     }
+
     // Start of by picking a random hole where the mole will come out of.
     randomMole = floor(random(numOfHoles));
 
