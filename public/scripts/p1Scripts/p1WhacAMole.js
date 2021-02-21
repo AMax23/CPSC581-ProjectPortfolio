@@ -634,7 +634,7 @@ function tutorial() {
     textSize(18);
     fill("#ffffff");
     let rectHeight = height * 0.09;
-    let rectStartY = height - rectHeight;
+    let rectStartY = holes[2].y + (holeImg.height / 7) + 20; //height - (rectHeight);
     rect(0, rectStartY, width, rectHeight);
     pop();
 
