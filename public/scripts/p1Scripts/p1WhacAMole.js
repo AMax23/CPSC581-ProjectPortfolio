@@ -221,7 +221,7 @@ function moleHit() {
 
             // After each hit, the moles come out faster and go back in fast too!
             timeMoleStaysHidden = timeMoleStaysHidden > 30 ? timeMoleStaysHidden - 5 : timeMoleStaysHidden;
-            timeMoleStaysOut = timeMoleStaysOut > 25 ? timeMoleStaysOut - 3 : timeMoleStaysOut;
+            timeMoleStaysOut = timeMoleStaysOut > 20 ? timeMoleStaysOut - 3 : timeMoleStaysOut;
 
             // Reset the time for when the mole is out if it's hit.
             timeMoleIsOut = 0;
