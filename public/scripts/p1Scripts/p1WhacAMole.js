@@ -42,7 +42,7 @@ var leaderboard = new Leaderboard();
 var scorePosted = false;
 var leaderBoardRequested = false;
 var minMoleHideTime = 30; // The longest time the mole will stay hidden.
-var minMoleOutTime = 25; // Minimum amount of time the mole will stay out. This is really quick.
+var minMoleOutTime = 20; // Minimum amount of time the mole will stay out. This is really quick.
 
 var timeMoleStaysOut = 100; // Number of times to be out of the hole.
 var timeMoleIsOut = 0;
@@ -222,8 +222,8 @@ function moleHit() {
             score++;
 
             // After each hit, the moles come out faster and go back in fast too!
-            timeMoleStaysHidden = timeMoleStaysHidden > minMoleHideTime ? timeMoleStaysHidden - 5 : timeMoleStaysHidden;
-            timeMoleStaysOut = timeMoleStaysOut > minMoleOutTime ? timeMoleStaysOut - 3 : timeMoleStaysOut;
+            timeMoleStaysHidden = timeMoleStaysHidden > minMoleHideTime ? timeMoleStaysHidden - 5 : minMoleHideTime;
+            timeMoleStaysOut = timeMoleStaysOut > minMoleOutTime ? timeMoleStaysOut - 3 : minMoleOutTime;
 
             // Reset the time for when the mole is out if it's hit.
             timeMoleIsOut = 0;
