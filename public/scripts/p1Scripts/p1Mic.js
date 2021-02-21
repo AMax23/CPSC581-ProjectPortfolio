@@ -14,8 +14,6 @@ function Microphone() {
 
     var self = this;
 
-    //window.addEventListener('load', init, false);
-
     this.init = function () {
         try {
             this.startMic();
@@ -32,11 +30,11 @@ function Microphone() {
                 self.mic = self.audioContext.createMediaStreamSource(stream);
                 self.mic.connect(self.analyser);
                 //self.analyser.connect(self.audioContext.destination); // Output mic input to device speakers. Testing.
-                //console.log('Audio permission not allowed');
+                // Needed to activate sound on mobile devices the first time (especially ios).
+                // User clicks somewhere on the page (probably the start button and then play a sound)
                 document.getElementById('body').onclick = function () {
                     if (!self.audioPermission) {
                         self.audioPermission = true;
-                        //console.log('Audio permission allowed');
                         self.whackSound.play();
                         self.whackSound.currentTime = 0;
                     }
