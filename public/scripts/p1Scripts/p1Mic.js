@@ -32,15 +32,14 @@ function Microphone() {
                 self.mic = self.audioContext.createMediaStreamSource(stream);
                 self.mic.connect(self.analyser);
                 //self.analyser.connect(self.audioContext.destination); // Output mic input to device speakers. Testing.
+                //console.log('Audio permission not allowed');
                 document.getElementById('body').onclick = function () {
-                    self.audioPermission = true;
-                    console.log('audio permission allowed');
-                    self.whackSound.play();
-                    self.whackSound.currentTime = 0;
-                }
-                    
-                if (!self.audioPermission) {
-                    console.log('Audio permission not allowed');
+                    if (!self.audioPermission) {
+                        self.audioPermission = true;
+                        //console.log('Audio permission allowed');
+                        self.whackSound.play();
+                        self.whackSound.currentTime = 0;
+                    }
                 }
                 self.beginRecording();
             })
