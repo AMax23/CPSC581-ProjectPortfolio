@@ -305,7 +305,7 @@ function resetGame() {
 // Show the time remaining at the top.
 function displayTime() {
     push();
-    strokeWeight(10);
+    strokeWeight(15);
 
     startTime--;
     let timeBar = map(startTime, 0, gameTimeLimit, 0, width);
