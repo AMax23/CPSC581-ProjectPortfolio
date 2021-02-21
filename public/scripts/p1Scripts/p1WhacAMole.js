@@ -184,7 +184,7 @@ function showHammer() {
         // This is changed back in the draw function.
         frameRate(10);
         hammer.show(hammerHitImg);
-        mic.whackSound.currentTime = 0; // Set the sound back to position 0.
+        //mic.whackSound.currentTime = 0; // Set the sound back to position 0.
         pop();
     } else {
         hammer.show(hammerImg);
