@@ -633,8 +633,8 @@ function tutorial() {
     strokeWeight(3);
     textSize(18);
     fill("#ffffff");
-    let rectStartY = height - (height * 0.17);
-    let rectHeight = height * 0.15;
+    let rectHeight = height * 0.09;
+    let rectStartY = height - rectHeight;
     rect(0, rectStartY, width, rectHeight);
     pop();
 
@@ -644,7 +644,7 @@ function tutorial() {
     textStyle(BOLD);
     textAlign(CENTER);
     if (messageTime <= 300) {
-        text(instructions[nextInsMsg], width / 2, rectStartY + (rectHeight * 0.3));
+        text(instructions[nextInsMsg], width / 2, rectStartY + (rectHeight * 0.4));
         messageTime++;
     } else {
         // Show the next instruction after whacking mole twice.
