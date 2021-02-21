@@ -7,6 +7,7 @@ function Microphone() {
     this.FFT_SIZE = 1024; // Power of 2, between 32 and max unsigned integer
     this.constraints = { audio: true };
     this.whackSound = new Audio('../sounds/project 1/whackSound.wav');
+    this.audioPermission = false;
 
     this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
     this.analyser = this.audioContext.createAnalyser();
@@ -31,6 +32,16 @@ function Microphone() {
                 self.mic = self.audioContext.createMediaStreamSource(stream);
                 self.mic.connect(self.analyser);
                 //self.analyser.connect(self.audioContext.destination); // Output mic input to device speakers. Testing.
+                document.getElementById('body').onclick = function () {
+                    self.audioPermission = true;
+                    console.log('audio permission allowed');
+                    self.whackSound.play();
+                    self.whackSound.currentTime = 0;
+                }
+                    
+                if (!self.audioPermission) {
+                    console.log('Audio permission not allowed');
+                }
                 self.beginRecording();
             })
             .catch(function (err) {
