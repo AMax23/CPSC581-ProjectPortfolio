@@ -178,8 +178,11 @@ function showMole() {
 function showHammer() {
     if (moleHit()) {
         push();
+        document.getElementById('whackSound').muted = false;
+        document.getElementById('whackSound').play();
+        document.getElementById('whackSound').currentTime = 0;
         // Play a sound when the hammer hits the mole.
-        mic.whackSound.play();
+        //mic.whackSound.play();
         // Slow down the frame rate to show the effect of the hammer hitting. Otherwise it's too fast.
         // This is changed back in the draw function.
         frameRate(10);
