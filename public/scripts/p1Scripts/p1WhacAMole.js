@@ -237,6 +237,8 @@ function moleHit() {
 
 // Function to create holes in a 2d array. And the moles.
 function createHoles() {
+    holes = [];
+    moles = [];
     // Create mole holes.
     let numOfCols = 2; //width > 900 ? 3 : 2;
     let numOfRows = 3; //height > 500 ? 3 : 2;
@@ -705,25 +707,5 @@ function windowResized() {
     resizeCanvas(windowWidth, windowHeight);
 
     // Destroy the holes and moles and recreate them if resized. ** PROBABLY NOT A GOOD IDEA **
-    holes = [];
-    moles = [];
-    let numOfCols = width > 900 ? 3 : 2;
-    let numOfRows = height > 500 ? 3 : 2;
-    numOfHoles = numOfCols * numOfRows;
-    let colSpace = width / numOfCols - (holeImg.width / 7 / 2);
-    let rowSpace = height / 2 / numOfRows;
-    for (let i = 0; i < numOfCols; i++) {
-        for (let j = 0; j < numOfRows; j++) {
-            let x = (colSpace * i) + (colSpace / 2); // These numbers came from trial and error to see what centers the holes.
-            let y = (rowSpace * j) + (rowSpace / 2) + (height * 0.2);
-            let hole = new Hole(x, y, holeImg);
-            let mole = new Mole(x, y, moleImg);
-            holes.push(hole);
-            moles.push(mole);
-        }
-    }
-    // Start of by picking a random hole where the mole will come out of.
-    randomMole = floor(random(numOfHoles));
-
-
+    createHoles();
 }
