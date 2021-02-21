@@ -75,10 +75,10 @@ function setup() {
     mic = new Microphone();
     mic.init();
 
-    createHoles();
-
     hammer = new Hammer(width / 2, height / 2);
     hammer.requestOrientationPermission();
+
+    createHoles();
 }
 
 function draw() {
@@ -236,8 +236,8 @@ function moleHit() {
 // Function to create holes in a 2d array. And the moles.
 function createHoles() {
     // Create mole holes.
-    let numOfCols = width > 900 ? 3 : 2;
-    let numOfRows = height > 500 ? 3 : 2;
+    let numOfCols = 2; //width > 900 ? 3 : 2;
+    let numOfRows = 3; //height > 500 ? 3 : 2;
     numOfHoles = numOfCols * numOfRows;
     let colSpace = width / numOfCols - (holeImg.width/7/2);
     let rowSpace = height / 2 / numOfRows;
@@ -253,6 +253,22 @@ function createHoles() {
     }
     // Start of by picking a random hole where the mole will come out of.
     randomMole = floor(random(numOfHoles));
+
+    //for (let i = 0; i < holes.length; i++) {
+    //    line(holes[i].x - rowSpace, holes[i].y - colSpace, width, holes[i].y - colSpace); // Horizontal line
+    //    line(holes[i].x, holes[i].y + holes[i].img.height / 7, width, holes[i].y + holes[i].img.height / 7); // Horizontal line
+    //    for (let j = 0; j < holes.length; j++) {
+    //        push();
+    //        fill(255, 0, 0);
+    //        line(holes[j].x - rowSpace, holes[j].y - colSpace, holes[j].x - rowSpace, height); // Horizontal line
+    //        line(holes[j].x + holes[i].img.width / 7, holes[j].y, holes[j].x + holes[i].img.width / 7, height); // Horizontal line
+    //        pop();
+    //    }
+    //}
+
+    // Hardcoding 0 and 3 for now until i find a different way to do this.
+    // Set the min and max bounds for the hammer. Allows easier movement of the hammer.
+    hammer.setConstraints(holes[0].x + (holeImg.width / 7) - 15, holes[3].x + (holeImg.width / 7) - 15, holes[0].y - 15, holes[2].y - 15)
 }
 
 // Display the player's current score.

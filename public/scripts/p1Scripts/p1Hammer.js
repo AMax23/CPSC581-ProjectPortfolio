@@ -14,6 +14,19 @@ function Hammer(x, y) {
         'bottomRightX': 0,
         'bottomRightY': 0
     };
+    this.hammerConstraints = {
+        'minX': 0,
+        'maxX': 0,
+        'minY': 0,
+        'maxY': 0
+    }
+
+    this.setConstraints = function (minX, maxX, minY, maxY) {
+        this.hammerConstraints.minX = minX;
+        this.hammerConstraints.maxX = maxX;
+        this.hammerConstraints.minY = minY;
+        this.hammerConstraints.maxY = maxY;
+    }
 
     this.show = function (img) {
 
@@ -40,8 +53,11 @@ function Hammer(x, y) {
         //////////////////////////////////
 
         // Make sure that the image stays inside the canvas.
-        this.x = constrain(this.x, img.width / 7, width);
-        this.y = constrain(this.y, 10, height - img.height / 7);
+        //this.x = constrain(this.x, img.width / 7, width);
+        //this.y = constrain(this.y, 10, height - img.height / 7);
+        // Hammer only moves within the bounds of the holes.
+        this.x = constrain(this.x, this.hammerConstraints.minX, this.hammerConstraints.maxX);
+        this.y = constrain(this.y, this.hammerConstraints.minY, this.hammerConstraints.maxY);
 
         //rect(this.x - img.width / 5, this.y, img.width / 5, img.height / 5);
         image(img, this.x - img.width / 7, this.y, img.width / 7, img.height / 7); // Make the image smaller for mobile devices
