@@ -642,7 +642,7 @@ function tutorial() {
     textStyle(BOLD);
     textAlign(CENTER);
     if (messageTime <= 300) {
-        text(instructions[nextInsMsg], width / 2, rectStartY + (rectHeight / 2));
+        text(instructions[nextInsMsg], width / 2, rectStartY + (rectHeight * 0.3));
         messageTime++;
     } else {
         // Show the next instruction after whacking mole twice.
