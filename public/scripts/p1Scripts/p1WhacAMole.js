@@ -43,6 +43,7 @@ let gameTimeLimit = 3546; // ~ 1 min. This is a count of how many times the game
 let leaderboard = new Leaderboard();
 let scorePosted = false;
 let leaderBoardRequested = false;
+let moleSpeedFactor = 5; // Subtract from timeMoleStaysOut and timeMoleStaysHidden.
 let minMoleHideTime = 30; // The longest time the mole will stay hidden.
 let minMoleOutTime = 20; // Minimum amount of time the mole will stay out. This is really quick.
 
@@ -248,8 +249,8 @@ function moleHit() {
             if (whatToShow == 0) {
                 score++;
                 // After each mole hit, the moles come out faster and go back in fast too!
-                timeMoleStaysHidden = timeMoleStaysHidden > minMoleHideTime ? timeMoleStaysHidden - 5 : minMoleHideTime;
-                timeMoleStaysOut = timeMoleStaysOut > minMoleOutTime ? timeMoleStaysOut - 3 : minMoleOutTime;
+                timeMoleStaysHidden = timeMoleStaysHidden > minMoleHideTime ? timeMoleStaysHidden - moleSpeedFactor : minMoleHideTime;
+                timeMoleStaysOut = timeMoleStaysOut > minMoleOutTime ? timeMoleStaysOut - moleSpeedFactor : minMoleOutTime;
             } else {
                 //console.log('You hit a bomb!!!');
                 score = score - 5 <= 0 ? 0 : score - 5;

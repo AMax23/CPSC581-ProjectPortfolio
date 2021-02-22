@@ -20,13 +20,13 @@ function Mole(posX, posY, img) {
     this.bombImg = bombImg;
     this.speed = 10;
     this.hit = false;
-    this.extraCanvas = createGraphics(100, 100); // This size is from trial and error to see what works best.
+    this.extraCanvas = createGraphics(100, 100); // This size is from trial and error to see what offset works best.
     this.bound = 50; // The point at which the mole is fully out or all in.
     this.hideY = this.bound;
     this.imageOffsetY = 50;
     this.imageOffsetX = 15;
     this.canvasOffsetY = 50;
-    
+
     this.show = function (whatToShow) {
         // 0 = Mole, 1 = bomb
         // I didn't wanna create a new class for bombs so im reusing this Mole one.
@@ -84,9 +84,6 @@ function Mole(posX, posY, img) {
     }
 
     this.setBounds = function () {
-        ////////////////////////////////////////////////////////////
-        // Testing boundaries. Trial and error gave these numbers
-        push();
         this.moleBounds.bottomLeftX = this.x + 15;
         this.moleBounds.bottomLeftY = this.y + 40;
         this.moleBounds.topLeftX = this.x + 15;
@@ -94,7 +91,9 @@ function Mole(posX, posY, img) {
         this.moleBounds.topRightX = this.x + 60;
         this.moleBounds.topRightY = this.y;
         this.moleBounds.bottomRightX = this.x + 60;
-
+        ////////////////////////////////////////////////////////////
+        // Testing boundaries. Trial and error gave these numbers
+        //push();
         //this.moleBounds.bottomRightY = this.y + 40;
         //fill(255, 255, 0);
         //rect(this.moleBounds.bottomLeftX, this.moleBounds.bottomLeftY, 10, 10);
@@ -104,7 +103,7 @@ function Mole(posX, posY, img) {
         //rect(this.moleBounds.topRightX, this.moleBounds.topRightY, 10, 10);
         //fill(255, 0, 255);
         //rect(this.moleBounds.bottomRightX, this.moleBounds.bottomRightY, 10, 10);
-        pop();
+        //pop();
         ////////////////////////////////////////////////////////////
     }
 }
