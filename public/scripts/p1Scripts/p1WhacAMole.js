@@ -514,9 +514,9 @@ function gameOver() {
         submitBtn.show();
         submitBtn.mousePressed(function () {
             let name = inputBox.value().trim();
-            // The name must be at least 1 character.
+            // The name must be at least 1 character. Only take the first 10 characters in the name.
             if (name.length > 0) {
-                leaderboard.postScore(name, score, accuracy / 100);
+                leaderboard.postScore(name.substr(0, 10), score, accuracy / 100);
                 inputBox.value(''); // Clear the input box after submitting
                 scorePosted = true;
                 // Update the leaderboatd and show it again.
