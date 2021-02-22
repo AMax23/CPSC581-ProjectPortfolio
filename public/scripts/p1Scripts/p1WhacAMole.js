@@ -51,7 +51,7 @@ let timeMoleStaysOut = 100; // Number of times to be out of the hole.
 let timeMoleIsOut = 0;
 let timeMoleIsHidden = 0;
 let timeMoleStaysHidden = 100; // Number of times to stay in the hole.
-let whenToShowBomb = timeMoleStaysOut * 0.75; // After this time, bombs will start appearing in the game with a certain probabilty.
+let whenToShowBomb = timeMoleStaysOut * 0.5; // After this time, bombs will start appearing in the game with a certain probabilty.
 
 ////////////////////////// BASIC P5 SET UP ////////////////////////////////////////
 function preload() {
