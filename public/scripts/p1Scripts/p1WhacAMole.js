@@ -1,7 +1,7 @@
 // P5 JavaScript source code for the main sketch.
 
 // Comment this out temporarily cos its annoying.
-//if (!window.location.href.toString().includes("https://")) { alert(`You will need "https://" to view this.`) }
+if (!window.location.href.toString().includes("https://")) { alert(`You will need "https://" to view this.`) }
 
 let hammerImg;
 let hammerHitImg;
@@ -26,7 +26,6 @@ let numOfHoles = 6;
 let randomMole; // Initialized when creating new holes and then updates everytime the mole is hit or when it hides.
 let molePicked = false; // The purpose of this is to ensure that the mole is set only once while it's still active.
 let whatToShow = 0; // Parameter for Mole.show(). 0 = show a mole, 1 = show a bomb.
-let scoreToShowBomb = 20; // After this score bombs will start appearing in the game with a certain probabilty.
 
 let screen = 0; // Screen 0 = Start screen, 1 = start game, 2 = game over, 3 = tutorial Mode, 4 = players' high scores 
 
@@ -51,6 +50,7 @@ let timeMoleStaysOut = 100; // Number of times to be out of the hole.
 let timeMoleIsOut = 0;
 let timeMoleIsHidden = 0;
 let timeMoleStaysHidden = 100; // Number of times to stay in the hole.
+let whenToShowBomb = timeMoleStaysOut * 0.75; // After this time, bombs will start appearing in the game with a certain probabilty.
 
 ////////////////////////// BASIC P5 SET UP ////////////////////////////////////////
 function preload() {
@@ -137,7 +137,7 @@ function chooseRandomMole() {
         // As the game progresses, there will be bombs in the game. 33% of the time a bomb will show up after a certain score.
         // Pick a random number between 0 and 2
         // If the number is [1, 2] then show a mole, otherwise show a bomb.
-        if (score > scoreToShowBomb) {
+        if (whenToShowBomb > timeMoleStaysOut) {
             // Do not show a bomb twice in a row.
             while (true) {
                 let newRandNum = floor(random(3)) == 0 ? 1 : 0
