@@ -15,7 +15,7 @@ const { Client } = require('pg');
     , Accuracy DECIMAL(4,3)
    );
  */
-//var connectionString = 'postgres://hkxgwfwgoliqme:d22829be8625e7347d87184bda71cbb6a068dba4b2c260932bc184974d1d0226@ec2-52-7-168-69.compute-1.amazonaws.com:5432/d2o94nape5edke';
+
 var connectionString = process.env.DATABASE_URL;
 
 connectionString = {
