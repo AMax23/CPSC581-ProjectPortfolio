@@ -35,8 +35,8 @@ function Hammer(x, y) {
         //console.log('x = ' + rotationY + ' Y = ' + rotationX);
 
         // Device tilt to move the hammer.
-        this.x += map(rotationY, -10, 10, -this.maxSpeed, this.maxSpeed);
         this.y += map(rotationX, 20, 35, -this.maxSpeed, this.maxSpeed);
+        this.x += map(rotationY, -10, 10, -this.maxSpeed, this.maxSpeed);
 
         // P5 system variable deviceOrientation returns the orientation of the device.
         // The x and y will need to be swapped if the device is in landscape mode.
@@ -53,8 +53,6 @@ function Hammer(x, y) {
         //////////////////////////////////
 
         // Make sure that the image stays inside the canvas.
-        //this.x = constrain(this.x, img.width / 7, width);
-        //this.y = constrain(this.y, 10, height - img.height / 7);
         // Hammer only moves within the bounds of the holes.
         this.x = constrain(this.x, this.hammerConstraints.minX, this.hammerConstraints.maxX);
         this.y = constrain(this.y, this.hammerConstraints.minY, this.hammerConstraints.maxY);
