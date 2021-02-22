@@ -3,51 +3,55 @@
 // Comment this out temporarily cos its annoying.
 if (!window.location.href.toString().includes("https://")) { alert(`You will need "https://" to view this.`) }
 
-var hammerImg;
-var hammerHitImg;
-var holeImg;
-var bgImg;
-var startScreenImg;
-var gameOverScreenImg;
-var highScoresScreenImg;
+let hammerImg;
+let hammerHitImg;
+let holeImg;
+let moleImg;
+let bombImg;
+let startScreenImg;
+let gameOverScreenImg;
+let highScoresScreenImg;
 
-var inputBox;
-var submitBtn;
+let inputBox;
+let submitBtn;
 
-var mic;
-var volumeLevel;
-var volumeThreshold = 15; // This number came from trial and error.
+let mic;
+let volumeLevel;
+let volumeThreshold = 15; // This number came from trial and error.
 
-var hammer;
-var holes = [];
-var moles = [];
-var numOfHoles = 6;
-var randomMole; // Initialized when creating new holes and then updates everytime the mole is hit or when it hides.
-var molePicked = false; // The purpose of this is to ensure that the mole is set only once while it's still active.
+let hammer;
+let holes = [];
+let moles = [];
+let numOfHoles = 6;
+let randomMole; // Initialized when creating new holes and then updates everytime the mole is hit or when it hides.
+let molePicked = false; // The purpose of this is to ensure that the mole is set only once while it's still active.
+let whatToShow = 0; // Parameter for Mole.show(). 0 = show a mole, 1 = show a bomb.
 
-var screen = 0; // Screen 0 = Start screen, 1 = start game, 2 = game over, 3 = tutorial Mode, 4 = players' high scores 
+let screen = 0; // Screen 0 = Start screen, 1 = start game, 2 = game over, 3 = tutorial Mode, 4 = players' high scores 
 
-var tutorialMode = false;
-var messageTime = 0;
-var instructions = ['TILT/ROTATE YOUR DEVICE \nTO MOVE HAMMER', 'YELL TO HIT THE MOLE', 'TIME REMAINING IS THE TOP BAR \n YOU HAVE 60 SECONDS',
-    'TOP LEFT IS YOUR SCORE', 'THE MOLES GET FASTER \nAS YOUR SCORE INCREASES', 'GO BACK TO START MENU \n WHEN YOU ARE READY'];
-var nextInsMsg = 0;
+let tutorialMode = false;
+let messageTime = 0;
+let nextInsMsg = 0;
+let instructions = ['TILT/ROTATE YOUR DEVICE \nTO MOVE HAMMER', 'YELL TO HIT THE MOLE', 'THE MOLES GET FASTER \nAS YOUR SCORE INCREASES', 'IF YOU HIT THE BOMB \n YOU WILL LOSE 5 POINTS',
+    'TIME REMAINING IS THE TOP BAR \n YOU HAVE 60 SECONDS', 'TOP LEFT IS YOUR SCORE',  'GO BACK TO START MENU \n WHEN YOU ARE READY'];
 
-var score = 0;
-var molesMissed = 0;
-var accuracy; // accuracy = score / (score + molesMissed)
-var startTime = 0; // The start time of the program. Used to get the time remaining.
-var gameTimeLimit = 3546; // ~ 1 min. This is a count of how many times the game loop runs until it's game over. There was a problem using millis()...
-var leaderboard = new Leaderboard();
-var scorePosted = false;
-var leaderBoardRequested = false;
-var minMoleHideTime = 30; // The longest time the mole will stay hidden.
-var minMoleOutTime = 20; // Minimum amount of time the mole will stay out. This is really quick.
+let score = 0;
+let molesMissed = 0;
+let accuracy; // accuracy = score / (score + molesMissed)
+let startTime = 0; // The start time of the program. Used to get the time remaining.
+let gameTimeLimit = 3546; // ~ 1 min. This is a count of how many times the game loop runs until it's game over. There was a problem using millis()...
+let leaderboard = new Leaderboard();
+let scorePosted = false;
+let leaderBoardRequested = false;
+let moleSpeedFactor = 5; // Subtract from timeMoleStaysOut and timeMoleStaysHidden.
+let minMoleHideTime = 30; // The longest time the mole will stay hidden.
+let minMoleOutTime = 20; // Minimum amount of time the mole will stay out. This is really quick.
 
-var timeMoleStaysOut = 100; // Number of times to be out of the hole.
-var timeMoleIsOut = 0;
-var timeMoleIsHidden = 0;
-var timeMoleStaysHidden = 100; // Number of times to stay in the hole.
+let timeMoleStaysOut = 100; // Number of times to be out of the hole.
+let timeMoleIsOut = 0;
+let timeMoleIsHidden = 0;
+let timeMoleStaysHidden = 100; // Number of times to stay in the hole.
+let whenToShowBomb = timeMoleStaysOut * 0.75; // After this time, bombs will start appearing in the game with a certain probabilty.
 
 ////////////////////////// BASIC P5 SET UP ////////////////////////////////////////
 function preload() {
@@ -57,6 +61,7 @@ function preload() {
     bgImg = loadImage('../images/project 1/background.png'); // Load the image of the grass
     holeImg = loadImage('../images/project 1/hole.png'); // Load the image of the hole
     moleImg = loadImage('../images/project 1/mole.png'); // Load the image of the mole
+    bombImg = loadImage('../images/project 1/bomb.png'); // Load the image of the bomb
     startScreenImg = loadImage('../images/project 1/startScreen.png'); // Load game start screen image
     gameOverScreenImg = loadImage('../images/project 1/gameOverScreen.png'); // Load game over screen image
     highScoresScreenImg = loadImage('../images/project 1/HighScoresScreen.png'); // Load game over screen image
@@ -116,29 +121,51 @@ function gameStart() {
     }
 }
 
-// Randomly pick a new mole, show it and then hide it again.
-function showMole() {
+// Pick a random hole and then randomly choose if a mole will come out of that hole of a mole.
+function chooseRandomMole() {
     // Pick a random hole for the mole to come out of.
     // Do this every time the mole is hit or when the mole goes in the hole.
     if ((moles[randomMole].hit || timeMoleIsHidden > timeMoleStaysHidden) && !moles[randomMole].active && !molePicked) {
         // Pick a new hole, not same as previous one.
         while (true) {
-            // The tutorial mode have instructions which cover the top 2 holes.
-            let newRandNum = floor(random(numOfHoles)); // Generate random number between 0 and 5.
+            let newRandNum = floor(random(numOfHoles)); // Generate random number for the hole.
             if (newRandNum != randomMole) {
                 randomMole = newRandNum;
                 break;
             }
         }
+
+        // As the game progresses, there will be bombs in the game. 33% of the time a bomb will show up after a certain score.
+        // Pick a random number between 0 and 2
+        // If the number is [1, 2] then show a mole, otherwise show a bomb.
+        if (whenToShowBomb > timeMoleStaysOut) {
+            // Do not show a bomb twice in a row.
+            while (true) {
+                let newRandNum = floor(random(3)) == 0 ? 1 : 0
+                if ((newRandNum != whatToShow) || newRandNum == 0) {
+                    whatToShow = newRandNum;
+                    break;
+                }
+            }
+        } else {
+            // Just show a mole if score is not high enough for bombs.
+            whatToShow = 0;
+        }
+
         molePicked = true;
         moles[randomMole].active = false; // The mole starts off as not being active. This means it will start off hidden.
         moles[randomMole].hit = false; // In case the mole was hit, we need to reset the variable.
     }
+}
+
+// Randomly pick a new mole, show it and then hide it again.
+function showMole() {
+    chooseRandomMole();
 
     // Show the mole that's active.
     if (!moles[randomMole].hit && timeMoleIsOut <= timeMoleStaysOut && moles[randomMole].active) {
         // Mark the time when the mole fully comes out. It will only stay active for a bit and then hide again.
-        if (moles[randomMole].show()) {
+        if (moles[randomMole].show(whatToShow)) {
             timeMoleIsOut++;
             timeMoleIsHidden = 0;
         }
@@ -146,7 +173,7 @@ function showMole() {
         // Hide the mole
         // And if the mole is fully hidden and the mole was never hit, increase the missed counter.
         if (!moles[randomMole].hide()) {
-            if (!moles[randomMole].hit) {
+            if (!moles[randomMole].hit && whatToShow == 0) {
                 molesMissed++;
             }
         }
@@ -171,7 +198,7 @@ function showMole() {
     }
 
     // Put this extra canvas exactly where the hole is so its aligned.
-    image(moles[randomMole].extraCanvas, moles[randomMole].x, moles[randomMole].y);
+    image(moles[randomMole].extraCanvas, moles[randomMole].x, moles[randomMole].y - moles[randomMole].canvasOffsetY);
 }
 
 // Show hammer and check if mole was hit.
@@ -219,11 +246,15 @@ function moleHit() {
             moles[i].hit = true;
 
             //console.log('You hit mole ' + i);
-            score++;
-
-            // After each hit, the moles come out faster and go back in fast too!
-            timeMoleStaysHidden = timeMoleStaysHidden > minMoleHideTime ? timeMoleStaysHidden - 5 : minMoleHideTime;
-            timeMoleStaysOut = timeMoleStaysOut > minMoleOutTime ? timeMoleStaysOut - 3 : minMoleOutTime;
+            if (whatToShow == 0) {
+                score++;
+                // After each mole hit, the moles come out faster and go back in fast too!
+                timeMoleStaysHidden = timeMoleStaysHidden > minMoleHideTime ? timeMoleStaysHidden - moleSpeedFactor : minMoleHideTime;
+                timeMoleStaysOut = timeMoleStaysOut > minMoleOutTime ? timeMoleStaysOut - moleSpeedFactor : minMoleOutTime;
+            } else {
+                //console.log('You hit a bomb!!!');
+                score = score - 5 <= 0 ? 0 : score - 5;
+            }
 
             // Reset the time for when the mole is out if it's hit.
             timeMoleIsOut = 0;
@@ -243,18 +274,19 @@ function createHoles() {
     let numOfCols = 2; //width > 900 ? 3 : 2;
     let numOfRows = 3; //height > 500 ? 3 : 2;
     numOfHoles = numOfCols * numOfRows;
-    let colSpace = width / numOfCols - (holeImg.width/7/2);
+    let colSpace = width / numOfCols - (holeImg.width / 7 / 2);
     let rowSpace = height / 2 / numOfRows;
     for (let i = 0; i < numOfCols; i++) {
         for (let j = 0; j < numOfRows; j++) {
             let x = (colSpace * i) + (colSpace / 2); // These numbers came from trial and error to see what centers the holes.
             let y = (rowSpace * j) + (rowSpace / 2) + (height * 0.2);
             let hole = new Hole(x, y, holeImg);
-            let mole = new Mole(x, y, moleImg);
+            let mole = new Mole(x, y, moleImg, bombImg);
             holes.push(hole);
             moles.push(mole);
         }
     }
+
     // Start of by picking a random hole where the mole will come out of.
     randomMole = floor(random(numOfHoles));
 
@@ -382,7 +414,7 @@ function startScreen() {
     instructionsBtn.topRightX = width / 2 + width / 2 * 0.30;
     instructionsBtn.topRightY = height / 2 - height / 2 * 0.07;
     instructionsBtn.bottomLeftX = width / 2 - width / 2 * 0.31;
-    instructionsBtn.bottomLeftY = height / 2 ;
+    instructionsBtn.bottomLeftY = height / 2;
     instructionsBtn.topLeftX = width / 2 - width / 2 * 0.31;
     instructionsBtn.topLeftY = height / 2 - height / 2 * 0.07;
 
