@@ -41,9 +41,9 @@ function Microphone() {
                 }
                 self.beginRecording();
             })
-            .catch(function (err) {
-                console.log('Error: ' + err);
-            });
+            //.catch(function (err) {
+            //    console.log('Error: ' + err);
+            //});
     }
 
     this.beginRecording = function () {
