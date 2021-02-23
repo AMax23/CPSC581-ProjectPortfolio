@@ -33,12 +33,12 @@ let tutorialMode = false;
 let messageTime = 0;
 let nextInsMsg = 0;
 let instructions = ['TILT/ROTATE YOUR DEVICE \nTO MOVE HAMMER', 'USE YOUR VOICE \nTO HIT THE MOLE', 'THE MOLES GET FASTER \nAS YOUR SCORE INCREASES', 'IF YOU HIT THE BOMB \n YOU WILL LOSE 5 POINTS',
-    'TIME LEFT IS THE TOP BAR \n YOU HAVE 60 SECONDS', 'TOP LEFT IS YOUR SCORE',  'GO BACK TO START MENU \n WHEN YOU ARE READY'];
+    'TIME LEFT IS THE TOP BAR \n YOU HAVE 60 SECONDS', 'TOP LEFT IS YOUR SCORE', 'GO BACK TO START MENU \n WHEN YOU ARE READY'];
 
 let score = 0;
 let molesMissed = 0;
 let accuracy; // accuracy = score / (score + molesMissed)
-let startTime = 0; // The start time of the program. Used to get the time remaining.
+let timeLeft = 0; // The start time of the program. Used to get the time remaining.
 let gameTimeLimit = 3546; // ~ 1 min. This is a count of how many times the game loop runs until it's game over. There was a problem using millis()...
 let leaderboard = new Leaderboard();
 let scorePosted = false;
@@ -51,7 +51,7 @@ let timeMoleStaysOut = 100; // Number of times to be out of the hole.
 let timeMoleIsOut = 0;
 let timeMoleIsHidden = 0;
 let timeMoleStaysHidden = 100; // Number of times to stay in the hole.
-let whenToShowBomb = timeMoleStaysOut * 0.5; // After this time, bombs will start appearing in the game with a certain probabilty.
+let whenToShowBomb = gameTimeLimit * (1 - 0.25); // 25% into the gane, and bombs will start appearing with a certain probabilty.
 
 ////////////////////////// BASIC P5 SET UP ////////////////////////////////////////
 function preload() {
@@ -138,7 +138,7 @@ function chooseRandomMole() {
         // As the game progresses, there will be bombs in the game. 33% of the time a bomb will show up after a certain score.
         // Pick a random number between 0 and 2
         // If the number is [1, 2] then show a mole, otherwise show a bomb.
-        if (whenToShowBomb > timeMoleStaysOut) {
+        if (whenToShowBomb > timeLeft) {
             // Do not show a bomb twice in a row.
             while (true) {
                 let newRandNum = floor(random(3)) == 0 ? 1 : 0
@@ -245,15 +245,20 @@ function moleHit() {
             // So the array length will always be the same regardless of the mole being hit.
             moles[i].hit = true;
 
-            //console.log('You hit mole ' + i);
+            // If player hits a mole:
             if (whatToShow == 0) {
+                //console.log('You hit mole ' + i);
                 score++;
                 // After each mole hit, the moles come out faster and go back in fast too!
                 timeMoleStaysHidden = timeMoleStaysHidden > minMoleHideTime ? timeMoleStaysHidden - moleSpeedFactor : minMoleHideTime;
                 timeMoleStaysOut = timeMoleStaysOut > minMoleOutTime ? timeMoleStaysOut - moleSpeedFactor : minMoleOutTime;
             } else {
+                // Player hit a bomb:
                 //console.log('You hit a bomb!!!');
                 score = score - 5 <= 0 ? 0 : score - 5;
+                // Make the mole slower if the bomb was hit. Showing some mercy here :). Max time is 100.
+                timeMoleStaysHidden = timeMoleStaysHidden >= 100 ? 100 : timeMoleStaysHidden + moleSpeedFactor;
+                timeMoleStaysOut = timeMoleStaysOut > 100 ? 100 : timeMoleStaysOut + moleSpeedFactor;
             }
 
             // Reset the time for when the mole is out if it's hit.
@@ -340,17 +345,17 @@ function displayTime() {
     push();
     strokeWeight(15);
 
-    startTime--;
-    let timeBar = map(startTime, 0, gameTimeLimit, 0, width);
+    timeLeft--;
+    let timeBar = map(timeLeft, 0, gameTimeLimit, 0, width);
 
     // Change the bar colour depending on how much time is left.
-    startTime <= 0.25 * gameTimeLimit ? stroke(255, 0, 0) : stroke(0, 74, 173);
+    timeLeft <= 0.25 * gameTimeLimit ? stroke(255, 0, 0) : stroke(0, 74, 173);
 
     line(0, 0, timeBar, 0);
     pop();
 
     // Either time is up or still playing. 2 = game over screen
-    screen = startTime < 0 && !tutorialMode ? 2 : screen;
+    screen = timeLeft < 0 && !tutorialMode ? 2 : screen;
 }
 
 function startScreen() {
@@ -453,17 +458,17 @@ function startScreen() {
         mic.whackSound.play();
         mic.whackSound.currentTime = 0;
         screen = 1; // Start game. Button is hidden after mic is started in Mic.js
-        startTime = gameTimeLimit; // The time when the game has started. Countdown start time.
+        timeLeft = gameTimeLimit; // The time when the game has started. Countdown start time.
     }
 
-    // If the instructions button is clicked
+    // If the instructions button is clicked.
     if (screen == 0 && mouseIsPressed && mouseX >= instructionsBtn.topLeftX && mouseX <= instructionsBtn.topRightX
         && mouseY >= instructionsBtn.topLeftY && mouseY <= instructionsBtn.bottomLeftY) {
         // Play a sound when player presses the button.
         mic.whackSound.play();
         mic.whackSound.currentTime = 0;
         screen = 3; // Tutorial mode is on.
-        startTime = gameTimeLimit;
+        timeLeft = gameTimeLimit;
         tutorialMode = true;
     }
 
@@ -650,7 +655,7 @@ function tutorial() {
 
     displayTime();
     // If time runs out, just restart it.
-    startTime = startTime <= 0 ? gameTimeLimit : startTime;
+    timeLeft = timeLeft <= 0 ? gameTimeLimit : timeLeft;
     showMole();
 
     // Show holes
