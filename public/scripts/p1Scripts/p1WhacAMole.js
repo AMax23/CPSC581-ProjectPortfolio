@@ -27,7 +27,7 @@ let randomMole; // Initialized when creating new holes and then updates everytim
 let molePicked = false; // The purpose of this is to ensure that the mole is set only once while it's still active.
 let whatToShow = 0; // Parameter for Mole.show(). 0 = show a mole, 1 = show a bomb.
 
-let screen = 0; // Screen 0 = Start screen, 1 = start game, 2 = game over, 3 = tutorial Mode, 4 = players' high scores 
+let screen = 0; // Screen 0 = Start screen, 1 = start game, 2 = game over, 3 = tutorial Mode, 4 = players' high scores
 
 let tutorialMode = false;
 let messageTime = 0;
@@ -309,12 +309,11 @@ function createHoles() {
 
 // Display the player's current score.
 function displayScore() {
-    let fontSize = 70;
     push();
-    textSize(fontSize);
+    textSize(70);
     textStyle(BOLD);
     fill(255);
-    text(score, 10, 60);
+    text(score, 10, 65);
     pop();
 }
 
@@ -345,7 +344,7 @@ function displayTime() {
     let timeBar = map(startTime, 0, gameTimeLimit, 0, width);
 
     // Change the bar colour depending on how much time is left.
-    startTime <= 0.25 * gameTimeLimit ? stroke(255, 0, 0) : stroke(0, 255, 0);
+    startTime <= 0.25 * gameTimeLimit ? stroke(255, 0, 0) : stroke(0, 74, 173);
 
     line(0, 0, timeBar, 0);
     pop();
@@ -391,32 +390,42 @@ function startScreen() {
         "topRightY": 0
     }
 
-    startBtn.bottomRightX = width / 2 + width / 2 * 0.13;
-    startBtn.bottomRightY = height / 2 - height / 2 * 0.13;
-    startBtn.topRightX = width / 2 + width / 2 * 0.13;
-    startBtn.topRightY = height / 2 - height / 2 * 0.20;
-    startBtn.bottomLeftX = width / 2 - width / 2 * 0.14;
-    startBtn.bottomLeftY = height / 2 - height / 2 * 0.13;
-    startBtn.topLeftX = width / 2 - width / 2 * 0.14;
-    startBtn.topLeftY = height / 2 - height / 2 * 0.20;
+    startBtn.bottomRightX = width * 0.8;
+    startBtn.bottomRightY = height * 0.663;
+    startBtn.topRightX = width * 0.8;
+    startBtn.topRightY = height * 0.622;
+    startBtn.bottomLeftX = width * 0.2;
+    startBtn.bottomLeftY = height * 0.663;
+    startBtn.topLeftX = width * 0.2;
+    startBtn.topLeftY = height * 0.622;
 
+    instructionsBtn.bottomRightX = width * 0.8;
+    instructionsBtn.bottomRightY = height * 0.74;
+    instructionsBtn.topRightX = width * 0.8;
+    instructionsBtn.topRightY = height * 0.697;
+    instructionsBtn.bottomLeftX = width * 0.2;
+    instructionsBtn.bottomLeftY = height * 0.74;
+    instructionsBtn.topLeftX = width * 0.2;
+    instructionsBtn.topLeftY = height * 0.697;
+
+    highScoreBtn.bottomRightX = width * 0.8;
+    highScoreBtn.bottomRightY = height * 0.814;
+    highScoreBtn.topRightX = width * 0.8;
+    highScoreBtn.topRightY = height * 0.77;
+    highScoreBtn.bottomLeftX = width * 0.2;
+    highScoreBtn.bottomLeftY = height * 0.814;
+    highScoreBtn.topLeftX = width * 0.2;
+    highScoreBtn.topLeftY = height * 0.77;
+
+    //push();
     //fill(255, 0, 0);
     //rect(startBtn.bottomRightX, startBtn.bottomRightY, 10, 10);
     //fill(255, 255, 0);
     //rect(startBtn.topRightX, startBtn.topRightY, 10, 10);
     //fill(255, 0, 255);
-    //rect(startBtn.bottomLeftX, startBtn.bottomLeftY, 10, 10);
-    //fill(0, 0, 255);
     //rect(startBtn.topLeftX, startBtn.topLeftY, 10, 10);
-
-    instructionsBtn.bottomRightX = width / 2 + width / 2 * 0.30;
-    instructionsBtn.bottomRightY = height / 2;
-    instructionsBtn.topRightX = width / 2 + width / 2 * 0.30;
-    instructionsBtn.topRightY = height / 2 - height / 2 * 0.07;
-    instructionsBtn.bottomLeftX = width / 2 - width / 2 * 0.31;
-    instructionsBtn.bottomLeftY = height / 2;
-    instructionsBtn.topLeftX = width / 2 - width / 2 * 0.31;
-    instructionsBtn.topLeftY = height / 2 - height / 2 * 0.07;
+    //fill(0, 0, 255);
+    //rect(startBtn.bottomLeftX, startBtn.bottomLeftY, 10, 10);
 
     //fill(255, 0, 0);
     //rect(instructionsBtn.bottomRightX, instructionsBtn.bottomRightY, 10, 10);
@@ -427,15 +436,6 @@ function startScreen() {
     //fill(0, 0, 255);
     //rect(instructionsBtn.bottomLeftX, instructionsBtn.bottomLeftY, 10, 10);
 
-    highScoreBtn.bottomRightX = width / 2 + width / 2 * 0.27;
-    highScoreBtn.bottomRightY = height / 2 + height / 2 * 0.13;
-    highScoreBtn.topRightX = width / 2 + width / 2 * 0.27;
-    highScoreBtn.topRightY = height / 2 + height / 2 * 0.08;
-    highScoreBtn.bottomLeftX = width / 2 - width / 2 * 0.31;
-    highScoreBtn.bottomLeftY = height / 2 + height / 2 * 0.13;
-    highScoreBtn.topLeftX = width / 2 - width / 2 * 0.31;
-    highScoreBtn.topLeftY = height / 2 + height / 2 * 0.08;
-
     //fill(255, 0, 0);
     //rect(highScoreBtn.bottomRightX, highScoreBtn.bottomRightY, 10, 10);
     //fill(255, 255, 0);
@@ -444,7 +444,7 @@ function startScreen() {
     //rect(highScoreBtn.topLeftX, highScoreBtn.topLeftY, 10, 10);
     //fill(0, 0, 255);
     //rect(highScoreBtn.bottomLeftX, highScoreBtn.bottomLeftY, 10, 10);
-
+    //pop();
 
     // If the start button is clicked.
     if (screen == 0 && mouseIsPressed && mouseX >= startBtn.topLeftX && mouseX <= startBtn.topRightX
@@ -547,14 +547,14 @@ function gameOver() {
         "topRightY": 0
     }
 
-    backToMenuBtn.bottomRightX = width / 2 + width / 2 * 0.23;
-    backToMenuBtn.bottomRightY = height / 2 - height / 2 * 0.4;
-    backToMenuBtn.topRightX = width / 2 + width / 2 * 0.23;
-    backToMenuBtn.topRightY = height / 2 - height / 2 * 0.5;
-    backToMenuBtn.topLeftX = width / 2 - width / 2 * 0.24;
-    backToMenuBtn.topLeftY = height / 2 - height / 2 * 0.5;
-    backToMenuBtn.bottomLeftX = width / 2 - width / 2 * 0.24;
-    backToMenuBtn.bottomLeftY = height / 2 - height / 2 * 0.4;
+    backToMenuBtn.bottomRightX = width * 0.850
+    backToMenuBtn.bottomRightY = height * 0.295;
+    backToMenuBtn.topRightX = width * 0.850
+    backToMenuBtn.topRightY = height * 0.252;
+    backToMenuBtn.topLeftX = width * 0.15
+    backToMenuBtn.topLeftY = height * 0.252;
+    backToMenuBtn.bottomLeftX = width * 0.15
+    backToMenuBtn.bottomLeftY = height * 0.295;
 
     //fill(255, 0, 0);
     //rect(backToMenuBtn.bottomRightX, backToMenuBtn.bottomRightY, 10, 10);
@@ -607,14 +607,14 @@ function highScores() {
         "topRightY": 0
     }
 
-    backToMenuBtn.bottomRightX = width / 2 + width / 2 * 0.23;
-    backToMenuBtn.bottomRightY = height / 2 - height / 2 * 0.4;
-    backToMenuBtn.topRightX = width / 2 + width / 2 * 0.23;
-    backToMenuBtn.topRightY = height / 2 - height / 2 * 0.5;
-    backToMenuBtn.topLeftX = width / 2 - width / 2 * 0.24;
-    backToMenuBtn.topLeftY = height / 2 - height / 2 * 0.5;
-    backToMenuBtn.bottomLeftX = width / 2 - width / 2 * 0.24;
-    backToMenuBtn.bottomLeftY = height / 2 - height / 2 * 0.4;
+    backToMenuBtn.bottomRightX = width * 0.850
+    backToMenuBtn.bottomRightY = height * 0.295;
+    backToMenuBtn.topRightX = width * 0.850
+    backToMenuBtn.topRightY = height * 0.252;
+    backToMenuBtn.topLeftX = width * 0.15
+    backToMenuBtn.topLeftY = height * 0.252;
+    backToMenuBtn.bottomLeftX = width * 0.15
+    backToMenuBtn.bottomLeftY = height * 0.295;
 
     //fill(255, 0, 0);
     //rect(backToMenuBtn.bottomRightX, backToMenuBtn.bottomRightY, 10, 10);
