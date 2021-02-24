@@ -46,7 +46,7 @@ let leaderBoardRequested = false;
 
 let moleSpeedFactor = 5; // Subtract from timeMoleStaysOut and timeMoleStaysHidden.
 let minMoleHideTime = 30; // The longest time the mole will stay hidden.
-let minMoleOutTime = 22; // Minimum amount of time the mole will stay out. This is really quick.
+let minMoleOutTime = 25; // Minimum amount of time the mole will stay out. 20 is really quick, 30 is average (for me, i guess)
 let timeMoleStaysOut = 100; // Number of times to be out of the hole.
 let timeMoleIsOut = 0;
 let timeMoleIsHidden = 0;
