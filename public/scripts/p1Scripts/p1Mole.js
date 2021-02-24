@@ -26,23 +26,44 @@ function Mole(posX, posY, img) {
     this.imageOffsetY = 50;
     this.imageOffsetX = 15;
     this.canvasOffsetY = 50;
+    this.moleOffsetX = 0;
+    this.moleOffsetY = 0;
+    this.moleSizeDivider = 9; // How much to divide the image width and height by.
+    this.moleSize = 'small'; // Either big or small mole.
 
-    this.show = function (whatToShow) {
+    this.show = function (whatToShow, moleSize) {
+        // Depending on the mole size, the image placement changes.
+        // This only applies to moles so if it is a bomb the third if will override the values back to 0.
+        if (moleSize == 'big') {
+            this.moleOffsetX = -2;
+            this.moleOffsetY = -32;
+            this.moleSizeDivider = 5;
+            this.bound = 85; // The point at which the large mole is fully hidden.
+        } else if (moleSize == 'small') {
+            this.moleOffsetX = 15;
+            this.moleOffsetY = 0;
+            this.moleSizeDivider = 9;
+            this.bound = 50; // The point at which the small mole is fully hidden.
+        }
+
         // 0 = Mole, 1 = bomb
         // I didn't wanna create a new class for bombs so im reusing this Mole one.
         // The images have different offsets so now i need to do this crazy thing.
-        if (whatToShow == 0) {
-            this.bound = 50;
+        if (whatToShow == 1) {
+            this.bound = 60; // The point at which the bomb is fully hidden.
+            this.imageOffsetY = 35;
+            this.canvasOffsetY = 50;
+            this.imageOffsetX = 15;
+            // This only applies to moles. Set values back to default.
+            this.moleOffsetX = 0;
+            this.moleOffsetY = 0;
+            this.moleSizeDivider = 7;
+            this.img = this.bombImg;
+        } else if (whatToShow == 0){
             this.imageOffsetY = 50;
             this.canvasOffsetY = 50;
             this.imageOffsetX = 0;
             this.img = img;
-        } else {
-            this.bound = 60;
-            this.imageOffsetY = 35;
-            this.canvasOffsetY = 50;
-            this.imageOffsetX = 15;
-            this.img = this.bombImg;
         }
 
         /* This is a buffer canvas drawn on top of the original one with a smaller size.
@@ -51,7 +72,7 @@ function Mole(posX, posY, img) {
          */
         this.extraCanvas.clear();
         //this.extraCanvas.background(0);
-        this.extraCanvas.image(this.img, 0 + this.imageOffsetX, this.hideY + this.imageOffsetY, this.img.width / 7, this.img.height / 7);
+        this.extraCanvas.image(this.img, 0 + this.imageOffsetX + this.moleOffsetX, this.hideY + this.imageOffsetY + this.moleOffsetY, this.img.width / this.moleSizeDivider, this.img.height / this.moleSizeDivider);
         //image(this.extraCanvas, this.x, this.y - this.imageOffsetY); // Put this extra canvas exactly where the hole is so its aligned.
 
         if (this.hideY <= 0) {
@@ -70,7 +91,7 @@ function Mole(posX, posY, img) {
         // Same logic as showing the mole but now we are going down.
         this.extraCanvas.clear();
         //this.extraCanvas.background(0);
-        this.extraCanvas.image(this.img, 0 + this.imageOffsetX, this.hideY + this.imageOffsetY, this.img.width / 7, this.img.height / 7);
+        this.extraCanvas.image(this.img, 0 + this.imageOffsetX + this.moleOffsetX, this.hideY + this.imageOffsetY + this.moleOffsetY, this.img.width / this.moleSizeDivider, this.img.height / this.moleSizeDivider);
         //image(this.extraCanvas, this.x, this.y - this.imageOffset);
 
         if (this.hideY >= this.bound) {

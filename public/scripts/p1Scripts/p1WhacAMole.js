@@ -26,6 +26,7 @@ let numOfHoles = 6;
 let randomMole; // Initialized when creating new holes and then updates everytime the mole is hit or when it hides.
 let molePicked = false; // The purpose of this is to ensure that the mole is set only once while it's still active.
 let whatToShow = 0; // Parameter for Mole.show(). 0 = show a mole, 1 = show a bomb.
+let moleSize = 'small'; // Mole size is either big or small. Default is small.
 
 let screen = 0; // Screen 0 = Start screen, 1 = start game, 2 = game over, 3 = tutorial Mode, 4 = players' high scores
 
@@ -51,7 +52,9 @@ let timeMoleStaysOut = 100; // Number of times to be out of the hole.
 let timeMoleIsOut = 0;
 let timeMoleIsHidden = 0;
 let timeMoleStaysHidden = 100; // Number of times to stay in the hole.
+let pointsToLoseBombHit = 5; // How many points to subtract if a bomb is hit.
 let whenToShowBomb = gameTimeLimit * (1 - 0.25); // 25% into the gane, and bombs will start appearing with a certain probabilty.
+let whenToChangeMoleSize = gameTimeLimit * (1 - 0.50); // 50% into the gane, and large moles will start appearing with a certain probabilty.
 
 ////////////////////////// BASIC P5 SET UP ////////////////////////////////////////
 function preload() {
@@ -60,7 +63,7 @@ function preload() {
     hammerHitImg = loadImage('../images/project 1/thorsHammerHit.png'); // Load the image hammer when its hitting
     bgImg = loadImage('../images/project 1/background.png'); // Load the image of the grass
     holeImg = loadImage('../images/project 1/hole.png'); // Load the image of the hole
-    moleImg = loadImage('../images/project 1/mole.png'); // Load the image of the mole
+    moleImg = loadImage('../images/project 1/moleNoHole.png'); // Load the image of the mole
     bombImg = loadImage('../images/project 1/bomb.png'); // Load the image of the bomb
     startScreenImg = loadImage('../images/project 1/startScreen.png'); // Load game start screen image
     gameOverScreenImg = loadImage('../images/project 1/gameOverScreen.png'); // Load game over screen image
@@ -89,6 +92,7 @@ function setup() {
 }
 
 function draw() {
+
     frameRate(60);
 
     if (screen == 0) {
@@ -152,6 +156,11 @@ function chooseRandomMole() {
             whatToShow = 0;
         }
 
+        // At one point in the game, there will be different mole sizes.
+        if (whenToChangeMoleSize > timeLeft) {
+            moleSize = floor(random(2)) == 0 ? 'big' : 'small';
+        }
+
         molePicked = true;
         moles[randomMole].active = false; // The mole starts off as not being active. This means it will start off hidden.
         moles[randomMole].hit = false; // In case the mole was hit, we need to reset the variable.
@@ -165,7 +174,7 @@ function showMole() {
     // Show the mole that's active.
     if (!moles[randomMole].hit && timeMoleIsOut <= timeMoleStaysOut && moles[randomMole].active) {
         // Mark the time when the mole fully comes out. It will only stay active for a bit and then hide again.
-        if (moles[randomMole].show(whatToShow)) {
+        if (moles[randomMole].show(whatToShow, moleSize)) {
             timeMoleIsOut++;
             timeMoleIsHidden = 0;
         }
@@ -255,7 +264,7 @@ function moleHit() {
             } else {
                 // Player hit a bomb:
                 //console.log('You hit a bomb!!!');
-                score = score - 5 <= 0 ? 0 : score - 5;
+                score = score - pointsToLoseBombHit <= 0 ? 0 : score - pointsToLoseBombHit;
                 // Make the mole slower if the bomb was hit. Showing some mercy here :). Max time is 100.
                 timeMoleStaysHidden = timeMoleStaysHidden >= 100 ? 100 : timeMoleStaysHidden + moleSpeedFactor;
                 timeMoleStaysOut = timeMoleStaysOut > 100 ? 100 : timeMoleStaysOut + moleSpeedFactor;
