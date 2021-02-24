@@ -17,7 +17,8 @@ let submitBtn;
 
 let mic;
 let volumeLevel;
-let volumeThreshold = 15; // This number came from trial and error.
+let volumeThresholdSmallMole = 15; // This number came from trial and error.
+let volumeThresholdBigMole = 40; // For the big moles, player has to yell louder!
 
 let hammer;
 let holes = [];
@@ -33,7 +34,8 @@ let screen = 0; // Screen 0 = Start screen, 1 = start game, 2 = game over, 3 = t
 let tutorialMode = false;
 let messageTime = 0;
 let nextInsMsg = 0;
-let instructions = ['TILT/ROTATE YOUR DEVICE \nTO MOVE HAMMER', 'USE YOUR VOICE \nTO HIT THE MOLE', 'THE MOLES GET FASTER \nAS YOUR SCORE INCREASES', 'IF YOU HIT THE BOMB \n YOU WILL LOSE 5 POINTS',
+let instructions = ['TILT/ROTATE YOUR DEVICE \nTO MOVE HAMMER', 'TO HIT THE MOLE, ADJUST \n YOUR VOICE TO ITS SIZE',
+    'THE MOLES GET FASTER \nAS YOUR SCORE INCREASES', 'IF YOU HIT THE BOMB \n YOU WILL LOSE 5 POINTS',
     'TIME LEFT IS THE TOP BAR \n YOU HAVE 60 SECONDS', 'TOP LEFT IS YOUR SCORE', 'GO BACK TO START MENU \n WHEN YOU ARE READY'];
 
 let score = 0;
@@ -235,46 +237,48 @@ function moleHit() {
     volumeLevel = mic.getVolumeLevel(); // Read the amplitude (volume level).
 
     for (var i = 0; i < moles.length; i++) {
-        if (!moles[i].hit && moles[i].out && volumeLevel >= volumeThreshold && (
-            // Case when the top right of the hammer is between the bounds of the mole.
-            (hammer.hammerBounds.topRightX >= moles[i].moleBounds.topLeftX && hammer.hammerBounds.topRightX <= moles[i].moleBounds.topRightX
-                && hammer.hammerBounds.topRightY > moles[i].moleBounds.topRightY && hammer.hammerBounds.topRightY < moles[i].moleBounds.bottomRightY)
+        if ((moles[i].moleSize == 'big' && volumeLevel >= volumeThresholdBigMole) || (moles[i].moleSize == 'small' && volumeLevel >= volumeThresholdSmallMole)) {
+            if (!moles[i].hit && moles[i].out && (
+                // Case when the top right of the hammer is between the bounds of the mole.
+                (hammer.hammerBounds.topRightX >= moles[i].moleBounds.topLeftX && hammer.hammerBounds.topRightX <= moles[i].moleBounds.topRightX
+                    && hammer.hammerBounds.topRightY > moles[i].moleBounds.topRightY && hammer.hammerBounds.topRightY < moles[i].moleBounds.bottomRightY)
 
-            // Case when the bottom right makes contact with the mole.
-            || (hammer.hammerBounds.bottomRightY >= moles[i].moleBounds.topRightY && hammer.hammerBounds.bottomRightY <= moles[i].moleBounds.bottomRightY
-                && hammer.hammerBounds.bottomRightX >= moles[i].moleBounds.topLeftX && hammer.hammerBounds.bottomRightX <= moles[i].moleBounds.topRightX)
+                // Case when the bottom right makes contact with the mole.
+                || (hammer.hammerBounds.bottomRightY >= moles[i].moleBounds.topRightY && hammer.hammerBounds.bottomRightY <= moles[i].moleBounds.bottomRightY
+                    && hammer.hammerBounds.bottomRightX >= moles[i].moleBounds.topLeftX && hammer.hammerBounds.bottomRightX <= moles[i].moleBounds.topRightX)
 
-            // Case when the entire hammer is touching the mole but all the bounds of the hammer are outside the bounds of the mole's.
-            || (hammer.hammerBounds.topRightX > moles[i].moleBounds.topRightX && hammer.hammerBounds.bottomLeftX <= moles[i].moleBounds.topLeftX
-                && hammer.hammerBounds.topLeftY < moles[i].moleBounds.topLeftY
-                && hammer.hammerBounds.bottomLeftY > moles[i].moleBounds.topLeftY)
-        )
-        ) {
-            // Only set the hit variable to true. I dont wanna delete the object from the array.
-            // So the array length will always be the same regardless of the mole being hit.
-            moles[i].hit = true;
+                // Case when the entire hammer is touching the mole but all the bounds of the hammer are outside the bounds of the mole's.
+                || (hammer.hammerBounds.topRightX > moles[i].moleBounds.topRightX && hammer.hammerBounds.bottomLeftX <= moles[i].moleBounds.topLeftX
+                    && hammer.hammerBounds.topLeftY < moles[i].moleBounds.topLeftY
+                    && hammer.hammerBounds.bottomLeftY > moles[i].moleBounds.topLeftY)
+            )
+            ) {
+                // Only set the hit variable to true. I dont wanna delete the object from the array.
+                // So the array length will always be the same regardless of the mole being hit.
+                moles[i].hit = true;
 
-            // If player hits a mole:
-            if (whatToShow == 0) {
-                //console.log('You hit mole ' + i);
-                score++;
-                // After each mole hit, the moles come out faster and go back in fast too!
-                timeMoleStaysHidden = timeMoleStaysHidden > minMoleHideTime ? timeMoleStaysHidden - moleSpeedFactor : minMoleHideTime;
-                timeMoleStaysOut = timeMoleStaysOut > minMoleOutTime ? timeMoleStaysOut - moleSpeedFactor : minMoleOutTime;
-            } else {
-                // Player hit a bomb:
-                //console.log('You hit a bomb!!!');
-                score = score - pointsToLoseBombHit <= 0 ? 0 : score - pointsToLoseBombHit;
-                // Make the mole slower if the bomb was hit. Showing some mercy here :). Max time is 100.
-                timeMoleStaysHidden = timeMoleStaysHidden >= 100 ? 100 : timeMoleStaysHidden + moleSpeedFactor;
-                timeMoleStaysOut = timeMoleStaysOut > 100 ? 100 : timeMoleStaysOut + moleSpeedFactor;
+                // If player hits a mole:
+                if (whatToShow == 0) {
+                    //console.log('You hit mole ' + i);
+                    score++;
+                    // After each mole hit, the moles come out faster and go back in fast too!
+                    timeMoleStaysHidden = timeMoleStaysHidden > minMoleHideTime ? timeMoleStaysHidden - moleSpeedFactor : minMoleHideTime;
+                    timeMoleStaysOut = timeMoleStaysOut > minMoleOutTime ? timeMoleStaysOut - moleSpeedFactor : minMoleOutTime;
+                } else {
+                    // Player hit a bomb:
+                    //console.log('You hit a bomb!!!');
+                    score = score - pointsToLoseBombHit <= 0 ? 0 : score - pointsToLoseBombHit;
+                    // Make the mole slower if the bomb was hit. Showing some mercy here :). Max time is 100.
+                    timeMoleStaysHidden = timeMoleStaysHidden >= 100 ? 100 : timeMoleStaysHidden + moleSpeedFactor;
+                    timeMoleStaysOut = timeMoleStaysOut > 100 ? 100 : timeMoleStaysOut + moleSpeedFactor;
+                }
+
+                // Reset the time for when the mole is out if it's hit.
+                timeMoleIsOut = 0;
+                timeMoleIsHidden = 0;
+                molePicked = false;
+                return true;
             }
-
-            // Reset the time for when the mole is out if it's hit.
-            timeMoleIsOut = 0;
-            timeMoleIsHidden = 0;
-            molePicked = false;
-            return true;
         }
     }
     return false;

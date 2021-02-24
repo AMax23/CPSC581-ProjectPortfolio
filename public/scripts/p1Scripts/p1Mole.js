@@ -32,6 +32,7 @@ function Mole(posX, posY, img) {
     this.moleSize = 'small'; // Either big or small mole.
 
     this.show = function (whatToShow, moleSize) {
+        this.moleSize = moleSize;
         // Depending on the mole size, the image placement changes.
         // This only applies to moles so if it is a bomb the third if will override the values back to 0.
         if (moleSize == 'big') {
@@ -58,6 +59,7 @@ function Mole(posX, posY, img) {
             this.moleOffsetX = 0;
             this.moleOffsetY = 0;
             this.moleSizeDivider = 7;
+            this.moleSize = 'small'; // The bomb should behave the same way a small mole does (used for the volumeThreshold).
             this.img = this.bombImg;
         } else if (whatToShow == 0){
             this.imageOffsetY = 50;
