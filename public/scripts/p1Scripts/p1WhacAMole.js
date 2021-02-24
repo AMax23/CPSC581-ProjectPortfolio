@@ -260,7 +260,8 @@ function moleHit() {
                 // If player hits a mole:
                 if (whatToShow == 0) {
                     //console.log('You hit mole ' + i);
-                    score++;
+                    // If player hits a big mole that deserves an extra point.
+                    score = moles[i].moleSize == 'small' ? score + 1 : score + 2;
                     // After each mole hit, the moles come out faster and go back in fast too!
                     timeMoleStaysHidden = timeMoleStaysHidden > minMoleHideTime ? timeMoleStaysHidden - moleSpeedFactor : minMoleHideTime;
                     timeMoleStaysOut = timeMoleStaysOut > minMoleOutTime ? timeMoleStaysOut - moleSpeedFactor : minMoleOutTime;
