@@ -91,6 +91,10 @@ function Hammer(x, y) {
     }
 
     this.requestOrientationPermission = function () {
+
+        // Some phones and browser do not support device rotation in the browser. 
+        if (rotationX == 'undefined' || rotationY == 'undefined') { alert('Device orientation not supported') }
+
         // This is needed for IOS devices. Permission to access device orientation.
         // https://krpano.com/forum/wbb/index.php?page=Thread&threadID=17044
         if (typeof DeviceOrientationEvent.requestPermission === 'function') {
