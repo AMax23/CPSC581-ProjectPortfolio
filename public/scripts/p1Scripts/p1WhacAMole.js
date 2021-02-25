@@ -36,7 +36,7 @@ let messageTime = 0;
 let nextInsMsg = 0;
 let instructions = ['TILT/ROTATE YOUR DEVICE \nTO MOVE HAMMER', 'TO HIT THE MOLE, ADJUST \n YOUR VOICE TO ITS SIZE',
     'THE MOLES GET FASTER \nAS YOUR SCORE INCREASES', 'IF YOU HIT THE BOMB \n YOU WILL LOSE 5 POINTS',
-    'TIME LEFT IS THE TOP BAR \n YOU HAVE 60 SECONDS', 'TOP LEFT IS YOUR SCORE', 'GO BACK TO START MENU \n WHEN YOU ARE READY'];
+    'TIME LEFT IS THE TOP BAR \n YOU WILL HAVE 60 SECONDS', 'TOP LEFT IS YOUR SCORE', 'GO BACK TO START MENU \n WHEN YOU ARE READY'];
 
 let score = 0;
 let molesMissed = 0;
@@ -701,7 +701,7 @@ function tutorial() {
         messageTime++;
     } else {
         // Show the next instruction after whacking mole twice.
-        if (score >= 2 || nextInsMsg == 0 || (score >= 2 && nextInsMsg == 1)) {
+        if (nextInsMsg >= 2 || nextInsMsg == 0 || (score >= 2 && nextInsMsg == 1)) {
             nextInsMsg = nextInsMsg == instructions.length - 1 ? 0 : nextInsMsg + 1;
         }
         // Reset the time the message is displayed.
