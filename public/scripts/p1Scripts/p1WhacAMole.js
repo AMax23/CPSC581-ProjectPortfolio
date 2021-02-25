@@ -17,7 +17,8 @@ let submitBtn;
 
 let mic;
 let volumeLevel;
-let volumeThreshold = 15; // This number came from trial and error.
+let volumeThresholdSmallMole = 15; // This number came from trial and error.
+let volumeThresholdBigMole = 40; // For the big moles, player has to yell louder!
 
 let hammer;
 let holes = [];
@@ -26,14 +27,16 @@ let numOfHoles = 6;
 let randomMole; // Initialized when creating new holes and then updates everytime the mole is hit or when it hides.
 let molePicked = false; // The purpose of this is to ensure that the mole is set only once while it's still active.
 let whatToShow = 0; // Parameter for Mole.show(). 0 = show a mole, 1 = show a bomb.
+let moleSize = 'small'; // Mole size is either big or small. Default is small.
 
 let screen = 0; // Screen 0 = Start screen, 1 = start game, 2 = game over, 3 = tutorial Mode, 4 = players' high scores
 
 let tutorialMode = false;
 let messageTime = 0;
 let nextInsMsg = 0;
-let instructions = ['TILT/ROTATE YOUR DEVICE \nTO MOVE HAMMER', 'USE YOUR VOICE \nTO HIT THE MOLE', 'THE MOLES GET FASTER \nAS YOUR SCORE INCREASES', 'IF YOU HIT THE BOMB \n YOU WILL LOSE 5 POINTS',
-    'TIME LEFT IS THE TOP BAR \n YOU HAVE 60 SECONDS', 'TOP LEFT IS YOUR SCORE', 'GO BACK TO START MENU \n WHEN YOU ARE READY'];
+let instructions = ['TILT/ROTATE YOUR DEVICE \nTO MOVE HAMMER', 'TO HIT THE MOLE, ADJUST \n YOUR VOICE TO ITS SIZE',
+    'THE MOLES GET FASTER \nAS YOUR SCORE INCREASES', 'IF YOU HIT THE BOMB \n YOU WILL LOSE 5 POINTS',
+    'TIME LEFT IS THE TOP BAR \n YOU WILL HAVE 60 SECONDS', 'TOP LEFT IS YOUR SCORE', 'GO BACK TO START MENU \n WHEN YOU ARE READY'];
 
 let score = 0;
 let molesMissed = 0;
@@ -46,12 +49,14 @@ let leaderBoardRequested = false;
 
 let moleSpeedFactor = 5; // Subtract from timeMoleStaysOut and timeMoleStaysHidden.
 let minMoleHideTime = 30; // The longest time the mole will stay hidden.
-let minMoleOutTime = 25; // Minimum amount of time the mole will stay out. 20 is really quick, 30 is average (for me, i guess)
+let minMoleOutTime = 30; // Minimum amount of time the mole will stay out. 20 is really quick, 30 is average (for me, i guess)
 let timeMoleStaysOut = 100; // Number of times to be out of the hole.
 let timeMoleIsOut = 0;
 let timeMoleIsHidden = 0;
 let timeMoleStaysHidden = 100; // Number of times to stay in the hole.
+let pointsToLoseBombHit = 5; // How many points to subtract if a bomb is hit.
 let whenToShowBomb = gameTimeLimit * (1 - 0.25); // 25% into the gane, and bombs will start appearing with a certain probabilty.
+let whenToChangeMoleSize = gameTimeLimit * (1 - 0.50); // 50% into the gane, and large moles will start appearing with a certain probabilty.
 
 ////////////////////////// BASIC P5 SET UP ////////////////////////////////////////
 function preload() {
@@ -60,7 +65,7 @@ function preload() {
     hammerHitImg = loadImage('../images/project 1/thorsHammerHit.png'); // Load the image hammer when its hitting
     bgImg = loadImage('../images/project 1/background.png'); // Load the image of the grass
     holeImg = loadImage('../images/project 1/hole.png'); // Load the image of the hole
-    moleImg = loadImage('../images/project 1/mole.png'); // Load the image of the mole
+    moleImg = loadImage('../images/project 1/moleNoHole.png'); // Load the image of the mole
     bombImg = loadImage('../images/project 1/bomb.png'); // Load the image of the bomb
     startScreenImg = loadImage('../images/project 1/startScreen.png'); // Load game start screen image
     gameOverScreenImg = loadImage('../images/project 1/gameOverScreen.png'); // Load game over screen image
@@ -89,6 +94,7 @@ function setup() {
 }
 
 function draw() {
+
     frameRate(60);
 
     if (screen == 0) {
@@ -152,6 +158,11 @@ function chooseRandomMole() {
             whatToShow = 0;
         }
 
+        // At one point in the game, there will be different mole sizes.
+        if (whenToChangeMoleSize > timeLeft) {
+            moleSize = floor(random(2)) == 0 ? 'big' : 'small';
+        }
+
         molePicked = true;
         moles[randomMole].active = false; // The mole starts off as not being active. This means it will start off hidden.
         moles[randomMole].hit = false; // In case the mole was hit, we need to reset the variable.
@@ -165,7 +176,7 @@ function showMole() {
     // Show the mole that's active.
     if (!moles[randomMole].hit && timeMoleIsOut <= timeMoleStaysOut && moles[randomMole].active) {
         // Mark the time when the mole fully comes out. It will only stay active for a bit and then hide again.
-        if (moles[randomMole].show(whatToShow)) {
+        if (moles[randomMole].show(whatToShow, moleSize)) {
             timeMoleIsOut++;
             timeMoleIsHidden = 0;
         }
@@ -226,46 +237,49 @@ function moleHit() {
     volumeLevel = mic.getVolumeLevel(); // Read the amplitude (volume level).
 
     for (var i = 0; i < moles.length; i++) {
-        if (!moles[i].hit && moles[i].out && volumeLevel >= volumeThreshold && (
-            // Case when the top right of the hammer is between the bounds of the mole.
-            (hammer.hammerBounds.topRightX >= moles[i].moleBounds.topLeftX && hammer.hammerBounds.topRightX <= moles[i].moleBounds.topRightX
-                && hammer.hammerBounds.topRightY > moles[i].moleBounds.topRightY && hammer.hammerBounds.topRightY < moles[i].moleBounds.bottomRightY)
+        if ((moles[i].moleSize == 'big' && volumeLevel >= volumeThresholdBigMole) || (moles[i].moleSize == 'small' && volumeLevel >= volumeThresholdSmallMole)) {
+            if (!moles[i].hit && moles[i].out && (
+                // Case when the top right of the hammer is between the bounds of the mole.
+                (hammer.hammerBounds.topRightX >= moles[i].moleBounds.topLeftX && hammer.hammerBounds.topRightX <= moles[i].moleBounds.topRightX
+                    && hammer.hammerBounds.topRightY > moles[i].moleBounds.topRightY && hammer.hammerBounds.topRightY < moles[i].moleBounds.bottomRightY)
 
-            // Case when the bottom right makes contact with the mole.
-            || (hammer.hammerBounds.bottomRightY >= moles[i].moleBounds.topRightY && hammer.hammerBounds.bottomRightY <= moles[i].moleBounds.bottomRightY
-                && hammer.hammerBounds.bottomRightX >= moles[i].moleBounds.topLeftX && hammer.hammerBounds.bottomRightX <= moles[i].moleBounds.topRightX)
+                // Case when the bottom right makes contact with the mole.
+                || (hammer.hammerBounds.bottomRightY >= moles[i].moleBounds.topRightY && hammer.hammerBounds.bottomRightY <= moles[i].moleBounds.bottomRightY
+                    && hammer.hammerBounds.bottomRightX >= moles[i].moleBounds.topLeftX && hammer.hammerBounds.bottomRightX <= moles[i].moleBounds.topRightX)
 
-            // Case when the entire hammer is touching the mole but all the bounds of the hammer are outside the bounds of the mole's.
-            || (hammer.hammerBounds.topRightX > moles[i].moleBounds.topRightX && hammer.hammerBounds.bottomLeftX <= moles[i].moleBounds.topLeftX
-                && hammer.hammerBounds.topLeftY < moles[i].moleBounds.topLeftY
-                && hammer.hammerBounds.bottomLeftY > moles[i].moleBounds.topLeftY)
-        )
-        ) {
-            // Only set the hit variable to true. I dont wanna delete the object from the array.
-            // So the array length will always be the same regardless of the mole being hit.
-            moles[i].hit = true;
+                // Case when the entire hammer is touching the mole but all the bounds of the hammer are outside the bounds of the mole's.
+                || (hammer.hammerBounds.topRightX > moles[i].moleBounds.topRightX && hammer.hammerBounds.bottomLeftX <= moles[i].moleBounds.topLeftX
+                    && hammer.hammerBounds.topLeftY < moles[i].moleBounds.topLeftY
+                    && hammer.hammerBounds.bottomLeftY > moles[i].moleBounds.topLeftY)
+            )
+            ) {
+                // Only set the hit variable to true. I dont wanna delete the object from the array.
+                // So the array length will always be the same regardless of the mole being hit.
+                moles[i].hit = true;
 
-            // If player hits a mole:
-            if (whatToShow == 0) {
-                //console.log('You hit mole ' + i);
-                score++;
-                // After each mole hit, the moles come out faster and go back in fast too!
-                timeMoleStaysHidden = timeMoleStaysHidden > minMoleHideTime ? timeMoleStaysHidden - moleSpeedFactor : minMoleHideTime;
-                timeMoleStaysOut = timeMoleStaysOut > minMoleOutTime ? timeMoleStaysOut - moleSpeedFactor : minMoleOutTime;
-            } else {
-                // Player hit a bomb:
-                //console.log('You hit a bomb!!!');
-                score = score - 5 <= 0 ? 0 : score - 5;
-                // Make the mole slower if the bomb was hit. Showing some mercy here :). Max time is 100.
-                timeMoleStaysHidden = timeMoleStaysHidden >= 100 ? 100 : timeMoleStaysHidden + moleSpeedFactor;
-                timeMoleStaysOut = timeMoleStaysOut > 100 ? 100 : timeMoleStaysOut + moleSpeedFactor;
+                // If player hits a mole:
+                if (whatToShow == 0) {
+                    //console.log('You hit mole ' + i);
+                    // If player hits a big mole that deserves an extra point.
+                    score = moles[i].moleSize == 'small' ? score + 1 : score + 2;
+                    // After each mole hit, the moles come out faster and go back in fast too!
+                    timeMoleStaysHidden = timeMoleStaysHidden > minMoleHideTime ? timeMoleStaysHidden - moleSpeedFactor : minMoleHideTime;
+                    timeMoleStaysOut = timeMoleStaysOut > minMoleOutTime ? timeMoleStaysOut - moleSpeedFactor : minMoleOutTime;
+                } else {
+                    // Player hit a bomb:
+                    //console.log('You hit a bomb!!!');
+                    score = score - pointsToLoseBombHit <= 0 ? 0 : score - pointsToLoseBombHit;
+                    // Make the mole slower if the bomb was hit. Showing some mercy here :). Max time is 100.
+                    timeMoleStaysHidden = timeMoleStaysHidden >= 100 ? 100 : timeMoleStaysHidden + moleSpeedFactor;
+                    timeMoleStaysOut = timeMoleStaysOut > 100 ? 100 : timeMoleStaysOut + moleSpeedFactor;
+                }
+
+                // Reset the time for when the mole is out if it's hit.
+                timeMoleIsOut = 0;
+                timeMoleIsHidden = 0;
+                molePicked = false;
+                return true;
             }
-
-            // Reset the time for when the mole is out if it's hit.
-            timeMoleIsOut = 0;
-            timeMoleIsHidden = 0;
-            molePicked = false;
-            return true;
         }
     }
     return false;
@@ -687,7 +701,7 @@ function tutorial() {
         messageTime++;
     } else {
         // Show the next instruction after whacking mole twice.
-        if (score >= 2 || nextInsMsg == 0 || (score >= 2 && nextInsMsg == 1)) {
+        if (nextInsMsg >= 2 || nextInsMsg == 0 || (score >= 2 && nextInsMsg == 1)) {
             nextInsMsg = nextInsMsg == instructions.length - 1 ? 0 : nextInsMsg + 1;
         }
         // Reset the time the message is displayed.
