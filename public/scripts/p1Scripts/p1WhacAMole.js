@@ -35,7 +35,7 @@ let tutorialMode = false;
 let messageTime = 0;
 let nextInsMsg = 0;
 let instructions = ['TILT/ROTATE YOUR DEVICE \nTO MOVE HAMMER', 'TO HIT THE MOLE, ADJUST \n YOUR VOICE TO ITS SIZE',
-    'THE MOLES GET FASTER \nAS YOUR SCORE INCREASES', 'IF YOU HIT THE BOMB \n YOU WILL LOSE 5 POINTS',
+    'THE MOLES GET FASTER \nAS YOUR SCORE INCREASES', 'IF YOU HIT THE BOMB \n YOU WILL LOSE 500 POINTS',
     'TIME LEFT IS THE TOP BAR \n YOU WILL HAVE 60 SECONDS', 'TOP LEFT IS YOUR SCORE', 'GO BACK TO START MENU \n WHEN YOU ARE READY'];
 
 let score = 0;
@@ -54,7 +54,8 @@ let timeMoleStaysOut = 100; // Number of times to be out of the hole.
 let timeMoleIsOut = 0;
 let timeMoleIsHidden = 0;
 let timeMoleStaysHidden = 100; // Number of times to stay in the hole.
-let pointsToLoseBombHit = 5; // How many points to subtract if a bomb is hit.
+let pointsToLoseBombHit = 500; // How many points to subtract if a bomb is hit.
+let pointsForHit = 100; // Get 100 points every time player hits a mole.
 let whenToShowBomb = gameTimeLimit * (1 - 0.25); // 25% into the gane, and bombs will start appearing with a certain probabilty.
 let whenToChangeMoleSize = gameTimeLimit * (1 - 0.50); // 50% into the gane, and large moles will start appearing with a certain probabilty.
 
@@ -259,7 +260,7 @@ function moleHit() {
                 if (whatToShow == 0) {
                     //console.log('You hit mole ' + i);
                     // If player hits a big mole that deserves an extra point.
-                    score = moles[i].moleSize == 'small' ? score + 1 : score + 2;
+                    score = moles[i].moleSize == 'small' ? score + pointsForHit : score + (pointsForHit*2);
                     // After each mole hit, the moles come out faster and go back in fast too!
                     timeMoleStaysHidden = timeMoleStaysHidden > minMoleHideTime ? timeMoleStaysHidden - moleSpeedFactor : minMoleHideTime;
                     timeMoleStaysOut = timeMoleStaysOut > minMoleOutTime ? timeMoleStaysOut - moleSpeedFactor : minMoleOutTime;
