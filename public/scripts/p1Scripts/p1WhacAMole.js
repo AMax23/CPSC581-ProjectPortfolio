@@ -11,6 +11,8 @@ let bombImg;
 let startScreenImg;
 let gameOverScreenImg;
 let highScoresScreenImg;
+let whackImg;
+let boomImg;
 
 let inputBox;
 let submitBtn;
@@ -71,6 +73,8 @@ function preload() {
     startScreenImg = loadImage('../images/project 1/startScreen.png'); // Load game start screen image
     gameOverScreenImg = loadImage('../images/project 1/gameOverScreen.png'); // Load game over screen image
     highScoresScreenImg = loadImage('../images/project 1/HighScoresScreen.png'); // Load game over screen image
+    whackImg = loadImage('../images/project 1/whack.png'); // Load game over screen image
+    boomImg = loadImage('../images/project 1/boom.png'); // Load game over screen image
 }
 
 function setup() {
@@ -221,7 +225,6 @@ function showHammer() {
         // This is changed back in the draw function.
         frameRate(10);
         hammer.show(hammerHitImg);
-
         pop();
     } else {
         hammer.show(hammerImg);
@@ -260,7 +263,7 @@ function moleHit() {
                 if (whatToShow == 0) {
                     //console.log('You hit mole ' + i);
                     // If player hits a big mole that deserves an extra point.
-                    score = moles[i].moleSize == 'small' ? score + pointsForHit : score + (pointsForHit*2);
+                    score = moles[i].moleSize == 'small' ? score + pointsForHit : score + (pointsForHit * 2);
                     // After each mole hit, the moles come out faster and go back in fast too!
                     timeMoleStaysHidden = timeMoleStaysHidden > minMoleHideTime ? timeMoleStaysHidden - moleSpeedFactor : minMoleHideTime;
                     timeMoleStaysOut = timeMoleStaysOut > minMoleOutTime ? timeMoleStaysOut - moleSpeedFactor : minMoleOutTime;
@@ -268,6 +271,8 @@ function moleHit() {
                     // Play a sound when the hammer hits the mole.
                     mic.whackSound.play();
                     mic.whackSound.currentTime = 0; // Set the sound back to position 0.
+                    // Show the speech expression for the WHACK!
+                    image(whackImg, width / 2 - 100, height / 2 - 20, whackImg.width / 3, whackImg.height / 3);
                 } else {
                     // Player hit a bomb:
                     //console.log('You hit a bomb!!!');
@@ -279,6 +284,8 @@ function moleHit() {
                     mic.bombSound.play();
                     mic.bombSound.volume = 0.3; // Set volume to 30%.
                     mic.bombSound.currentTime = 0; // Set the sound back to position 0.
+                    // Show the speech expression for the BOOM!
+                    image(boomImg, width / 2 - 60, height / 2 - 20, boomImg.width / 2, boomImg.height / 2);
                 }
 
                 // Reset the time for when the mole is out if it's hit.
@@ -522,7 +529,7 @@ function gameOver() {
     fill(255);
     textSize(20);
     textAlign(CENTER);
-    accuracy = (score != 0) ? (score / (score + (molesMissed*100)) * 100).toFixed(0) : 0;
+    accuracy = (score != 0) ? (score / (score + (molesMissed * 100)) * 100).toFixed(0) : 0;
     text('Your score is ' + score
         + '\n Missed = ' + (molesMissed)
         + '\n Accuracy = ' + accuracy + '%'
