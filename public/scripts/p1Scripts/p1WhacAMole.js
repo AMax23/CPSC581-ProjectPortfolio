@@ -166,6 +166,8 @@ function chooseRandomMole() {
         // At one point in the game, there will be different mole sizes.
         if (whenToChangeMoleSize > timeLeft) {
             moleSize = floor(random(2)) == 0 ? 'big' : 'small';
+        } else {
+            moleSize = 'small';
         }
 
         molePicked = true;
@@ -365,6 +367,7 @@ function resetGame() {
     messageTime = 0;
     nextInsMsg = 0;
     tutorialMode = false;
+    moleSize = 'small';
     createHoles();
 }
 
