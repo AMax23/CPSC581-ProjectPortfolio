@@ -7,6 +7,7 @@ function Microphone() {
     this.FFT_SIZE = 1024; // Power of 2, between 32 and max unsigned integer
     this.constraints = { audio: true };
     this.whackSound = new Audio('../sounds/project 1/whackSound.wav');
+    this.bombSound = new Audio('../sounds/project 1/bombSound.wav');
     this.audioPermission = false;
 
     this.audioContext = new (window.AudioContext || window.webkitAudioContext)();

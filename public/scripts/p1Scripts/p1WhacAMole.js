@@ -216,13 +216,11 @@ function showMole() {
 function showHammer() {
     if (moleHit()) {
         push();
-        // Play a sound when the hammer hits the mole.
-        mic.whackSound.play();
         // Slow down the frame rate to show the effect of the hammer hitting. Otherwise it's too fast.
         // This is changed back in the draw function.
         frameRate(10);
         hammer.show(hammerHitImg);
-        mic.whackSound.currentTime = 0; // Set the sound back to position 0.
+
         pop();
     } else {
         hammer.show(hammerImg);
@@ -265,6 +263,10 @@ function moleHit() {
                     // After each mole hit, the moles come out faster and go back in fast too!
                     timeMoleStaysHidden = timeMoleStaysHidden > minMoleHideTime ? timeMoleStaysHidden - moleSpeedFactor : minMoleHideTime;
                     timeMoleStaysOut = timeMoleStaysOut > minMoleOutTime ? timeMoleStaysOut - moleSpeedFactor : minMoleOutTime;
+
+                    // Play a sound when the hammer hits the mole.
+                    mic.whackSound.play();
+                    mic.whackSound.currentTime = 0; // Set the sound back to position 0.
                 } else {
                     // Player hit a bomb:
                     //console.log('You hit a bomb!!!');
@@ -272,6 +274,10 @@ function moleHit() {
                     // Make the mole slower if the bomb was hit. Showing some mercy here :). Max time is 100.
                     timeMoleStaysHidden = timeMoleStaysHidden >= 100 ? 100 : timeMoleStaysHidden + moleSpeedFactor;
                     timeMoleStaysOut = timeMoleStaysOut > 100 ? 100 : timeMoleStaysOut + moleSpeedFactor;
+
+                    mic.bombSound.play();
+                    mic.bombSound.volume = 0.3; // Set volume to 30%.
+                    mic.bombSound.currentTime = 0; // Set the sound back to position 0.
                 }
 
                 // Reset the time for when the mole is out if it's hit.
