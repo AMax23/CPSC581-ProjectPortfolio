@@ -6,9 +6,9 @@ function Microphone() {
     this.freqBin = 0;
     this.FFT_SIZE = 1024; // Power of 2, between 32 and max unsigned integer
     this.constraints = { audio: true };
-    this.whackSound = new Audio('../sounds/project 1/whackSound.wav');
-    this.bombSound = new Audio('../sounds/project 1/bombSound.wav');
-    this.gameMusic = new Audio('../sounds/project 1/moonBaseMusic.mp3'); // https://www.youtube.com/watch?v=uWILfcPIyto&fbclid=IwAR13OYCpYjieiZ3pHg3sKrgqcgQgVN2pobLrWhukrbnMLVkXNkpRAGn1fiA
+    this.whackSound = new Audio();// new Audio('../sounds/project 1/whackSound.wav');
+    this.bombSound = new Audio();// new Audio('../sounds/project 1/bombSound.wav');
+    this.gameMusic = new Audio(); //new Audio('../sounds/project 1/moonBaseMusic.mp3'); // https://www.youtube.com/watch?v=uWILfcPIyto&fbclid=IwAR13OYCpYjieiZ3pHg3sKrgqcgQgVN2pobLrWhukrbnMLVkXNkpRAGn1fiA
     this.audioPermission = false;
 
     this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -34,14 +34,17 @@ function Microphone() {
                 //self.analyser.connect(self.audioContext.destination); // Output mic input to device speakers. Testing.
                 // Needed to activate sound on mobile devices the first time (especially ios).
                 // User clicks somewhere on the page (probably the start button and then play a sound)
-                document.getElementById('body').onclick = function () {
-                    if (!self.audioPermission) {
+                if (!self.audioPermission) {
+                    console.log('soundddd');
+                    document.getElementById('body').onclick = function () {
                         self.audioPermission = true;
                         // These sounds need to play the first time, but im just gonna stop them immediately
                         // so no one knows whats really happening! Stop me if you can.
 
+
+
                         //self.gameMusic.volume = 1;
-                        //self.gameMusic.play();
+                        self.gameMusic.play();
                         // Stop music.
                         //self.gameMusic.volume = 1;
                         //self.gameMusic.pause();
@@ -50,22 +53,29 @@ function Microphone() {
                         // Play the bomb sound the first time user clicks.
                         // This is just so the bomb sound works in game.
                         self.bombSound.play();
-                        self.bombSound.pause();
-                        self.bombSound.currentTime = 0;
+                        //self.bombSound.pause();
+                        //self.bombSound.currentTime = 0;
 
                         // This sound can play fully.
                         self.whackSound.play();
-                        self.whackSound.currentTime = 0;
+                        //self.whackSound.currentTime = 0;
                     }
+                } else {
+                    console.log('no more sound');
+                    document.getElementById('body').onclick = () => false
                 }
                 self.beginRecording();
             })
-            //.catch(function (err) {
-            //    console.log('Error: ' + err);
-            //});
+        //.catch(function (err) {
+        //    console.log('Error: ' + err);
+        //});
     }
 
     this.beginRecording = function () {
+
+        // Make onclick function execute only once.
+        document.getElementById('body').onclick = () => false
+
         // The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page.
         // This is to fix the error on Chrome browsers.
         self.audioContext.resume();
