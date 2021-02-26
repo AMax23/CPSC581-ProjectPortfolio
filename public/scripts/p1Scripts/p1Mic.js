@@ -8,6 +8,7 @@ function Microphone() {
     this.constraints = { audio: true };
     this.whackSound = new Audio('../sounds/project 1/whackSound.wav');
     this.bombSound = new Audio('../sounds/project 1/bombSound.wav');
+    this.gameMusic = new Audio('../sounds/project 1/moonBaseSound.mp3');
     this.audioPermission = false;
 
     this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -38,6 +39,11 @@ function Microphone() {
                         self.audioPermission = true;
                         self.whackSound.play();
                         self.whackSound.currentTime = 0;
+                        // Play the bomb sound the first time user clicks.
+                        // This is just so the bomb sound works in game.
+                        self.bombSound.volume = 0;
+                        self.bombSound.play();
+                        self.bombSound.currentTime = 0;
                     }
                 }
                 self.beginRecording();
