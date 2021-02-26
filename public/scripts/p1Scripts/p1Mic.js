@@ -39,10 +39,13 @@ function Microphone() {
                         self.audioPermission = true;
                         // These sounds need to play the first time, but im just gonna stop them immediately
                         // so no one knows whats really happening! Stop me if you can.
-                        self.gameMusic.play();
+
+                        //self.gameMusic.volume = 1;
+                        //self.gameMusic.play();
                         // Stop music.
-                        self.gameMusic.pause();
-                        self.gameMusic.currentTime = 0;
+                        //self.gameMusic.volume = 1;
+                        //self.gameMusic.pause();
+                        //self.gameMusic.currentTime = 0;
 
                         // Play the bomb sound the first time user clicks.
                         // This is just so the bomb sound works in game.

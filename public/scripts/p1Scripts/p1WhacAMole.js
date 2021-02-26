@@ -283,8 +283,8 @@ function moleHit() {
                     timeMoleStaysHidden = timeMoleStaysHidden >= 100 ? 100 : timeMoleStaysHidden + moleSpeedFactor;
                     timeMoleStaysOut = timeMoleStaysOut > 100 ? 100 : timeMoleStaysOut + moleSpeedFactor;
 
-                    mic.bombSound.play();
                     mic.bombSound.volume = 0.3; // Set volume to 30%.
+                    mic.bombSound.play();
                     mic.bombSound.currentTime = 0; // Set the sound back to position 0.
                     // Show the speech expression for the BOOM!
                     image(boomImg, width / 2 - 60, height / 2 - 20, boomImg.width / 2, boomImg.height / 2);
@@ -368,6 +368,8 @@ function resetGame() {
     nextInsMsg = 0;
     tutorialMode = false;
     moleSize = 'small';
+    mic.gameMusic.pause();
+    mic.gameMusic.position = 0;
     createHoles();
 }
 
@@ -490,6 +492,10 @@ function startScreen() {
         mic.whackSound.currentTime = 0;
         screen = 1; // Start game. Button is hidden after mic is started in Mic.js
         timeLeft = gameTimeLimit; // The time when the game has started. Countdown start time.
+
+        // Start playing the game music.
+        mic.gameMusic.volume = 0.3;
+        mic.gameMusic.play();
     }
 
     // If the instructions button is clicked.
@@ -501,6 +507,9 @@ function startScreen() {
         screen = 3; // Tutorial mode is on.
         timeLeft = gameTimeLimit;
         tutorialMode = true;
+        // Start playing the game music.
+        mic.gameMusic.volume = 0.3;
+        mic.gameMusic.play();
     }
 
     // If the high scores button is clicked.
