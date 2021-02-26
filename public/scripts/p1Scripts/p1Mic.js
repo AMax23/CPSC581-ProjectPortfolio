@@ -43,7 +43,7 @@ function Microphone() {
 
                         //self.gameMusic.volume = 1;
                         //self.gameMusic.position = 50; 
-                        self.gameMusic.play();
+
                         // Stop music.
                         //self.gameMusic.volume = 1;
                         //self.gameMusic.pause();
@@ -58,6 +58,8 @@ function Microphone() {
                         // This sound can play fully.
                         self.whackSound.play();
                         self.whackSound.currentTime = 0;
+
+                        self.gameMusic.play();
                     }
                 }
                 //// Make onclick function execute only once.
