@@ -51,6 +51,7 @@ function Microphone() {
 
                         // Play the bomb sound the first time user clicks.
                         // This is just so the bomb sound works in game.
+                        self.bombSound.volume = 0.3; // Set volume to 30%.
                         self.bombSound.play();
                         self.bombSound.pause();
                         self.bombSound.currentTime = 0;
@@ -59,7 +60,10 @@ function Microphone() {
                         self.whackSound.play();
                         self.whackSound.currentTime = 0;
 
+                        // Set volume of game music to 10%.
+                        self.gameMusic.volume = 0.1;
                         self.gameMusic.play();
+
                     }
                 }
                 //// Make onclick function execute only once.

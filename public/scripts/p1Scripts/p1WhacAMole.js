@@ -283,7 +283,6 @@ function moleHit() {
                     timeMoleStaysHidden = timeMoleStaysHidden >= 100 ? 100 : timeMoleStaysHidden + moleSpeedFactor;
                     timeMoleStaysOut = timeMoleStaysOut > 100 ? 100 : timeMoleStaysOut + moleSpeedFactor;
 
-                    mic.bombSound.volume = 0.3; // Set volume to 30%.
                     mic.bombSound.play();
                     mic.bombSound.currentTime = 0; // Set the sound back to position 0.
                     // Show the speech expression for the BOOM!
@@ -493,7 +492,6 @@ function startScreen() {
         timeLeft = gameTimeLimit; // The time when the game has started. Countdown start time.
 
         // Start playing the game music.
-        mic.gameMusic.volume = 0.1;
         mic.gameMusic.src = '../sounds/project 1/moonBaseMusic.mp3';
     }
 
@@ -507,7 +505,6 @@ function startScreen() {
         timeLeft = gameTimeLimit;
         tutorialMode = true;
         // Start playing the game music.
-        mic.gameMusic.volume = 0.1;
         mic.gameMusic.src = '../sounds/project 1/moonBaseMusic.mp3';
     }
 
