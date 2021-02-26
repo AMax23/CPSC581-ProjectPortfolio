@@ -95,11 +95,6 @@ function setup() {
     hammer = new Hammer(width / 2, height / 2);
     hammer.requestOrientationPermission();
 
-    mic.gameMusic.src = '../sounds/project 1/moonBaseMusic.mp3';
-    mic.bombSound.src = '../sounds/project 1/bombSound.wav';
-    mic.whackSound.src = '../sounds/project 1/whackSound.wav';
-
-
     createHoles();
 }
 

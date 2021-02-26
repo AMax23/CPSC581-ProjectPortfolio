@@ -19,6 +19,10 @@ function Microphone() {
     this.init = function () {
         try {
             this.startMic();
+
+            this.gameMusic.src = '../sounds/project 1/moonBaseMusic.mp3';
+            this.bombSound.src = '../sounds/project 1/bombSound.wav';
+            this.whackSound.src = '../sounds/project 1/whackSound.wav';
         }
         catch (e) {
             console.error(e);
@@ -35,7 +39,6 @@ function Microphone() {
                 // Needed to activate sound on mobile devices the first time (especially ios).
                 // User clicks somewhere on the page (probably the start button and then play a sound)
                 if (!self.audioPermission) {
-                    console.log('soundddd');
                     document.getElementById('body').onclick = function () {
                         self.audioPermission = true;
                         // These sounds need to play the first time, but im just gonna stop them immediately
@@ -60,10 +63,10 @@ function Microphone() {
                         self.whackSound.play();
                         //self.whackSound.currentTime = 0;
                     }
-                } else {
-                    console.log('no more sound');
-                    document.getElementById('body').onclick = () => false
                 }
+                // Make onclick function execute only once.
+                document.getElementById('body').onclick = () => false
+
                 self.beginRecording();
             })
         //.catch(function (err) {
@@ -72,10 +75,6 @@ function Microphone() {
     }
 
     this.beginRecording = function () {
-
-        // Make onclick function execute only once.
-        document.getElementById('body').onclick = () => false
-
         // The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page.
         // This is to fix the error on Chrome browsers.
         self.audioContext.resume();
