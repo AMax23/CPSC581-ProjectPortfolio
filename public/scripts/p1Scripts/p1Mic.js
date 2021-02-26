@@ -8,7 +8,7 @@ function Microphone() {
     this.constraints = { audio: true };
     this.whackSound = new Audio('../sounds/project 1/whackSound.wav');
     this.bombSound = new Audio('../sounds/project 1/bombSound.wav');
-    this.gameMusic = new Audio('../sounds/project 1/moonBaseMusic.mp3'); // https://www.youtube.com/watch?v=uWILfcPIyto&fbclid=IwAR13OYCpYjieiZ3pHg3sKrgqcgQgVN2pobLrWhukrbnMLVkXNkpRAGn1fiA
+    this.gameMusic = new Audio(''); //new Audio('../sounds/project 1/moonBaseMusic.mp3'); // https://www.youtube.com/watch?v=uWILfcPIyto&fbclid=IwAR13OYCpYjieiZ3pHg3sKrgqcgQgVN2pobLrWhukrbnMLVkXNkpRAGn1fiA
     this.audioPermission = false;
 
     this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -34,34 +34,39 @@ function Microphone() {
                 //self.analyser.connect(self.audioContext.destination); // Output mic input to device speakers. Testing.
                 // Needed to activate sound on mobile devices the first time (especially ios).
                 // User clicks somewhere on the page (probably the start button and then play a sound)
-                if (!self.audioPermission) {
-                    document.getElementById('body').onclick = function () {
-                        self.audioPermission = true;
-                        // These sounds need to play the first time, but im just gonna stop them immediately
-                        // so no one knows whats really happening! Stop me if you can.
+                //if (!self.audioPermission) {
+                document.getElementById('body').onclick = function () {
+                    //self.audioPermission = true;
+                    // These sounds need to play the first time, but im just gonna stop them immediately
+                    // so no one knows whats really happening! Stop me if you can.
 
 
 
-                        //self.gameMusic.volume = 1;
-                        self.gameMusic.play();
-                        // Stop music.
-                        //self.gameMusic.volume = 1;
-                        //self.gameMusic.pause();
-                        //self.gameMusic.currentTime = 0;
+                    //self.gameMusic.volume = 1;
+                    //self.gameMusic.position = 50; 
+                    self.gameMusic.play();
+                    // Stop music.
+                    //self.gameMusic.volume = 1;
+                    //self.gameMusic.pause();
+                    //self.gameMusic.currentTime = 0;
 
-                        // Play the bomb sound the first time user clicks.
-                        // This is just so the bomb sound works in game.
-                        self.bombSound.play();
-                        //self.bombSound.pause();
-                        //self.bombSound.currentTime = 0;
+                    // Play the bomb sound the first time user clicks.
+                    // This is just so the bomb sound works in game.
+                    self.bombSound.play();
+                    self.bombSound.pause();
+                    self.bombSound.currentTime = 0;
 
-                        // This sound can play fully.
-                        self.whackSound.play();
-                        //self.whackSound.currentTime = 0;
-                    }
+                    // This sound can play fully.
+                    self.whackSound.play();
+                    self.whackSound.currentTime = 0;
+                    //}
                 }
-                // Make onclick function execute only once.
-                document.getElementById('body').onclick = () => false
+                //// Make onclick function execute only once.
+                //document.getElementById('body').onclick = () => false
+
+                //self.gameMusic.pause();
+                //self.gameMusic.currentTime = 0;
+                //self.gameMusic.src = '../sounds/project 1/moonBaseMusic.mp3';
 
                 self.beginRecording();
             })

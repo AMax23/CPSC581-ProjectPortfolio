@@ -368,8 +368,7 @@ function resetGame() {
     nextInsMsg = 0;
     tutorialMode = false;
     moleSize = 'small';
-    mic.gameMusic.pause();
-    mic.gameMusic.position = 0;
+    mic.gameMusic.src = '';
     createHoles();
 }
 
@@ -495,7 +494,7 @@ function startScreen() {
 
         // Start playing the game music.
         mic.gameMusic.volume = 0.3;
-        mic.gameMusic.play();
+        mic.gameMusic.src = '../sounds/project 1/moonBaseMusic.mp3';
     }
 
     // If the instructions button is clicked.
@@ -509,7 +508,7 @@ function startScreen() {
         tutorialMode = true;
         // Start playing the game music.
         mic.gameMusic.volume = 0.3;
-        mic.gameMusic.play();
+        mic.gameMusic.src = '../sounds/project 1/moonBaseMusic.mp3';
     }
 
     // If the high scores button is clicked.
