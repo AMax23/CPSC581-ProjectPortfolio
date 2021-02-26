@@ -6,9 +6,9 @@ function Microphone() {
     this.freqBin = 0;
     this.FFT_SIZE = 1024; // Power of 2, between 32 and max unsigned integer
     this.constraints = { audio: true };
-    this.whackSound = new Audio();// new Audio('../sounds/project 1/whackSound.wav');
-    this.bombSound = new Audio();// new Audio('../sounds/project 1/bombSound.wav');
-    this.gameMusic = new Audio(); //new Audio('../sounds/project 1/moonBaseMusic.mp3'); // https://www.youtube.com/watch?v=uWILfcPIyto&fbclid=IwAR13OYCpYjieiZ3pHg3sKrgqcgQgVN2pobLrWhukrbnMLVkXNkpRAGn1fiA
+    this.whackSound = new Audio('../sounds/project 1/whackSound.wav');
+    this.bombSound = new Audio('../sounds/project 1/bombSound.wav');
+    this.gameMusic = new Audio('../sounds/project 1/moonBaseMusic.mp3'); // https://www.youtube.com/watch?v=uWILfcPIyto&fbclid=IwAR13OYCpYjieiZ3pHg3sKrgqcgQgVN2pobLrWhukrbnMLVkXNkpRAGn1fiA
     this.audioPermission = false;
 
     this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -19,10 +19,6 @@ function Microphone() {
     this.init = function () {
         try {
             this.startMic();
-
-            this.gameMusic.src = '../sounds/project 1/moonBaseMusic.mp3';
-            this.bombSound.src = '../sounds/project 1/bombSound.wav';
-            this.whackSound.src = '../sounds/project 1/whackSound.wav';
         }
         catch (e) {
             console.error(e);
