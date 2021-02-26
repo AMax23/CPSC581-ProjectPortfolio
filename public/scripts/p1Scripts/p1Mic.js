@@ -37,13 +37,15 @@ function Microphone() {
                 document.getElementById('body').onclick = function () {
                     if (!self.audioPermission) {
                         self.audioPermission = true;
-                        self.whackSound.play();
-                        self.whackSound.currentTime = 0;
+
                         // Play the bomb sound the first time user clicks.
                         // This is just so the bomb sound works in game.
                         self.bombSound.volume = 0;
                         self.bombSound.play();
                         self.bombSound.currentTime = 0;
+
+                        self.whackSound.play();
+                        self.whackSound.currentTime = 0;
                     }
                 }
                 self.beginRecording();
