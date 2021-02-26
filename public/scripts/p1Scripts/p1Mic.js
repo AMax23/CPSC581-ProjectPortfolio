@@ -8,7 +8,7 @@ function Microphone() {
     this.constraints = { audio: true };
     this.whackSound = new Audio('../sounds/project 1/whackSound.wav');
     this.bombSound = new Audio('../sounds/project 1/bombSound.wav');
-    this.gameMusic = new Audio('../sounds/project 1/moonBaseMusic.mp3');
+    this.gameMusic = new Audio('../sounds/project 1/moonBaseMusic.mp3'); // https://www.youtube.com/watch?v=uWILfcPIyto&fbclid=IwAR13OYCpYjieiZ3pHg3sKrgqcgQgVN2pobLrWhukrbnMLVkXNkpRAGn1fiA
     this.audioPermission = false;
 
     this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -37,17 +37,20 @@ function Microphone() {
                 document.getElementById('body').onclick = function () {
                     if (!self.audioPermission) {
                         self.audioPermission = true;
-                        // These sounds need to play the first time, but im just gonna mute them
+                        // These sounds need to play the first time, but im just gonna stop them immediately
                         // so no one knows whats really happening! Stop me if you can.
                         self.gameMusic.play();
-                        self.gameMusic.volume = 0;
+                        // Stop music.
+                        self.gameMusic.pause();
+                        self.gameMusic.currentTime = 0;
 
                         // Play the bomb sound the first time user clicks.
                         // This is just so the bomb sound works in game.
                         self.bombSound.play();
-                        self.bombSound.volume = 0;
+                        self.bombSound.pause();
                         self.bombSound.currentTime = 0;
 
+                        // This sound can play fully.
                         self.whackSound.play();
                         self.whackSound.currentTime = 0;
                     }
