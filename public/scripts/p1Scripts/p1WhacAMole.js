@@ -367,7 +367,7 @@ function resetGame() {
     nextInsMsg = 0;
     tutorialMode = false;
     moleSize = 'small';
-    mic.gameMusic.src = '';
+    //mic.gameMusic.src = '';
     createHoles();
 }
 
@@ -492,7 +492,7 @@ function startScreen() {
         timeLeft = gameTimeLimit; // The time when the game has started. Countdown start time.
 
         // Start playing the game music.
-        mic.gameMusic.src = '../sounds/project 1/moonBaseMusic.mp3';
+        //mic.gameMusic.src = '../sounds/project 1/moonBaseMusic.mp3';
     }
 
     // If the instructions button is clicked.
@@ -505,7 +505,7 @@ function startScreen() {
         timeLeft = gameTimeLimit;
         tutorialMode = true;
         // Start playing the game music.
-        mic.gameMusic.src = '../sounds/project 1/moonBaseMusic.mp3';
+        //mic.gameMusic.src = '../sounds/project 1/moonBaseMusic.mp3';
     }
 
     // If the high scores button is clicked.

@@ -8,7 +8,7 @@ function Microphone() {
     this.constraints = { audio: true };
     this.whackSound = new Audio('../sounds/project 1/whackSound.wav');
     this.bombSound = new Audio('../sounds/project 1/bombSound.wav');
-    this.gameMusic = new Audio(''); //new Audio('../sounds/project 1/moonBaseMusic.mp3'); // https://www.youtube.com/watch?v=uWILfcPIyto&fbclid=IwAR13OYCpYjieiZ3pHg3sKrgqcgQgVN2pobLrWhukrbnMLVkXNkpRAGn1fiA
+    //this.gameMusic = new Audio(''); //new Audio('../sounds/project 1/moonBaseMusic.mp3'); // https://www.youtube.com/watch?v=uWILfcPIyto&fbclid=IwAR13OYCpYjieiZ3pHg3sKrgqcgQgVN2pobLrWhukrbnMLVkXNkpRAGn1fiA
     this.audioPermission = false;
 
     this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -60,9 +60,9 @@ function Microphone() {
                         self.whackSound.play();
                         self.whackSound.currentTime = 0;
 
-                        // Set volume of game music to 10%.
-                        self.gameMusic.volume = 0.1;
-                        self.gameMusic.play();
+                        //// Set volume of game music to 10%.
+                        //self.gameMusic.volume = 0.05;
+                        //self.gameMusic.play(); // This acutally gives an error if you click the body
 
                     }
                 }
