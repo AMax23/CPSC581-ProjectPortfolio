@@ -34,32 +34,31 @@ function Microphone() {
                 //self.analyser.connect(self.audioContext.destination); // Output mic input to device speakers. Testing.
                 // Needed to activate sound on mobile devices the first time (especially ios).
                 // User clicks somewhere on the page (probably the start button and then play a sound)
-                //if (!self.audioPermission) {
                 document.getElementById('body').onclick = function () {
-                    //self.audioPermission = true;
-                    // These sounds need to play the first time, but im just gonna stop them immediately
-                    // so no one knows whats really happening! Stop me if you can.
+                    if (!self.audioPermission) {
 
+                        self.audioPermission = true;
+                        // These sounds need to play the first time, but im just gonna stop them immediately
+                        // so no one knows whats really happening! Stop me if you can.
 
+                        //self.gameMusic.volume = 1;
+                        //self.gameMusic.position = 50; 
+                        self.gameMusic.play();
+                        // Stop music.
+                        //self.gameMusic.volume = 1;
+                        //self.gameMusic.pause();
+                        //self.gameMusic.currentTime = 0;
 
-                    //self.gameMusic.volume = 1;
-                    //self.gameMusic.position = 50; 
-                    self.gameMusic.play();
-                    // Stop music.
-                    //self.gameMusic.volume = 1;
-                    //self.gameMusic.pause();
-                    //self.gameMusic.currentTime = 0;
+                        // Play the bomb sound the first time user clicks.
+                        // This is just so the bomb sound works in game.
+                        self.bombSound.play();
+                        self.bombSound.pause();
+                        self.bombSound.currentTime = 0;
 
-                    // Play the bomb sound the first time user clicks.
-                    // This is just so the bomb sound works in game.
-                    self.bombSound.play();
-                    self.bombSound.pause();
-                    self.bombSound.currentTime = 0;
-
-                    // This sound can play fully.
-                    self.whackSound.play();
-                    self.whackSound.currentTime = 0;
-                    //}
+                        // This sound can play fully.
+                        self.whackSound.play();
+                        self.whackSound.currentTime = 0;
+                    }
                 }
                 //// Make onclick function execute only once.
                 //document.getElementById('body').onclick = () => false
