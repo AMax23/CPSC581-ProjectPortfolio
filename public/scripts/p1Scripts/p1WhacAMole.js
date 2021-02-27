@@ -41,6 +41,7 @@ let instructions = ['TILT/ROTATE YOUR DEVICE \nTO MOVE HAMMER', 'TO HIT THE MOLE
     'TIME LEFT IS THE TOP BAR \n YOU WILL HAVE 60 SECONDS', 'TOP LEFT IS YOUR SCORE', 'GO BACK TO START MENU \n WHEN YOU ARE READY'];
 
 let score = 0;
+let hits = 0; // Similar to score but when you hit a bomb score will decrease. This is to ensure accuracy is accurate :).
 let molesMissed = 0;
 let accuracy; // accuracy = score / (score + molesMissed)
 let timeLeft = 0; // The start time of the program. Used to get the time remaining.
@@ -266,6 +267,7 @@ function moleHit() {
                     //console.log('You hit mole ' + i);
                     // If player hits a big mole that deserves an extra point.
                     score = moles[i].moleSize == 'small' ? score + pointsForHit : score + (pointsForHit * 2);
+                    hits++; // Mole hit counter increases by 1.
                     // After each mole hit, the moles come out faster and go back in fast too!
                     timeMoleStaysHidden = timeMoleStaysHidden > minMoleHideTime ? timeMoleStaysHidden - moleSpeedFactor : minMoleHideTime;
                     timeMoleStaysOut = timeMoleStaysOut > minMoleOutTime ? timeMoleStaysOut - moleSpeedFactor : minMoleOutTime;
@@ -537,7 +539,7 @@ function gameOver() {
     fill(255);
     textSize(20);
     textAlign(CENTER);
-    accuracy = (score != 0) ? (score / (score + (molesMissed * 100)) * 100).toFixed(0) : 0;
+    accuracy = (hits != 0) ? (hits / (hits + (molesMissed)) * 100).toFixed(0) : 0;
     text('Your score is ' + score
         + '\n Missed = ' + (molesMissed)
         + '\n Accuracy = ' + accuracy + '%'
