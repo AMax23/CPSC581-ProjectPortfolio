@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Project 2</title>
+
+    <!-- Custom Additional CSS -->
+    <link href="../stylesheets/p2Style.css" rel="stylesheet" />
+</head>
+<body>
+
+    <div>
+        <input placeholder="Enter username..." type="text" id="usernameInput" />
+        <br>
+        <button onclick="joinCall()">Join Call</button>
+    </div>
+
+    <div id="videoCallDiv">
+        <video muted id="localVideo" autoplay></video>
+        <video id="remoteVideo" autoplay></video>
+        <div class="callButtonsDiv">
+            <button onclick="muteVideo()">Mute Video</button>
+            <button onclick="muteAudio()">Mute Audio</button>
+        </div>
+    </div>
+
+    <!--Additional Scripts-->
+    <script src="../scripts/p2Scripts/receiver.js"></script>
+
+</body>
+</html>
