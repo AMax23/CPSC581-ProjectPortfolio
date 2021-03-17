@@ -30,3 +30,9 @@ $("#det-p1").on("click", e => {
 $("#src-p1").on("click", e => {
     window.location.href = "https://github.com/AMax23/CPSC581-ProjectPortfolio";
 });
+
+//////////////////////////////////////////////////////////////////////
+// P2 go page
+$("#go-p2").on("click", e => {
+    window.location.assign(`${URL}/pages/p2.html`);
+});
