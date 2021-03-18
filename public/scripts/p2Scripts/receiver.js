@@ -72,8 +72,7 @@ function joinCall() {
     //// Make the video call div visible.
     //document.getElementById("videoCallDiv").style.display = "inline";
 
-    // Video stream from the device.
-    navigator.getUserMedia({
+    let constraints = {
         video: {
             frameRate: 24,
             width: {
@@ -82,7 +81,11 @@ function joinCall() {
             aspectRatio: 1.33333
         },
         audio: true
-    }, (stream) => {
+    }
+
+    // Video stream from the device.
+    navigator.mediaDevices.getUserMedia(constraints)
+        .then(function (stream) {
         // Show the stream in the local video element.
         localVideoStream = stream;
         document.getElementById("localVideo").srcObject = localVideoStream;
