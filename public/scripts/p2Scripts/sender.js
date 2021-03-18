@@ -50,8 +50,8 @@ function sendData(data) {
 }
 
 function startCall() {
-    // Make the video call div visible.
-    document.getElementById("videoCallDiv").style.display = "inline";
+    //// Make the video call div visible.
+    //document.getElementById("videoCallDiv").style.display = "inline";
 
     // Video stream from the device.
     navigator.getUserMedia({

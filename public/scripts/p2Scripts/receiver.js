@@ -55,8 +55,8 @@ function joinCall() {
     // Once the join call button is clicked, get the username from the input box.
     //personToCall = document.getElementById('usernameInput').value;
 
-    // Make the video call div visible.
-    document.getElementById("videoCallDiv").style.display = "inline";
+    //// Make the video call div visible.
+    //document.getElementById("videoCallDiv").style.display = "inline";
 
     // Video stream from the device.
     navigator.getUserMedia({
