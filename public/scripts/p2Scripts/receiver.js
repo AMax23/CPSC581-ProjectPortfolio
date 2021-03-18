@@ -8,12 +8,14 @@ var webSocket = new WebSocket(HOST);
 let localVideoStream;
 let peerConnection;
 let personToCall = 'oma/opa'; // Name of the person to call. Hardcoding ito oma/opa because Rhys will only call them.
+var username = "Rhys";
 
 let audioOn = true;
 let videoOn = true;
 
 // onopen function waits for the websocket connection to establish before sending message.
 webSocket.onopen = () => {
+    sendUsername();
     joinCall();
 }
 
@@ -30,7 +32,19 @@ function handleSignallingData(data) {
             break;
         case "candidate":
             peerConnection.addIceCandidate(data.candidate);
+            break;
+        case "mouseClient":
+            newDrawing(data);
     };
+}
+
+// Send the username to the socket server so the server can store it.
+function sendUsername() {
+    var data = {
+        username: username,
+        type: "storeUser"
+    };
+    webSocket.send(JSON.stringify(data));
 }
 
 function createAndSendAnswer() {

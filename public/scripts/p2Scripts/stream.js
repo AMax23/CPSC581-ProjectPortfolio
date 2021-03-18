@@ -1,4 +1,4 @@
-let users = []; // Store all connected users.
+let users = []; // Store all connected users (sender).
 
 const stream = (socket) => {
 
@@ -47,6 +47,20 @@ const stream = (socket) => {
                     candidate: candidate
                 }, socket);
             })
+        } else if (data.type == 'mouseDrag' && user != null) {
+            //console.log(data.x + ', ' + data.y);
+            let clientData = {
+                type: "mouseClient",
+                x: data.x,
+                y: data.y
+            };
+
+            // Goes through all the users (should be only 2), and whoever drew sends it to the other client.
+            for (let i = 0; i < users.length; i++) {
+                if (users[i].username != user.username) {
+                    users[i].conn.send(JSON.stringify(clientData));
+                }
+            }
         }
     }
 
@@ -69,7 +83,11 @@ const stream = (socket) => {
 
     function findUser(username) {
         console.log('Find username');
+        console.log('---------------------------------------------------------------');
+        console.log('---------------------------------------------------------------');
         for (let i = 0; i < users.length; i++) {
+            console.log('looking for: ' + username + ' found user = ' + users[i].username);
+
             if (users[i].username == username)
                 return users[i];
         }
