@@ -7,10 +7,15 @@ var webSocket = new WebSocket(HOST);
 
 let localVideoStream;
 let peerConnection;
-let personToCall; // Name of the person to call.
+let personToCall = 'oma/opa'; // Name of the person to call. Hardcoding ito oma/opa because Rhys will only call them.
 
 let audioOn = true;
 let videoOn = true;
+
+// onopen function waits for the websocket connection to establish before sending message.
+webSocket.onopen = () => {
+    joinCall();
+}
 
 // When there is a message from the server to the websocket:
 webSocket.onmessage = (event) => {
@@ -48,7 +53,7 @@ function sendData(data) {
 
 function joinCall() {
     // Once the join call button is clicked, get the username from the input box.
-    personToCall = document.getElementById('usernameInput').value;
+    //personToCall = document.getElementById('usernameInput').value;
 
     // Make the video call div visible.
     document.getElementById("videoCallDiv").style.display = "inline";

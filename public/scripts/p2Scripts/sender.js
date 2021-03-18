@@ -5,13 +5,19 @@
 var HOST = location.origin.replace(/^http/, 'ws'); // WebSocket requests use the WS protocol, not the HTTP protocol.
 var webSocket = new WebSocket(HOST);
 
-let username;
+let username = 'oma/opa'; // Hardcoding this because this app is meant to only be used by 2 parties. Assuming oma/opa will start the call.
 
 let localVideoStream;
 let peerConnection;
 
 let audioOn = true;
 let videoOn = true;
+
+// onopen function waits for the websocket connection to establish before sending message.
+webSocket.onopen = () => {
+    sendUsername(username);
+    startCall();
+}
 
 // When there is a message from the server to the websocket:
 webSocket.onmessage = (event) => {
@@ -31,7 +37,7 @@ function handleSignallingData(data) {
 
 // Send the username to the socket server so the server can store it.
 function sendUsername() {
-    username = document.getElementById("usernameInput").value;
+    //username = document.getElementById("usernameInput").value;
     sendData({
         type: "storeUser"
     });
@@ -40,7 +46,7 @@ function sendUsername() {
 // Send object to server.
 function sendData(data) {
     data.username = username;
-    webSocket.send(JSON.stringify(data));
+    webSocket.send(JSON.stringify(data))
 }
 
 function startCall() {
