@@ -86,50 +86,51 @@ function joinCall() {
     // Video stream from the device.
     navigator.mediaDevices.getUserMedia(constraints)
         .then(function (stream) {
-        // Show the stream in the local video element.
-        localVideoStream = stream;
-        document.getElementById("localVideo").srcObject = localVideoStream;
+            // Show the stream in the local video element.
+            localVideoStream = stream;
+            document.getElementById("localVideo").srcObject = localVideoStream;
 
-        // Config for peer connection.
-        // STUN server and TURN servers that it will use to create the ICE candidates and to connect to the peer.
-        let configuration = {
-            iceServers: [
-                {
-                    "urls": ["stun:stun.l.google.com:19302", "stun:stun1.l.google.com:19302", "stun:stun2.l.google.com:19302"]
-                }
-            ]
-        };
+            // Config for peer connection.
+            // STUN server and TURN servers that it will use to create the ICE candidates and to connect to the peer.
+            let configuration = {
+                iceServers: [
+                    {
+                        "urls": ["stun:stun.l.google.com:19302", "stun:stun1.l.google.com:19302", "stun:stun2.l.google.com:19302"]
+                    }
+                ]
+            };
 
-        // Create a peer connection and attach the local stream to it.
-        // When some other peer connects to our peer, then our stream will be available to them.
-        peerConnection = new RTCPeerConnection(configuration);
-        peerConnection.addStream(localVideoStream);
+            // Create a peer connection and attach the local stream to it.
+            // When some other peer connects to our peer, then our stream will be available to them.
+            peerConnection = new RTCPeerConnection(configuration);
+            //peerConnection.addStream(localVideoStream);
+            localVideoStream.getTracks().forEach(track => peerConnection.addTrack(track, localVideoStream));
 
-        // When our peer connection connects with someone else, then a callback function is called:
-        peerConnection.onaddstream = (e) => {
-            document.getElementById("remoteVideo").srcObject = e.stream;
-        };
+            // When our peer connection connects with someone else, then a callback function is called:
+            peerConnection.onaddstream = (e) => {
+                document.getElementById("remoteVideo").srcObject = e.stream;
+            };
 
-        // As soon as the offer gets created.
-        // Those candidates need to be sent to the server and the server will send that candidate to the person connection to us.
-        peerConnection.onicecandidate = ((e) => {
-            if (e.candidate == null)
-                return;
-            // Send our offer and candidates to the other client.
+            // As soon as the offer gets created.
+            // Those candidates need to be sent to the server and the server will send that candidate to the person connection to us.
+            peerConnection.onicecandidate = ((e) => {
+                if (e.candidate == null)
+                    return;
+                // Send our offer and candidates to the other client.
+                sendData({
+                    type: "sendCandidate",
+                    candidate: e.candidate
+                });
+            })
+
+            // Send the username to the server and connect the call with that person.
             sendData({
-                type: "sendCandidate",
-                candidate: e.candidate
+                type: "joinCall",
             });
+
+        }, (error) => {
+            console.log(error);
         })
-
-        // Send the username to the server and connect the call with that person.
-        sendData({
-            type: "joinCall",
-        });
-
-    }, (error) => {
-        console.log(error);
-    })
 }
 
 

@@ -71,47 +71,48 @@ function startCall() {
     // Video stream from the device.
     navigator.mediaDevices.getUserMedia(constraints)
         .then(function (stream) {
-        // Show the stream in the local video element.
-        localVideoStream = stream;
-        document.getElementById("localVideo").srcObject = localVideoStream;
+            // Show the stream in the local video element.
+            localVideoStream = stream;
+            document.getElementById("localVideo").srcObject = localVideoStream;
 
-        // Configuration for peer connection.
-        // STUN server and TURN servers that it will use to create the ICE candidates and to connect to the peer.
-        let configuration = {
-            iceServers: [
-                {
-                    "urls": ["stun:stun.l.google.com:19302", "stun:stun1.l.google.com:19302", "stun:stun2.l.google.com:19302"]
-                }
-            ]
-        };
+            // Configuration for peer connection.
+            // STUN server and TURN servers that it will use to create the ICE candidates and to connect to the peer.
+            let configuration = {
+                iceServers: [
+                    {
+                        "urls": ["stun:stun.l.google.com:19302", "stun:stun1.l.google.com:19302", "stun:stun2.l.google.com:19302"]
+                    }
+                ]
+            };
 
-        // Create a peer connection and attach the local stream to it.
-        // When some other peer connects to our peer, then our stream will be available to them.
-        peerConnection = new RTCPeerConnection(configuration);
-        peerConnection.addStream(localVideoStream);
+            // Create a peer connection and attach the local stream to it.
+            // When some other peer connects to our peer, then our stream will be available to them.
+            peerConnection = new RTCPeerConnection(configuration);
+            //peerConnection.addStream(localVideoStream);
+            localVideoStream.getTracks().forEach(track => peerConnection.addTrack(track, localVideoStream));
 
-        // When the peer connection connects with someone else, then a callback function is called:
-        peerConnection.onaddstream = (e) => {
-            document.getElementById("remoteVideo").srcObject = e.stream;
-        };
+            // When the peer connection connects with someone else, then a callback function is called:
+            peerConnection.onaddstream = (e) => {
+                document.getElementById("remoteVideo").srcObject = e.stream;
+            };
 
-        // As soon as the offer gets created.
-        // Those candidates need to be sent to the server and the server will send that candidate to the person connection to us.
-        peerConnection.onicecandidate = ((e) => {
-            if (e.candidate == null)
-                return;
-            // Send our offer and candidates to the other client.
-            sendData({
-                type: "storeCandidate",
-                candidate: e.candidate
-            });
+            // As soon as the offer gets created.
+            // Those candidates need to be sent to the server and the server will send that candidate to the person connection to us.
+            peerConnection.onicecandidate = ((e) => {
+                if (e.candidate == null)
+                    return;
+                // Send our offer and candidates to the other client.
+                sendData({
+                    type: "storeCandidate",
+                    candidate: e.candidate
+                });
+            })
+
+            // Create and send our offer.
+            createAndSendOffer();
+        }, (error) => {
+            console.log(error);
         })
-
-        // Create and send our offer.
-        createAndSendOffer();
-    }, (error) => {
-        console.log(error);
-    })
 }
 
 /* Create and send our offer. This offer is stored on the socket server.
