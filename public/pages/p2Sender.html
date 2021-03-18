@@ -17,13 +17,21 @@
         <button onclick="startCall()">Start Call</button>
     </div>-->
 
-    <div id="videoCallDiv">
-        <video muted id="localVideo" autoplay></video>
-        <video id="remoteVideo" autoplay></video>
-        <div class="callButtonsDiv">
-            <button onclick="muteVideo()">Mute Video</button>
-            <button onclick="muteAudio()">Mute Audio</button>
+    <div class="mainContainer">
+
+        <div id="videoCallDiv">
+            <video id="remoteVideo" autoplay></video>
+            <video muted id="localVideo" autoplay></video>
+            <div class="callButtonsDiv">
+                <button onclick="muteVideo()">Mute Video</button>
+                <button onclick="muteAudio()">Mute Audio</button>
+            </div>
         </div>
+
+        <div class="drawingCanvas">
+            What Oma/Opa see
+        </div>
+
     </div>
 
     <!--Additional Scripts-->
