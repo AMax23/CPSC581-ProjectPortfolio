@@ -4,108 +4,66 @@ const stream = (socket) => {
 
     console.log('Client connected');
 
-    //console.log(socket);
-
     socket.onmessage = (message) => {
         var data = JSON.parse(message.data); // String data.
         var user = findUser(data.username);
 
         console.log('on Message');
 
-        // Add a type field for every message coming from the client.
-        switch (data.type) {
-            case "storeUser":
-                if (user != null) {
-                    return
-                }
-                const newUser = {
-                    conn: socket,
-                    username: data.username
-                };
-                users.push(newUser);
-                console.log(newUser.username + ' connected');
-                break;
-            case "storeOffer":
-                if (user == null) {
-                    return;
-                }
-                user.offer = data.offer;
-                break;
+        if (data.type == 'storeUser' && user == null) {
+            // Add a type field for every message coming from the client.
+            const newUser = {
+                conn: socket,
+                username: data.username
+            };
+            users.push(newUser);
+            console.log(newUser.username + ' connected');
+        } else if (data.type == 'storeOffer' && user != null) {
+            user.offer = data.offer;
+        } else if (data.type == 'storeCandidate' && user != null && user.candidates == null) {
+            user.candidates = [];
+            user.candidates.push(data.candidate);
+        } else if (data.type == 'sendAnswer' && user != null) {
+            console.log('Receiver send answer');
+            sendData({
+                type: "answer",
+                answer: data.answer
+            }, user.conn);
+        } else if (data.type == 'sendCandidate' && user != null) {
+            sendData({
+                type: "candidate",
+                candidate: data.candidate
+            }, user.conn);
+        } else if (data.type == 'joinCall' && user != null) {
+            console.log('Matata');
+            sendData({
+                type: "offer",
+                offer: user.offer
+            }, socket);
 
-            case "storeCandidate":
-                if (user == null) {
-                    return;
-                }
-                if (user.candidates == null)
-                    user.candidates = [];
-
-                user.candidates.push(data.candidate);
-                break;
-            case "sendAnswer":
-                if (user == null) {
-                    return;
-                }
-
-                console.log('Receiver send answer');
-                sendData({
-                    type: "answer",
-                    answer: data.answer
-                }, user.conn);
-                break;
-            case "sendCandidate":
-                if (user == null) {
-                    return;
-                }
+            user.candidates.forEach(candidate => {
                 sendData({
                     type: "candidate",
-                    candidate: data.candidate
-                }, user.conn);
-                break;
-            case "joinCall":
-                if (user == null) {
-                    return;
-                }
-                console.log('Matata');
-
-                sendData({
-                    type: "offer",
-                    offer: user.offer
+                    candidate: candidate
                 }, socket);
-
-                user.candidates.forEach(candidate => {
-                    sendData({
-                        type: "candidate",
-                        candidate: candidate
-                    }, socket);
-                })
-                break;
+            })
         }
     }
 
     // When the user disconnects, delete the user and clean up connection.
-    socket.on('close', function () {
-        console.log('Client disconnected');
-        if (socket.name) {
-            delete users[socket.name];
-
-            if (socket.otherName) {
-                console.log("Disconnecting from ", socket.otherName);
-                var conn = users[socket.otherName];
-                conn.otherName = null;
-
-                if (conn != null) {
-                    sendData({
-                        type: "leave"
-                    }, conn);
-                }
+    socket.on('close', () => {
+        users.forEach(user => {
+            if (user.conn == socket) {
+                console.log('Client disconnected: ' + user.username);
+                users.splice(users.indexOf(user), 1);
+                return;
             }
-        }
-    });
+        })
+    })
 
     // Helper function for sending messages to a connection.
     function sendData(data, connection) {
         console.log('Send data');
-        //console.log(connection);
         connection.send(JSON.stringify(data));
     }
 
