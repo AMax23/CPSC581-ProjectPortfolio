@@ -41,12 +41,14 @@ const stream = (socket) => {
                 offer: user.offer
             }, socket);
 
-            user.candidates.forEach(candidate => {
-                sendData({
-                    type: "candidate",
-                    candidate: candidate
-                }, socket);
-            })
+            if (user.candidates) {
+                user.candidates.forEach(candidate => {
+                    sendData({
+                        type: "candidate",
+                        candidate: candidate
+                    }, socket);
+                })
+            }
         } else if (data.type == 'mouseDrag' && user != null) {
             //console.log(data.x + ', ' + data.y);
             let clientData = {
@@ -54,6 +56,27 @@ const stream = (socket) => {
                 x: data.x,
                 y: data.y
             };
+
+            // Goes through all the users (should be only 2), and whoever drew sends it to the other client.
+            for (let i = 0; i < users.length; i++) {
+                if (users[i].username != user.username) {
+                    users[i].conn.send(JSON.stringify(clientData));
+                }
+            }
+        } else if (data.type == 'toServer' && user != null) {
+            console.log(data.x + ', ' + data.y);
+            //let clientData = {
+            //    type: "toClient",
+            //    //x: data.x,
+            //    //y: data.y
+            //    boxesPos: data.boxesPos,
+            //    boxesAng: data.boxesAng,
+            //    canvas: canvas
+
+            //};
+
+            let clientData = data;
+            clientData.type = "toClient";
 
             // Goes through all the users (should be only 2), and whoever drew sends it to the other client.
             for (let i = 0; i < users.length; i++) {

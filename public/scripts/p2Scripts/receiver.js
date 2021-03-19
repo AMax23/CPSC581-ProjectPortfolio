@@ -35,6 +35,10 @@ function handleSignallingData(data) {
             break;
         case "mouseClient":
             newDrawing(data);
+            break;
+        case "toClient":
+            drawBox(data);
+            console.log('got something from server');
     };
 }
 
