@@ -2,7 +2,7 @@
 // Resources: https://www.tutorialspoint.com/webrtc/webrtc_video_demo.htm, https://blog.logrocket.com/get-a-basic-chat-application-working-with-webrtc/
 
 // Establish a connection with our signaling server.
-var HOST = location.origin.replace(/^http/, 'ws'); // WebSocket requests use the WS protocol, not the HTTP protocol.
+var HOST = location.origin.replace(/^http/, 'wss'); // WebSocket requests use the WS protocol, not the HTTP protocol.
 var webSocket = new WebSocket(HOST);
 
 let localVideoStream;

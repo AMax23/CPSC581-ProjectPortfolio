@@ -2,7 +2,7 @@
 // Resources: https://www.tutorialspoint.com/webrtc/webrtc_video_demo.htm, https://blog.logrocket.com/get-a-basic-chat-application-working-with-webrtc/
 
 // Establish a connection with our signaling server.
-var HOST = location.origin.replace(/^http/, 'ws'); // WebSocket requests use the WS protocol, not the HTTP protocol.
+var HOST = location.origin.replace(/^http/, 'wss'); // WebSocket requests use the WS protocol, not the HTTP protocol.
 var webSocket = new WebSocket(HOST);
 
 var username = 'oma/opa'; // Hardcoding this because this app is meant to only be used by 2 parties. Assuming oma/opa will start the call.
