@@ -7,6 +7,14 @@ class Box {
         this.body = Bodies.rectangle(x, y, w, h, options);
         this.w = w;
         this.h = h;
+
+        this.r = random(255); // r is a random number between 0 - 255
+        this.g = random(100, 200); // g is a random number betwen 100 - 200
+        this.b = random(100); // b is a random number between 0 - 100
+        this.a = random(200, 255); // a is a random number between 200 - 255
+
+        this.boxColour = color(random(255), random(255), random(255));
+
         World.add(world, this.body);
     }
 
@@ -19,7 +27,7 @@ class Box {
         rectMode(CENTER);
         strokeWeight(1);
         stroke(255);
-        fill(127);
+        fill(this.boxColour);
         rect(0, 0, this.w, this.h);
         pop();
     }
