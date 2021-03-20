@@ -46,6 +46,12 @@ function handleSignallingData(data) {
         case "mouseClient":
             newDrawing(data);
             console.log('receiving a message');
+            break;
+        case "toClient":
+            moveBox(data);
+            break;
+        default:
+            break;
     };
 }
 

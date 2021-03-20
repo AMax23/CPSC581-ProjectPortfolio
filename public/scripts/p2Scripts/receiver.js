@@ -47,8 +47,10 @@ function handleSignallingData(data) {
             newDrawing(data);
             break;
         case "toClient":
-            drawBox(data);
-            console.log('got something from server');
+            moveBox(data);
+            break;
+        default:
+            break;
     };
 }
 
@@ -116,8 +118,6 @@ function joinCall() {
             // When our peer connection connects with someone else, then a callback function is called:
             peerConnection.ontrack = (e) => {
                 document.getElementById("remoteVideo").srcObject = e.streams[0];
-                console.log(e.streams[0]);
-                console.log('Adding remote video');
             };
 
             // As soon as the offer gets created.
