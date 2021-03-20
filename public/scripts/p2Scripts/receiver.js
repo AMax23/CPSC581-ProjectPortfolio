@@ -13,6 +13,23 @@ var username = "Rhys";
 let audioOn = true;
 let videoOn = true;
 
+// Configuration for peer connection.
+// STUN server and TURN servers that it will use to create the ICE candidates and to connect to the peer.
+const peerConnectionConfig = {
+    iceServers: [
+        { urls: "stun:stun.stunprotocol.org:3478" },
+        { urls: "stun:stun.l.google.com:19302" },
+        { urls: "stun:stun1.l.google.com:19302" },
+        { urls: "stun:stun2.l.google.com:19302" },
+        { urls: "stun:stun3.l.google.com:19302" },
+        { urls: "stun:stun4.l.google.com:19302" },
+        { urls: "stun:stun.ekiga.net" },
+        { urls: "stun:stun.fwdnet.net" },
+        { urls: "stun:stun.ideasip.com" },
+        { urls: "stun:stun.iptel.org" },
+    ],
+};
+
 // onopen function waits for the websocket connection to establish before sending message.
 webSocket.onopen = () => {
     sendUsername();
@@ -94,19 +111,9 @@ function joinCall() {
             localVideoStream = stream;
             document.getElementById("localVideo").srcObject = localVideoStream;
 
-            // Config for peer connection.
-            // STUN server and TURN servers that it will use to create the ICE candidates and to connect to the peer.
-            let configuration = {
-                iceServers: [
-                    {
-                        "urls": ["stun:stun.l.google.com:19302", "stun:stun1.l.google.com:19302", "stun:stun2.l.google.com:19302"]
-                    }
-                ]
-            };
-
             // Create a peer connection and attach the local stream to it.
             // When some other peer connects to our peer, then our stream will be available to them.
-            peerConnection = new RTCPeerConnection(configuration);
+            peerConnection = new RTCPeerConnection(peerConnectionConfig);
             //peerConnection.addStream(localVideoStream);
             //localVideoStream.getTracks().forEach(track => peerConnection.addTrack(track, localVideoStream));
             stream.getTracks().forEach(function (track) {
