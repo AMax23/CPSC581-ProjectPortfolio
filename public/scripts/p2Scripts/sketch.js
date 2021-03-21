@@ -22,8 +22,9 @@ let boxB;
 let ball;
 let ground;
 
-const toVertices = e => e.vertices.map(({ x, y }) => ({ x, y }));
-
+var num = 60;
+var x = [];
+var y = [];
 
 ////////////////////////// BASIC P5 SET UP ////////////////////////////////////////
 function preload() {
@@ -57,6 +58,10 @@ function setup() {
     boxes.push(new Box(width / 2, 80, 50, 50));
     boxes.push(new Box(width / 2, 80, 50, 50));
     boxes.push(new Box(width / 2, 80, 50, 50));
+    boxes.push(new Box(width / 2, 80, 50, 50));
+    boxes.push(new Box(width / 2, 80, 50, 50));
+    boxes.push(new Box(width / 2, 80, 50, 50));
+    boxes.push(new Box(width / 2, 80, 50, 50));
 
     ground = Bodies.rectangle(width, height / 2, 10, height, {
         isStatic: true
@@ -76,35 +81,46 @@ function setup() {
     Engine.run(engine);
 
     //console.log(box1);
-}
 
+    noStroke();
+    for (var i = 0; i < num; i++) {
+        x[i] = 0;
+        y[i] = 0;
+    }
+}
 
 
 function draw() {
 
+    //drawMousePos();
+
+    //if (mouseMoved()) {
+    //    console.log('ok');
+    //}
+
     //fill(255, 255, 255);
     //rect(mouseX, mouseY, 100, 300);
 
-    background(0);
+    //background(0);
 
-    for (let ground of grounds) {
-        ground.show();
-    }
+    //for (let ground of grounds) {
+    //    ground.show();
+    //}
 
-    for (let box of boxes) {
-        box.show();
-    }
+    //for (let box of boxes) {
+    //    box.show();
+    //}
 
-    if (mouseConstraint.body) {
-        //console.log('----------------------------------------------------');
-        //console.log(mouseConstraint.body);
-        let boxMoved = mouseConstraint.body.id - 1; // This is the number of the box that was moved. Minus 1 cos array starts at 0.
-        //console.log(engine.world.bodies[boxMoved]);
-        //console.log('----------------------------------------------------');
-        sendBox(boxMoved);
-        //console.log(boxes[0].body.velocity);
-        //console.log(mouseConstraint.body.angularSpeed);
-    }
+    //if (mouseConstraint.body) {
+    //    //console.log('----------------------------------------------------');
+    //    //console.log(mouseConstraint.body);
+    //    //let boxMoved = mouseConstraint.body.id - 1; // This is the number of the box that was moved. Minus 1 cos array starts at 0.
+    //    //console.log(engine.world.bodies[boxMoved]);
+    //    //console.log('----------------------------------------------------');
+    //    sendBox();
+    //    //console.log(boxes[0].body.velocity);
+    //    //console.log(mouseConstraint.body.angularSpeed);
+    //}
 
 
     //noStroke();
@@ -138,29 +154,38 @@ function drawMouse(mouseConstraint) {
     }
 }
 
-function drawVertices(vertices) {
-    beginShape();
-    for (var i = 0; i < vertices.length; i++) {
-        vertex(vertices[i].x, vertices[i].y);
-    }
-    endShape(CLOSE);
-}
+function sendBox() {
 
-function sendBox(boxMoved) {
+    let allBodies = [];
+
+    for (let i = 0; i < engine.world.bodies.length; i++) {
+        let bodiesDate = {
+            position: engine.world.bodies[i].position,
+            angle: engine.world.bodies[i].angle,
+        };
+
+        allBodies.push(bodiesDate);
+    }
 
     let data = {
         type: 'toServer',
         username: username, // username comes from sender.js or receiver.js
-        boxMoved: boxMoved,
-        boxesPos: engine.world.bodies[boxMoved].position,
-        boxesAng: engine.world.bodies[boxMoved].angle,
-        canvas: { width: width, height: height }
+        //boxMoved: boxMoved,
+        //boxesPos: engine.world.bodies[boxMoved].position,
+        //boxesAng: engine.world.bodies[boxMoved].angle,
+        canvas: { width: width, height: height },
+        bodies: allBodies
+
     }
 
     //console.log(box1.position.x, box1.position.y);
     // Send the x and y coords to the server.
     //console.log('sending to server');
-    webSocket.send(JSON.stringify(data));
+
+    //if (webSocket.readyState) {
+        //console.log('here');
+        webSocket.send(JSON.stringify(data));
+    //}
 
     //console.log(data.boxesPos.x, data.boxesPos.y);
     //console.log('Canvas width and height = ' + width, height);
@@ -196,21 +221,24 @@ function sendBox(boxMoved) {
 
 function moveBox(data) {
 
-    let boxMoved = data.boxMoved;
+    //let boxMoved = data.boxMoved;
 
-    if (engine.world.bodies[boxMoved].position != data.boxesPos || engine.world.bodies[boxMoved].angle != data.boxesAng) {
-        //console.log('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<');
-        //console.log(engine.world.bodies[boxMoved].position, data.boxesPos);
-        //console.log('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<');
+    for (let i = 0; i < data.bodies.length; i++) {
 
-        let bodyPosXMapped = map(data.boxesPos.x, 50, data.canvas.width, 0, width - 50);
-        let bodyPosYMapped = map(data.boxesPos.y, 50, data.canvas.height, 0, height - 100);
+        //if (engine.world.bodies[i].position != data.bodies[i].position || engine.world.bodies[i].angle != data.bodies[i].angle) {
+            //console.log('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<');
+            //console.log(engine.world.bodies[boxMoved].position, data.boxesPos);
+            //console.log('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<');
 
-        data.boxesPos.x = bodyPosXMapped;
-        data.boxesPos.y = bodyPosYMapped;
+            let bodyPosXMapped = map(data.bodies[i].position.x, 0, data.canvas.width, 0, width);
+            let bodyPosYMapped = map(data.bodies[i].position.y, 0, data.canvas.height, 0, height);
 
-        engine.world.bodies[boxMoved].position = data.boxesPos;
-        engine.world.bodies[boxMoved].angle = data.boxesAng;
+            data.bodies[i].position.x = bodyPosXMapped;
+            data.bodies[i].position.y = bodyPosYMapped;
+
+            engine.world.bodies[i].position = data.bodies[i].position;
+            engine.world.bodies[i].angle = data.bodies[i].angle;
+        //}
     }
 
     //console.log(data.boxesPos, data.boxesAng);
@@ -219,24 +247,46 @@ function moveBox(data) {
     //console.log(engine.world.bodies[boxMoved]);
 }
 
-//function mouseDragged() {
-//    let data = {
-//        type: 'mouseDrag',
-//        username: username, // username comes from sender.js or receiver.js
-//        x: mouseX,
-//        y: mouseY
-//    }
+function mouseDragged() {
+    let data = {
+        type: 'mouseDrag',
+        username: username, // username comes from sender.js or receiver.js
+        x: mouseX,
+        y: mouseY
+    }
 
-//    // Send the x and y coords to the server.
-//    webSocket.send(JSON.stringify(data));
+    // Send the x and y coords to the server.
+    webSocket.send(JSON.stringify(data));
 
-//    fill(255, 250, 0);
-//    ellipse(mouseX, mouseY, 30, 30);
-//}
+    fill(255, 250, 0);
+    ellipse(mouseX, mouseY, 30, 30);
+}
 
-//function newDrawing(data) {
-//    // Draw the iamge for the receiver. Change the colour of the fill so you can tell who's who.
-//    fill(255, 0, 255);
-//    ellipse(data.x, data.y, 30, 30);
-//    //console.log('New drawing ' + data.x + ', ' + data.y);
-//}
+function newDrawing(data) {
+     //Draw the iamge for the receiver. Change the colour of the fill so you can tell who's who.
+    fill(255, 0, 255);
+    ellipse(data.x, data.y, 30, 30);
+    console.log('New drawing ' + data.x + ', ' + data.y);
+}
+
+function drawMousePos() {
+    background(0);
+
+    //Copy array values from back to front
+    for (var i = num - 1; i > 0; i--) {
+        x[i] = x[i - 1];
+        y[i] = y[i - 1];
+    }
+
+    x[0] = mouseX; //Set the first element
+    y[0] = mouseY; //Set the first element
+
+    for (var i = 0; i < num; i++) {
+        fill(i * 4);
+        ellipse(x[i], y[i], 50, 50);
+    }
+}
+
+function mouseMoved() {
+    console.log('ok');
+}
