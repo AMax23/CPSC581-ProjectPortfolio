@@ -50,6 +50,9 @@ function handleSignallingData(data) {
         case "toClient":
             moveBox(data);
             break;
+        case "UpdateState":
+            drawStuff(data);
+            break;
         default:
             break;
     };

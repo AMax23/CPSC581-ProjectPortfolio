@@ -82,11 +82,11 @@ function setup() {
 
     //console.log(box1);
 
-    noStroke();
-    for (var i = 0; i < num; i++) {
-        x[i] = 0;
-        y[i] = 0;
-    }
+    //noStroke();
+    //for (var i = 0; i < num; i++) {
+    //    x[i] = 0;
+    //    y[i] = 0;
+    //}
 }
 
 
@@ -101,26 +101,26 @@ function draw() {
     //fill(255, 255, 255);
     //rect(mouseX, mouseY, 100, 300);
 
-    //background(0);
+    background(0);
 
     //for (let ground of grounds) {
     //    ground.show();
     //}
 
-    //for (let box of boxes) {
-    //    box.show();
-    //}
+    for (let box of boxes) {
+        box.show();
+    }
 
-    //if (mouseConstraint.body) {
-    //    //console.log('----------------------------------------------------');
-    //    //console.log(mouseConstraint.body);
-    //    //let boxMoved = mouseConstraint.body.id - 1; // This is the number of the box that was moved. Minus 1 cos array starts at 0.
-    //    //console.log(engine.world.bodies[boxMoved]);
-    //    //console.log('----------------------------------------------------');
-    //    sendBox();
-    //    //console.log(boxes[0].body.velocity);
-    //    //console.log(mouseConstraint.body.angularSpeed);
-    //}
+    if (mouseConstraint.body) {
+        //console.log('----------------------------------------------------');
+        //console.log(mouseConstraint.body);
+        //let boxMoved = mouseConstraint.body.id - 1; // This is the number of the box that was moved. Minus 1 cos array starts at 0.
+        //console.log(engine.world.bodies[boxMoved]);
+        //console.log('----------------------------------------------------');
+        sendBox();
+        //console.log(boxes[0].body.velocity);
+        //console.log(mouseConstraint.body.angularSpeed);
+    }
 
 
     //noStroke();
@@ -247,20 +247,20 @@ function moveBox(data) {
     //console.log(engine.world.bodies[boxMoved]);
 }
 
-function mouseDragged() {
-    let data = {
-        type: 'mouseDrag',
-        username: username, // username comes from sender.js or receiver.js
-        x: mouseX,
-        y: mouseY
-    }
+//function mouseDragged() {
+//    let data = {
+//        type: 'mouseDrag',
+//        username: username, // username comes from sender.js or receiver.js
+//        x: mouseX,
+//        y: mouseY
+//    }
 
-    // Send the x and y coords to the server.
-    webSocket.send(JSON.stringify(data));
+//    // Send the x and y coords to the server.
+//    webSocket.send(JSON.stringify(data));
 
-    fill(255, 250, 0);
-    ellipse(mouseX, mouseY, 30, 30);
-}
+//    fill(255, 250, 0);
+//    ellipse(mouseX, mouseY, 30, 30);
+//}
 
 function newDrawing(data) {
      //Draw the iamge for the receiver. Change the colour of the fill so you can tell who's who.
@@ -287,6 +287,6 @@ function drawMousePos() {
     }
 }
 
-function mouseMoved() {
-    console.log('ok');
-}
+//function mouseMoved() {
+//    console.log('ok');
+//}

@@ -47,7 +47,11 @@ function handleSignallingData(data) {
             newDrawing(data);
             break;
         case "toClient":
+            console.log('getting data');
             moveBox(data);
+            break;
+        case "UpdateState":
+            drawStuff(data);
             break;
         default:
             break;
