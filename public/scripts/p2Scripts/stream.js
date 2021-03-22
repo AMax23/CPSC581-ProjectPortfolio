@@ -3,13 +3,17 @@ let users = []; // Store all connected users (sender).
 const Matter = require("matter-js");
 const frameRate = 1000 / 30;
 //const canvas = { width: 300, height: 200 };
-const boxes = 5
-const boxSize = 20
-const wallThickness = 20
-let online = 0;
+const boxes = 5;
+const boxSize = 80;
+const wallThickness = 20;
 
 let entities;
 let engine = Matter.Engine.create();
+
+let MouseConstraint = Matter.MouseConstraint;
+    //Mouse = Matter.Mouse;
+
+let mouseConstraint;
 
 //const entities = {
 //    boxes: [...Array(boxes)].map(() =>
@@ -76,6 +80,7 @@ const stream = (socket) => {
     console.log('Client connected');
     if (entities) {
         setInterval(() => {
+
             Matter.Engine.update(engine, frameRate);
             //io.emit("update state", {
             //    boxes: entities.boxes.map(toVertices),
@@ -83,11 +88,22 @@ const stream = (socket) => {
             //    online,
             //});
 
+
+            if (mouseConstraint.body) {
+                console.log('VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV');
+                console.log('Hakuna Matata');
+                console.log('VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV');
+            } else {
+                //console.log(mouseConstraint);
+            }
+
+
             let clientData = {
                 type: "UpdateState",
                 boxes: entities.boxes.map(toVertices),
-                walls: entities.walls.map(toVertices),
+                walls: entities.walls.map(toVertices)
             }
+
             // Goes through all the users (should be only 2), and whoever drew sends it to the other client.
             for (let i = 0; i < users.length; i++) {
                 //if (users[i].username != user.username) {
@@ -95,6 +111,7 @@ const stream = (socket) => {
                 //}
             }
             //console.log('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<UPDATE>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+
         }, frameRate);
     }
 
@@ -107,8 +124,21 @@ const stream = (socket) => {
         if (data.type == 'canvas') {
 
             console.log('oooooooooooooooooooooooooooooooooooooooooooooo');
-            console.log(data);
-            console.log('oooooooooooooooooooooooooooooooooooooooooooooo');
+            //console.log(toDOM(data.canvas));
+
+            console.log(data.options);
+
+
+            mouseConstraint = MouseConstraint.create(engine, data.options);
+
+            //console.log(data.pixelDensity);
+
+            mouseConstraint.mouse.pixelRatio = data.pixelDensity;
+
+            Matter.World.add(engine.world, mouseConstraint);
+
+            //console.log(engine.world);
+
 
             //let MouseConstraint = Matter.MouseConstraint,
             //    Mouse = Matter.Mouse;
@@ -142,11 +172,18 @@ const stream = (socket) => {
             //mouseConstraint.mouse.pixelRatio = data.pixelDensity;//pixelDensity();
             //Matter.World.add(engine.world, mouseConstraint);
 
-            const canvas = { width: 400, height: 400 };
+            //console.log(data.canvasWidth, data.canvasHeight);
+
+            const canvas = { width: data.canvasWidth, height: data.canvasHeight };
 
             entities = {
                 boxes: [...Array(boxes)].map(() =>
-                    Matter.Bodies.rectangle(canvas.width / 2, 80, 50, 50)
+                    Matter.Bodies.rectangle(canvas.width / 2, 80, boxSize, boxSize, {
+                        friction: 0.6,
+                        restitution: 0.5,
+                        //density: 0.005,
+                        frictionAir: 0
+                    })
                     //Matter.Bodies.rectangle(
                     //    Math.random() * canvas.width,
                     //    boxSize,
@@ -157,23 +194,23 @@ const stream = (socket) => {
                 walls: [
                     // Left
                     Matter.Bodies.rectangle(
-                        -50, canvas.height / 2, 100, canvas.height,
-                        { isStatic: true }
+                        0-50, canvas.height / 2, 100, canvas.height,
+                        { friction: 0.0, isStatic: true }
                     ),
                     // Right
                     Matter.Bodies.rectangle(
                         canvas.width + 50, canvas.height / 2, 100, canvas.height,
-                        { isStatic: true }
+                        { friction: 0.1, isStatic: true }
                     ),
                     // Top
                     Matter.Bodies.rectangle(
                         canvas.width / 2, 0 - 50, canvas.width, 100,
-                        { isStatic: true }
+                        { friction: 0.0, isStatic: true }
                     ),
                     // Bottom
                     Matter.Bodies.rectangle(
-                        canvas.width / 2, canvas.height + 33, canvas.width, 100,
-                        { isStatic: true }
+                        canvas.width / 2, canvas.height + 25, canvas.width, 100,
+                        { friction: 1, isStatic: true }
                     ),
                     //Matter.Bodies.rectangle(
                     //    0, canvas.height / 2,
@@ -198,25 +235,11 @@ const stream = (socket) => {
                 ]
             };
 
-            ////let cnv = createCanvas(200, 200);
-
-            //let MouseConstraint = Matter.MouseConstraint,
-            //    Mouse = Matter.Mouse;
-
-            ////let mouse = Mouse.create(cnv.elt);
-
-            //let mouseConstraint;
-            ////mouse.pixelRatio = pixelDensity() // for retina displays etc
-            //let options = {
-            //    //mouse: mouse
-            //}
-            //mouseConstraint = MouseConstraint.create(engine, options);
-            ////mouseConstraint.mouse.pixelRatio = pixelDensity();
-            //Matter.World.add(engine.world, mouseConstraint);
-
-
             Matter.World.add(engine.world, [].concat(...Object.values(entities)));
 
+            //// Run the engine
+            //Matter.Engine.run(engine);
+            console.log('oooooooooooooooooooooooooooooooooooooooooooooo');
 
 
         } else if (data.type == 'storeUser' && user == null) {
@@ -295,9 +318,9 @@ const stream = (socket) => {
                 users[i].conn.send(JSON.stringify(clientData));
                 //}
             }
-        } else if (data.type == 'userClick') {
-            let clientData = data;
-            clientData.type = "toClient";
+        } else if (data.type == 'userClick' && user != null) {
+            //let clientData = data;
+            //clientData.type = "toClient";
 
             //console.log('USER CLICK RECEIVED');
 
@@ -306,17 +329,26 @@ const stream = (socket) => {
                 y: data.y
             }
 
-            entities.boxes.forEach(box => {
-                // https://stackoverflow.com/a/50472656/6243352
+            // If oma/opa click then add a new box, but if Rhys clicks then do the force effect.
+            if (user.username == 'oma/opa') {
+                // Add the new box where the user clicks.
+                let newBox = Matter.Bodies.rectangle(coordinates.x, coordinates.y, boxSize, boxSize);
+                Matter.World.add(engine.world, newBox);
+                entities.boxes.push(newBox);
 
-                //console.log('///////////////////////////////////good////////////////////////////////////////////////////');
+            } else {
+                entities.boxes.forEach(box => {
+                    // https://stackoverflow.com/a/50472656/6243352
 
-                const force = 0.01;
-                const deltaVector = Matter.Vector.sub(box.position, coordinates);
-                const normalizedDelta = Matter.Vector.normalise(deltaVector);
-                const forceVector = Matter.Vector.mult(normalizedDelta, force);
-                Matter.Body.applyForce(box, box.position, forceVector);
-            });
+                    //console.log('///////////////////////////////////good////////////////////////////////////////////////////');
+
+                    const force = 0.05;
+                    const deltaVector = Matter.Vector.sub(box.position, coordinates);
+                    const normalizedDelta = Matter.Vector.normalise(deltaVector);
+                    const forceVector = Matter.Vector.mult(normalizedDelta, force);
+                    Matter.Body.applyForce(box, box.position, forceVector);
+                });
+            }
         }
     }
 

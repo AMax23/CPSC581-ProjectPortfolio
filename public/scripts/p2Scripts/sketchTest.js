@@ -51,6 +51,8 @@ function setup() {
     //console.log(canvasWidth, canvasHeight);
 
     myCanvasDiv = document.getElementById('myCanvas');
+    myCanvasDiv.addEventListener("mousedown", addBoxes)
+
 
     //console.log('in setup');
 
@@ -121,24 +123,54 @@ function draw() {
     if (once && webSocket.readyState) {
         console.log('Hello');
 
+        //let cnv = myCanvasDiv;
+        //const engine = Matter.Engine.create();
+        let MouseConstraint = Matter.MouseConstraint,
+            Mouse = Matter.Mouse;
+
+        let mouse = Mouse.create(cnv.elt);
+
+        //let mouseConstraint;
+        mouse.pixelRatio = pixelDensity(); // for retina displays etc
+        let options = {
+            mouse: mouse
+        };
+
+
+
+        ////mouseConstraint = MouseConstraint.create(engine, options);
+
+        //mouseConstraint.mouse.pixelRatio = pixelDensity();
+
+        ////Matter.World.add(engine.world, mouseConstraint);
+
         //console.log(myCanvasDiv);
 
         //console.log(myCanvasDiv.offsetWidth, myCanvasDiv.offsetHeight);
 
+        //console.log(myCanvasDiv.attributes);
+
+        //console.log(toJSON(myCanvasDiv));
+
+        //let domJSON = toJSON(myCanvasDiv);
+
+        console.log(options);
 
         let data = {
             type: "canvas",
             //pixelDensity: pixelDensity(),
-            canvas: myCanvasDiv//cnv.elt
-            //canvasWidth: myCanvasDiv.offsetWidth,
-            //canvasHeight: myCanvasDiv.offsetHeight,
+            //canvas: myCanvasDiv,//cnv.elt
+            canvasWidth: myCanvasDiv.offsetWidth,
+            canvasHeight: myCanvasDiv.offsetHeight,
+            options: options,
+            pixelDensity: pixelDensity()
         }
 
         //console.log(myCanvasDiv);
 
         //console.log();
 
-        webSocket.send(JSON.stringify(data, [""]));
+        webSocket.send(JSON.stringify(data));
 
         once = false;
     }
@@ -203,7 +235,6 @@ function draw() {
 }
 ///////////////////////////////////////////////////////////////////////////////////
 
-
 function setMouseConstraints(data) {
     //let MouseConstraint = Matter.MouseConstraint,
     //    Mouse = Matter.Mouse;
@@ -220,30 +251,38 @@ function setMouseConstraints(data) {
     //data.w.add(engine.world, mouseConstraint);
 }
 
-function mousePressed() {
-    console.log('ok');
+//e => {
+        //socket.emit("player click", { x: e.offsetX, y: e.offsetY });
+
+
+function addBoxes(e) {
+       console.log('ok');
+
+       //ellipse(mouseX, mouseY, 20, 20);
 
 
     //document.addEventListener("mousedown", e => {
     //socket.emit("player click", { x: e.offsetX, y: e.offsetY });
 
-    let data = {
-        type: "userClick",
-        x: mouseX,
-        y: mouseY
+       let data = {
+           type: "userClick",
+           username: username, // This username comes from the recevier and sender js.
+           x: e.offsetX,//mouseX,
+           y: e.offsetY//mouseY
     }
     webSocket.send(JSON.stringify(data));
 
     //});
 
 }
+   //});
 
 function drawStuff(data) {
     clear();
     //console.log('num of people online = ' + data.online);
 
     let boxes = data.boxes;
-    let wall = data.walls;
+    let walls = data.walls;
     //ctx.fillStyle = "#111";
     //ctx.strokeStyle = "#111";
     //walls.forEach(wall => draw(wall, ctx));
@@ -252,6 +291,7 @@ function drawStuff(data) {
     //onlineEl.textContent = online;
 
     boxes.forEach(box => drawBody(box));
+    walls.forEach(wall => drawBody(wall));
 }
 
 function drawBody(vertices) {
@@ -263,12 +303,16 @@ function drawBody(vertices) {
 
     //console.log('does it come here');
     //fill(255, 0, 255);
-
+    //background(0);
+    push();
     textSize(70);
     textStyle(BOLD);
     fill(255);
     text('hello', 350, 150);
     stroke(3);
+    pop();
+
+
     //console.log(vertices);
 
     ////console.log(vertices[0].x, vertices[0].y);
@@ -282,6 +326,7 @@ function drawBody(vertices) {
         vertex(vertices[i].x, vertices[i].y);
         //console.log('umm');
     }
+
     endShape(CLOSE);
 }
 
