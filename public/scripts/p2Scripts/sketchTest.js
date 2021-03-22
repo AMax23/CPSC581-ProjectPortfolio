@@ -1,38 +1,7 @@
 // JavaScript source code
 
-//// Module aliases
-//var Engine = Matter.Engine,
-//    Render = Matter.Render,
-//    World = Matter.World,
-//    Bodies = Matter.Bodies,
-//    MouseConstraint = Matter.MouseConstraint,
-//    Mouse = Matter.Mouse;
-
-//// Create an engine
-//var engine;
-//var world;
-
-//let boxes = [];
-//let circles = [];
-//let grounds = [];
-//let mouseConstraint;
-
-//let boxA;
-//let boxB;
-//let ball;
-//let ground;
-
-//var num = 60;
-//var x = [];
-//var y = [];
-
-//let toDraw = false;
-
 let once = true;
-
 let myCanvasDiv;
-
-let cnv;
 
 ////////////////////////// BASIC P5 SET UP ////////////////////////////////////////
 function preload() {
@@ -48,130 +17,21 @@ function setup() {
     cnv.parent("mainCanvas");
     cnv.id('myCanvas');
 
-    //console.log(canvasWidth, canvasHeight);
-
     myCanvasDiv = document.getElementById('myCanvas');
+    // Add event listener for whenever the canvas is clicked.
     myCanvasDiv.addEventListener("mousedown", addBoxes)
-
-
-    //console.log('in setup');
-
-    background(0);
-
-    //webSocket.onopen = () => {
-    //    let data = {
-    //        type: "canvas",
-    //        canvas: canvasDiv
-    //    }
-    //    webSocket.send(JSON.stringify(data));
-    //}
-
-
-    //engine = Engine.create();
-    //world = engine.world;
-
-    ////  Engine.run(engine);
-    //grounds.push(new Boundary(-50, height / 2, 100, height)); // Left
-    //grounds.push(new Boundary(width + 50, height / 2, 100, height)); // Right
-    //grounds.push(new Boundary(width / 2, 0 - 50, width, 100)); // Top
-    //grounds.push(new Boundary(width / 2, height + 33, width, 100)); // Bottom
-    ////World.add(world, grounds);
-
-    //// create two boxes and a ground
-    ////boxA = Bodies.rectangle(200, 200, 80, 80);
-    ////boxB = Bodies.rectangle(270, 50, 160, 80);
-    ////ball = Bodies.circle(100, 50, 40);
-    //boxes.push(new Box(width / 2, 80, 50, 50));
-    //boxes.push(new Box(width / 2, 80, 50, 50));
-    //boxes.push(new Box(width / 2, 80, 50, 50));
-    //boxes.push(new Box(width / 2, 80, 50, 50));
-    //boxes.push(new Box(width / 2, 80, 50, 50));
-    //boxes.push(new Box(width / 2, 80, 50, 50));
-    //boxes.push(new Box(width / 2, 80, 50, 50));
-    //boxes.push(new Box(width / 2, 80, 50, 50));
-    //boxes.push(new Box(width / 2, 80, 50, 50));
-
-    //ground = Bodies.rectangle(width, height / 2, 10, height, {
-    //    isStatic: true
-    //});
-    //World.add(engine.world, [grounds, boxes]);
-
-    //let mouse = Mouse.create(cnv.elt);
-    //mouse.pixelRatio = pixelDensity() // for retina displays etc
-    //let options = {
-    //    mouse: mouse
-    //}
-    //mouseConstraint = MouseConstraint.create(engine, options);
-    //mouseConstraint.mouse.pixelRatio = pixelDensity();
-    //World.add(engine.world, mouseConstraint);
-
-    //// Run the engine
-    //Engine.run(engine);
-
-    ////console.log(box1);
-
-    //noStroke();
-    //for (var i = 0; i < num; i++) {
-    //    x[i] = 0;
-    //    y[i] = 0;
-    //}
 }
-
 
 function draw() {
 
+    // This only runs once to setup the canvas on the server side.
     if (once && webSocket.readyState) {
-        console.log('Hello');
-
-        //let cnv = myCanvasDiv;
-        //const engine = Matter.Engine.create();
-        let MouseConstraint = Matter.MouseConstraint,
-            Mouse = Matter.Mouse;
-
-        let mouse = Mouse.create(cnv.elt);
-
-        //let mouseConstraint;
-        mouse.pixelRatio = pixelDensity(); // for retina displays etc
-        let options = {
-            mouse: mouse
-        };
-
-
-
-        ////mouseConstraint = MouseConstraint.create(engine, options);
-
-        //mouseConstraint.mouse.pixelRatio = pixelDensity();
-
-        ////Matter.World.add(engine.world, mouseConstraint);
-
-        //console.log(myCanvasDiv);
-
-        //console.log(myCanvasDiv.offsetWidth, myCanvasDiv.offsetHeight);
-
-        //console.log(myCanvasDiv.attributes);
-
-        //console.log(toJSON(myCanvasDiv));
-
-        //let domJSON = toJSON(myCanvasDiv);
-
-        console.log(options);
-
         let data = {
             type: "canvas",
-            //pixelDensity: pixelDensity(),
-            //canvas: myCanvasDiv,//cnv.elt
             canvasWidth: myCanvasDiv.offsetWidth,
             canvasHeight: myCanvasDiv.offsetHeight,
-            options: options,
-            pixelDensity: pixelDensity()
         }
-
-        //console.log(myCanvasDiv);
-
-        //console.log();
-
         webSocket.send(JSON.stringify(data));
-
         once = false;
     }
 
@@ -194,18 +54,6 @@ function draw() {
     //for (let box of boxes) {
     //    box.show();
     //}
-
-    //if (mouseConstraint.body) {
-    //    //console.log('----------------------------------------------------');
-    //    //console.log(mouseConstraint.body);
-    //    //let boxMoved = mouseConstraint.body.id - 1; // This is the number of the box that was moved. Minus 1 cos array starts at 0.
-    //    //console.log(engine.world.bodies[boxMoved]);
-    //    //console.log('----------------------------------------------------');
-    //    sendBox();
-    //    //console.log(boxes[0].body.velocity);
-    //    //console.log(mouseConstraint.body.angularSpeed);
-    //}
-
 
     //noStroke();
     //fill(255);
@@ -235,102 +83,48 @@ function draw() {
 }
 ///////////////////////////////////////////////////////////////////////////////////
 
-function setMouseConstraints(data) {
-    //let MouseConstraint = Matter.MouseConstraint,
-    //    Mouse = Matter.Mouse;
-
-    //let mouse = Mouse.create(myCanvasDiv);
-
-    //let mouseConstraint;
-    //mouse.pixelRatio = pixelDensity() // for retina displays etc
-    //let options = {
-    //    mouse: mouse
-    //}
-    //mouseConstraint = MouseConstraint.create(engine, options);
-    //mouseConstraint.mouse.pixelRatio = pixelDensity();
-    //data.w.add(engine.world, mouseConstraint);
-}
-
-//e => {
-        //socket.emit("player click", { x: e.offsetX, y: e.offsetY });
-
-
-function addBoxes(e) {
-       console.log('ok');
-
-       //ellipse(mouseX, mouseY, 20, 20);
-
-
-    //document.addEventListener("mousedown", e => {
-    //socket.emit("player click", { x: e.offsetX, y: e.offsetY });
-
-       let data = {
-           type: "userClick",
-           username: username, // This username comes from the recevier and sender js.
-           x: e.offsetX,//mouseX,
-           y: e.offsetY//mouseY
+// Everytime the user clicks, a new box get added to the world.
+function addBoxes(event) {
+    let data = {
+        type: "userClick",
+        username: username, // This username comes from the recevier and sender js.
+        x: event.offsetX,
+        y: event.offsetY
     }
     webSocket.send(JSON.stringify(data));
-
-    //});
-
 }
-   //});
 
-function drawStuff(data) {
-    clear();
-    //console.log('num of people online = ' + data.online);
+// 
+function drawObject(data) {
+    clear(); // Clear the canvas and redraw all the shapes and walls.
 
-    let boxes = data.boxes;
     let walls = data.walls;
-    //ctx.fillStyle = "#111";
-    //ctx.strokeStyle = "#111";
-    //walls.forEach(wall => draw(wall, ctx));
-    ////ctx.fillStyle = "#aaa";
-    //boxes.forEach(box => draw(box, ctx));
-    //onlineEl.textContent = online;
+    let boxes = data.boxes;
 
-    boxes.forEach(box => drawBody(box));
-    walls.forEach(wall => drawBody(wall));
-}
-
-function drawBody(vertices) {
-    //ctx.beginPath();
-    //body.forEach(e => ctx.lineTo(e.x, e.y));
-    //ctx.closePath();
-    //ctx.fill();
-    //ctx.stroke();
-
-    //console.log('does it come here');
-    //fill(255, 0, 255);
-    //background(0);
     push();
-    textSize(70);
-    textStyle(BOLD);
-    fill(255);
-    text('hello', 350, 150);
+    fill(0, 255, 0);
     stroke(3);
+    walls.forEach(wall => drawBody(wall));
     pop();
 
+    push();
+    fill(0);
+    stroke(255);
+    strokeWeight(2);
+    boxes.forEach(box => drawBody(box));
+    pop();
+}
 
-    //console.log(vertices);
-
-    ////console.log(vertices[0].x, vertices[0].y);
-
+// Helper function to draw the vertices for each object.
+function drawBody(vertices) {
     beginShape();
-
-    ////vertices.forEach(e => line(e.x,e.y,0,0));
-
-
     for (var i = 0; i < vertices.length; i++) {
         vertex(vertices[i].x, vertices[i].y);
-        //console.log('umm');
     }
-
     endShape(CLOSE);
 }
 
-
+/* OLD CODE
 function drawMouse(mouseConstraint) {
     if (mouseConstraint.body) {
         var pos = mouseConstraint.body.position;
@@ -478,3 +272,5 @@ function drawMousePos() {
 //function mouseMoved() {
 //    console.log('ok');
 //}
+
+*/

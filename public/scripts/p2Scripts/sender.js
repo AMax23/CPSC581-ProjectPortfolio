@@ -51,7 +51,7 @@ function handleSignallingData(data) {
             moveBox(data);
             break;
         case "UpdateState":
-            drawStuff(data);
+            drawObject(data);
             break;
         default:
             break;

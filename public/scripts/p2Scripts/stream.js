@@ -1,117 +1,46 @@
-let users = []; // Store all connected users (sender).
-
 const Matter = require("matter-js");
-const frameRate = 1000 / 30;
-//const canvas = { width: 300, height: 200 };
-const boxes = 5;
-const boxSize = 80;
-const wallThickness = 20;
 
-let entities;
-let engine = Matter.Engine.create();
+// Module aliases
+let Engine = Matter.Engine,
+    Render = Matter.Render,
+    World = Matter.World,
+    Bodies = Matter.Bodies,
+    Body = Matter.Body,
+    Vector = Matter.Vector,
+    MouseConstraint = Matter.MouseConstraint,
+    Mouse = Matter.Mouse;
 
-let MouseConstraint = Matter.MouseConstraint;
-    //Mouse = Matter.Mouse;
-
+// Create an engine
+let engine = Engine.create();
+let world;
 let mouseConstraint;
 
-//const entities = {
-//    boxes: [...Array(boxes)].map(() =>
-//        Matter.Bodies.rectangle(canvas.width / 2, 80, 50, 50)
-//        //Matter.Bodies.rectangle(
-//        //    Math.random() * canvas.width,
-//        //    boxSize,
-//        //    Math.random() * boxSize + boxSize,
-//        //    Math.random() * boxSize + boxSize,
-//        //)
-//    ),
-//    walls: [
-//        Matter.Bodies.rectangle(
-//            canvas.width / 2, 0,
-//            canvas.width,
-//            wallThickness,
-//            { isStatic: true }
-//        ),
-//        Matter.Bodies.rectangle(
-//            0, canvas.height / 2,
-//            wallThickness,
-//            canvas.height,
-//            { isStatic: true }
-//        ),
-//        Matter.Bodies.rectangle(
-//            canvas.width,
-//            canvas.width / 2,
-//            wallThickness,
-//            canvas.width,
-//            { isStatic: true }
-//        ),
-//        Matter.Bodies.rectangle(
-//            canvas.width / 2,
-//            canvas.height,
-//            canvas.width,
-//            wallThickness,
-//            { isStatic: true }
-//        ),
-//    ]
-//};
+let entities;
+let boxes = 5;
+let boxSize = 80;
+let wallThickness = 100;
+let frameRate = 1000 / 30;
 
-//////let cnv = createCanvas(200, 200);
-//const engine = Matter.Engine.create();
-////let MouseConstraint = Matter.MouseConstraint,
-////    Mouse = Matter.Mouse;
+let users = []; // Store all connected users.
 
-//////let mouse = Mouse.create(cnv.elt);
-
-////let mouseConstraint;
-//////mouse.pixelRatio = pixelDensity() // for retina displays etc
-////let options = {
-////    //mouse: mouse
-////}
-////mouseConstraint = MouseConstraint.create(engine, options);
-//////mouseConstraint.mouse.pixelRatio = pixelDensity();
-////Matter.World.add(engine.world, mouseConstraint);
-
-
-//Matter.World.add(engine.world, [].concat(...Object.values(entities)));
 const toVertices = e => e.vertices.map(({ x, y }) => ({ x, y }));
 
 const stream = (socket) => {
 
-    console.log('Client connected');
+    // When both clients are connected then start updating the world and send it to the clients.
     if (entities) {
         setInterval(() => {
-
-            Matter.Engine.update(engine, frameRate);
-            //io.emit("update state", {
-            //    boxes: entities.boxes.map(toVertices),
-            //    walls: entities.walls.map(toVertices),
-            //    online,
-            //});
-
-
-            if (mouseConstraint.body) {
-                console.log('VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV');
-                console.log('Hakuna Matata');
-                console.log('VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV');
-            } else {
-                //console.log(mouseConstraint);
-            }
-
+            Engine.update(engine, frameRate);
 
             let clientData = {
                 type: "UpdateState",
                 boxes: entities.boxes.map(toVertices),
                 walls: entities.walls.map(toVertices)
             }
-
-            // Goes through all the users (should be only 2), and whoever drew sends it to the other client.
+            // Send message to all connections
             for (let i = 0; i < users.length; i++) {
-                //if (users[i].username != user.username) {
                 users[i].conn.send(JSON.stringify(clientData));
-                //}
             }
-            //console.log('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<UPDATE>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-
         }, frameRate);
     }
 
@@ -119,131 +48,47 @@ const stream = (socket) => {
         var data = JSON.parse(message.data); // String data.
         var user = findUser(data.username);
 
-        console.log('on Message');
-
+        // The client will send different messages types. For each one it does something different.
         if (data.type == 'canvas') {
-
-            console.log('oooooooooooooooooooooooooooooooooooooooooooooo');
-            //console.log(toDOM(data.canvas));
-
-            console.log(data.options);
-
-
-            mouseConstraint = MouseConstraint.create(engine, data.options);
-
-            //console.log(data.pixelDensity);
-
-            mouseConstraint.mouse.pixelRatio = data.pixelDensity;
-
-            Matter.World.add(engine.world, mouseConstraint);
-
-            //console.log(engine.world);
-
-
-            //let MouseConstraint = Matter.MouseConstraint,
-            //    Mouse = Matter.Mouse;
-
-            ////let mouse = Mouse.create(data.canvas);
-
-            //console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-            //console.log(data.canvas);
-            //console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-
-            //let clientData = {
-            //    type: "canvasMouse",
-            //    w: Matter.World
-            //    //e: engine.world
-
-            //};
-
-            //for (let i = 0; i < users.length; i++) {
-            //    //if (users[i].username != user.username) {
-            //    users[i].conn.send(JSON.stringify(clientData));
-            //    //}
-            //}
-
-
-            //let mouseConstraint;
-            //mouse.pixelRatio = data.pixelDensity;//pixelDensity() // for retina displays etc
-            //let options = {
-            //    mouse: mouse
-            //}
-            //mouseConstraint = MouseConstraint.create(engine, options);
-            //mouseConstraint.mouse.pixelRatio = data.pixelDensity;//pixelDensity();
-            //Matter.World.add(engine.world, mouseConstraint);
-
-            //console.log(data.canvasWidth, data.canvasHeight);
-
-            const canvas = { width: data.canvasWidth, height: data.canvasHeight };
+            let canvas = { width: data.canvasWidth, height: data.canvasHeight };
 
             entities = {
                 boxes: [...Array(boxes)].map(() =>
-                    Matter.Bodies.rectangle(canvas.width / 2, 80, boxSize, boxSize, {
+                    Bodies.rectangle(canvas.width / 2, 80, boxSize, boxSize, {
                         friction: 0.6,
                         restitution: 0.5,
                         //density: 0.005,
                         frictionAir: 0
                     })
-                    //Matter.Bodies.rectangle(
-                    //    Math.random() * canvas.width,
-                    //    boxSize,
-                    //    Math.random() * boxSize + boxSize,
-                    //    Math.random() * boxSize + boxSize,
-                    //)
                 ),
                 walls: [
                     // Left
-                    Matter.Bodies.rectangle(
-                        0-50, canvas.height / 2, 100, canvas.height,
+                    Bodies.rectangle(
+                        0, canvas.height / 2, wallThickness, canvas.height,
                         { friction: 0.0, isStatic: true }
                     ),
                     // Right
-                    Matter.Bodies.rectangle(
-                        canvas.width + 50, canvas.height / 2, 100, canvas.height,
+                    Bodies.rectangle(
+                        canvas.width, canvas.width / 2, wallThickness, canvas.width,
                         { friction: 0.1, isStatic: true }
                     ),
                     // Top
-                    Matter.Bodies.rectangle(
-                        canvas.width / 2, 0 - 50, canvas.width, 100,
+                    Bodies.rectangle(
+                        canvas.width / 2, 0, canvas.width, wallThickness,
                         { friction: 0.0, isStatic: true }
                     ),
                     // Bottom
-                    Matter.Bodies.rectangle(
-                        canvas.width / 2, canvas.height + 25, canvas.width, 100,
+                    Bodies.rectangle(
+                        canvas.width / 2, canvas.height, canvas.width, wallThickness,
                         { friction: 1, isStatic: true }
                     ),
-                    //Matter.Bodies.rectangle(
-                    //    0, canvas.height / 2,
-                    //    wallThickness,
-                    //    canvas.height,
-                    //    { isStatic: true }
-                    //),
-                    //Matter.Bodies.rectangle(
-                    //    canvas.width,
-                    //    canvas.width / 2,
-                    //    wallThickness,
-                    //    canvas.width,
-                    //    { isStatic: true }
-                    //),
-                    //Matter.Bodies.rectangle(
-                    //    canvas.width / 2,
-                    //    canvas.height,
-                    //    canvas.width,
-                    //    wallThickness,
-                    //    { isStatic: true }
-                    //),
                 ]
             };
 
-            Matter.World.add(engine.world, [].concat(...Object.values(entities)));
-
-            //// Run the engine
-            //Matter.Engine.run(engine);
-            console.log('oooooooooooooooooooooooooooooooooooooooooooooo');
-
+            World.add(engine.world, [].concat(...Object.values(entities)));
 
         } else if (data.type == 'storeUser' && user == null) {
-            // Add a type field for every message coming from the client.
+            // Add the new user to the list of all users.
             const newUser = {
                 conn: socket,
                 username: data.username
@@ -257,7 +102,6 @@ const stream = (socket) => {
             user.candidates = [];
             user.candidates.push(data.candidate);
         } else if (data.type == 'sendAnswer' && user != null) {
-            console.log('Receiver send answer');
             sendData({
                 type: "answer",
                 answer: data.answer
@@ -268,7 +112,6 @@ const stream = (socket) => {
                 candidate: data.candidate
             }, user.conn);
         } else if (data.type == 'joinCall' && user != null) {
-            console.log('Matata');
             sendData({
                 type: "offer",
                 offer: user.offer
@@ -283,7 +126,6 @@ const stream = (socket) => {
                 })
             }
         } else if (data.type == 'mouseDrag' && user != null) {
-            //console.log(data.x + ', ' + data.y);
             let clientData = {
                 type: "mouseClient",
                 x: data.x,
@@ -297,20 +139,8 @@ const stream = (socket) => {
                 }
             }
         } else if (data.type == 'toServer') {
-            //let clientData = {
-            //    type: "toClient",
-            //    //x: data.x,
-            //    //y: data.y
-            //    boxesPos: data.boxesPos,
-            //    boxesAng: data.boxesAng,
-            //    canvas: canvas
-
-            //};
-
             let clientData = data;
             clientData.type = "toClient";
-
-            console.log('<<<<<<<<<<<<<<<<<<<<<<<<<<SENDING TO CLIENT>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
 
             // Goes through all the users (should be only 2), and whoever drew sends it to the other client.
             for (let i = 0; i < users.length; i++) {
@@ -319,11 +149,6 @@ const stream = (socket) => {
                 //}
             }
         } else if (data.type == 'userClick' && user != null) {
-            //let clientData = data;
-            //clientData.type = "toClient";
-
-            //console.log('USER CLICK RECEIVED');
-
             let coordinates = {
                 x: data.x,
                 y: data.y
@@ -332,21 +157,19 @@ const stream = (socket) => {
             // If oma/opa click then add a new box, but if Rhys clicks then do the force effect.
             if (user.username == 'oma/opa') {
                 // Add the new box where the user clicks.
-                let newBox = Matter.Bodies.rectangle(coordinates.x, coordinates.y, boxSize, boxSize);
-                Matter.World.add(engine.world, newBox);
+                let newBox = Bodies.rectangle(coordinates.x, coordinates.y, boxSize, boxSize);
+                World.add(engine.world, newBox);
                 entities.boxes.push(newBox);
 
             } else {
                 entities.boxes.forEach(box => {
                     // https://stackoverflow.com/a/50472656/6243352
 
-                    //console.log('///////////////////////////////////good////////////////////////////////////////////////////');
-
-                    const force = 0.05;
-                    const deltaVector = Matter.Vector.sub(box.position, coordinates);
-                    const normalizedDelta = Matter.Vector.normalise(deltaVector);
-                    const forceVector = Matter.Vector.mult(normalizedDelta, force);
-                    Matter.Body.applyForce(box, box.position, forceVector);
+                    let force = 0.05;
+                    let deltaVector = Vector.sub(box.position, coordinates);
+                    let normalizedDelta = Vector.normalise(deltaVector);
+                    let forceVector = Vector.mult(normalizedDelta, force);
+                    Body.applyForce(box, box.position, forceVector);
                 });
             }
         }
@@ -365,17 +188,12 @@ const stream = (socket) => {
 
     // Helper function for sending messages to a connection.
     function sendData(data, connection) {
-        console.log('Send data');
         connection.send(JSON.stringify(data));
     }
 
+    // If the user connection already exists return that.
     function findUser(username) {
-        console.log('Find username');
-        console.log('---------------------------------------------------------------');
-        console.log('---------------------------------------------------------------');
         for (let i = 0; i < users.length; i++) {
-            console.log('looking for: ' + username + ' found user = ' + users[i].username);
-
             if (users[i].username == username)
                 return users[i];
         }
