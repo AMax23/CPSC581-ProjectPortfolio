@@ -43,13 +43,6 @@ function handleSignallingData(data) {
         case "candidate":
             peerConnection.addIceCandidate(data.candidate);
             break;
-        case "mouseClient":
-            newDrawing(data);
-            break;
-        case "toClient":
-            console.log('getting data');
-            moveBox(data);
-            break;
         case "UpdateState":
             drawObject(data);
             break;
