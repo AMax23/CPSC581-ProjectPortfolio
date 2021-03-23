@@ -18,7 +18,7 @@ let maxBoxes = 20;
 let boxSize = 50;
 // Properties for the box.
 let boxOptions = {
-    friction: 0.7,
+    friction: 1,
     restitution: 0, // Elasticity, 0 = none
     //density: 0.005,
     frictionAir: 0
