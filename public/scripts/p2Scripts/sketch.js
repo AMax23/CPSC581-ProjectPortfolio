@@ -1,30 +1,10 @@
 // JavaScript source code
 
-// Module aliases
-var Engine = Matter.Engine,
-    Render = Matter.Render,
-    World = Matter.World,
-    Bodies = Matter.Bodies,
-    MouseConstraint = Matter.MouseConstraint,
-    Mouse = Matter.Mouse;
+// Comment this out temporarily cos its annoying.
+//if (!window.location.href.toString().includes("https://")) { alert(`You will need "https://" to view this.`) }
 
-// Create an engine
-var engine;
-var world;
-
-let boxes = [];
-let circles = [];
-let grounds = [];
-let mouseConstraint;
-
-let boxA;
-let boxB;
-let ball;
-let ground;
-
-var num = 60;
-var x = [];
-var y = [];
+let canvasPropSentToServer = false;
+let myCanvasDiv;
 
 ////////////////////////// BASIC P5 SET UP ////////////////////////////////////////
 function preload() {
@@ -38,59 +18,34 @@ function setup() {
     let cnv = createCanvas(canvasWidth, canvasHeight);
     // Put p5 canvas in the right div on main page.
     cnv.parent("mainCanvas");
+    cnv.id('myCanvas');
 
-    engine = Engine.create();
-    world = engine.world;
+    myCanvasDiv = document.getElementById('myCanvas');
+    // Add event listener for whenever the canvas is clicked.
+    myCanvasDiv.addEventListener("mousedown", addBoxes);
 
-    //  Engine.run(engine);
-    grounds.push(new Boundary(-50, height / 2, 100, height)); // Left
-    grounds.push(new Boundary(width + 50, height / 2, 100, height)); // Right
-    grounds.push(new Boundary(width / 2, 0 - 50, width, 100)); // Top
-    grounds.push(new Boundary(width / 2, height + 33, width, 100)); // Bottom
-    //World.add(world, grounds);
-
-    // create two boxes and a ground
-    //boxA = Bodies.rectangle(200, 200, 80, 80);
-    //boxB = Bodies.rectangle(270, 50, 160, 80);
-    //ball = Bodies.circle(100, 50, 40);
-    boxes.push(new Box(width / 2, 80, 50, 50));
-    boxes.push(new Box(width / 2, 80, 50, 50));
-    boxes.push(new Box(width / 2, 80, 50, 50));
-    boxes.push(new Box(width / 2, 80, 50, 50));
-    boxes.push(new Box(width / 2, 80, 50, 50));
-    boxes.push(new Box(width / 2, 80, 50, 50));
-    boxes.push(new Box(width / 2, 80, 50, 50));
-    boxes.push(new Box(width / 2, 80, 50, 50));
-    boxes.push(new Box(width / 2, 80, 50, 50));
-
-    ground = Bodies.rectangle(width, height / 2, 10, height, {
-        isStatic: true
-    });
-    World.add(engine.world, [grounds, boxes]);
-
-    let mouse = Mouse.create(cnv.elt);
-    mouse.pixelRatio = pixelDensity() // for retina displays etc
-    let options = {
-        mouse: mouse
+    // Add event listener for when the clear button is clicked (only on oma/opa's side).
+    if (username == 'oma/opa') {
+        let clearBtn = document.getElementById('clrScrnBtn');
+        clearBtn.addEventListener("click", clearScreen);
     }
-    mouseConstraint = MouseConstraint.create(engine, options);
-    mouseConstraint.mouse.pixelRatio = pixelDensity();
-    World.add(engine.world, mouseConstraint);
-
-    // Run the engine
-    Engine.run(engine);
-
-    //console.log(box1);
-
-    //noStroke();
-    //for (var i = 0; i < num; i++) {
-    //    x[i] = 0;
-    //    y[i] = 0;
-    //}
 }
 
-
 function draw() {
+
+    // This only runs once to setup the canvas on the server side.
+    // This doesn't work as i want it to cos the receiver will join last and will override these properties.
+    // But idk how i wanna handle that rn.
+    if (!canvasPropSentToServer && webSocket.readyState) {
+        let data = {
+            type: "canvas",
+            canvasWidth: myCanvasDiv.offsetWidth,
+            canvasHeight: myCanvasDiv.offsetHeight,
+        }
+        webSocket.send(JSON.stringify(data));
+        canvasPropSentToServer = true;
+    }
+
 
     //drawMousePos();
 
@@ -98,30 +53,18 @@ function draw() {
     //    console.log('ok');
     //}
 
-    //fill(255, 255, 255);
+    //fill(255, 0, 255);
     //rect(mouseX, mouseY, 100, 300);
 
-    background(0);
+    //background(0);
 
     //for (let ground of grounds) {
     //    ground.show();
     //}
 
-    for (let box of boxes) {
-        box.show();
-    }
-
-    if (mouseConstraint.body) {
-        //console.log('----------------------------------------------------');
-        //console.log(mouseConstraint.body);
-        //let boxMoved = mouseConstraint.body.id - 1; // This is the number of the box that was moved. Minus 1 cos array starts at 0.
-        //console.log(engine.world.bodies[boxMoved]);
-        //console.log('----------------------------------------------------');
-        sendBox();
-        //console.log(boxes[0].body.velocity);
-        //console.log(mouseConstraint.body.angularSpeed);
-    }
-
+    //for (let box of boxes) {
+    //    box.show();
+    //}
 
     //noStroke();
     //fill(255);
@@ -141,8 +84,67 @@ function draw() {
     //    ground.show();
     //}
     //aaa();
+
+    //console.log('how');
+
+    //if (!toDraw) {
+    //    console.log('okkkk');
+    //}
+
 }
 ///////////////////////////////////////////////////////////////////////////////////
+
+// Gets the data from the server and draws those vertices for each object.
+function drawObject(data) {
+    clear(); // Clear the canvas and redraw all the shapes and walls.
+
+    let walls = data.walls;
+    let boxes = data.boxes;
+
+    push();
+    fill(0, 255, 0);
+    stroke(3);
+    walls.forEach(wall => drawBody(wall));
+    pop();
+
+    push();
+    fill(0);
+    stroke(255);
+    strokeWeight(2);
+    boxes.forEach(box => drawBody(box));
+    pop();
+}
+
+// Helper function to draw the vertices for each object.
+function drawBody(vertices) {
+    beginShape();
+    for (var i = 0; i < vertices.length; i++) {
+        vertex(vertices[i].x, vertices[i].y);
+    }
+    endShape(CLOSE);
+}
+
+// Everytime the user clicks, a new box get added to the world.
+function addBoxes(event) {
+    let data = {
+        type: "userClick",
+        username: username, // This username comes from the recevier and sender js.
+        x: event.offsetX,
+        y: event.offsetY
+    }
+    webSocket.send(JSON.stringify(data));
+}
+
+// Remove all the boxes from the screen.
+function clearScreen(event) {
+    let data = {
+        type: "clearScreen",
+        username: username, // This username comes from the recevier and sender js.
+    }
+    webSocket.send(JSON.stringify(data));
+}
+
+/* OLD CODE
 function drawMouse(mouseConstraint) {
     if (mouseConstraint.body) {
         var pos = mouseConstraint.body.position;
@@ -183,8 +185,8 @@ function sendBox() {
     //console.log('sending to server');
 
     //if (webSocket.readyState) {
-        //console.log('here');
-        webSocket.send(JSON.stringify(data));
+    //console.log('here');
+    webSocket.send(JSON.stringify(data));
     //}
 
     //console.log(data.boxesPos.x, data.boxesPos.y);
@@ -226,18 +228,18 @@ function moveBox(data) {
     for (let i = 0; i < data.bodies.length; i++) {
 
         //if (engine.world.bodies[i].position != data.bodies[i].position || engine.world.bodies[i].angle != data.bodies[i].angle) {
-            //console.log('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<');
-            //console.log(engine.world.bodies[boxMoved].position, data.boxesPos);
-            //console.log('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<');
+        //console.log('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<');
+        //console.log(engine.world.bodies[boxMoved].position, data.boxesPos);
+        //console.log('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<');
 
-            let bodyPosXMapped = map(data.bodies[i].position.x, 0, data.canvas.width, 0, width);
-            let bodyPosYMapped = map(data.bodies[i].position.y, 0, data.canvas.height, 0, height);
+        let bodyPosXMapped = map(data.bodies[i].position.x, 0, data.canvas.width, 0, width);
+        let bodyPosYMapped = map(data.bodies[i].position.y, 0, data.canvas.height, 0, height);
 
-            data.bodies[i].position.x = bodyPosXMapped;
-            data.bodies[i].position.y = bodyPosYMapped;
+        data.bodies[i].position.x = bodyPosXMapped;
+        data.bodies[i].position.y = bodyPosYMapped;
 
-            engine.world.bodies[i].position = data.bodies[i].position;
-            engine.world.bodies[i].angle = data.bodies[i].angle;
+        engine.world.bodies[i].position = data.bodies[i].position;
+        engine.world.bodies[i].angle = data.bodies[i].angle;
         //}
     }
 
@@ -263,7 +265,7 @@ function moveBox(data) {
 //}
 
 function newDrawing(data) {
-     //Draw the iamge for the receiver. Change the colour of the fill so you can tell who's who.
+    //Draw the iamge for the receiver. Change the colour of the fill so you can tell who's who.
     fill(255, 0, 255);
     ellipse(data.x, data.y, 30, 30);
     console.log('New drawing ' + data.x + ', ' + data.y);
@@ -290,3 +292,5 @@ function drawMousePos() {
 //function mouseMoved() {
 //    console.log('ok');
 //}
+
+*/
