@@ -2,8 +2,8 @@ var path = require('path');             // Some convenient dir/path functions
 var express = require('express');       // Use the express module
 var app = express();                    // This is our express.js instance
 const PORT = process.env.PORT || 5000;  // Port should be 5000 by default
-const ws = require("ws");               // Require websocket and setup server.
-var wsServer = new ws.Server({ noServer: true });
+const WS = require("ws");               // Require websocket and setup server.
+var wsServer = new WS.Server({ noServer: true });
 var stream = require('./stream.js'); // Socket server stuff...
 
 /////////////////////////////////////////// Database related stuff /////////////////////////////////////////////
