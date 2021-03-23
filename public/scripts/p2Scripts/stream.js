@@ -6,18 +6,28 @@ let Engine = Matter.Engine,
     World = Matter.World,
     Bodies = Matter.Bodies,
     Body = Matter.Body,
-    Vector = Matter.Vector,
-    MouseConstraint = Matter.MouseConstraint,
-    Mouse = Matter.Mouse;
+    Vector = Matter.Vector;
 
 // Create an engine
 let engine = Engine.create();
-let world;
-let mouseConstraint;
+let world = engine.world;
 
 let entities;
-let boxes = 5;
-let boxSize = 80;
+let boxes = 0; // Starting off with no boxes on the screen.
+let maxBoxes = 20;
+let boxSize = 50;
+// Properties for the box.
+let boxOptions = {
+    friction: 0.7,
+    restitution: 0, // Elasticity, 0 = none
+    //density: 0.005,
+    frictionAir: 0
+};
+let wallOptions = {
+    friction: 1,
+    isStatic: true,
+    restitution: 0, // Elasticity
+};
 let wallThickness = 100;
 let frameRate = 1000 / 30;
 
@@ -54,38 +64,25 @@ const stream = (socket) => {
 
             entities = {
                 boxes: [...Array(boxes)].map(() =>
-                    Bodies.rectangle(canvas.width / 2, 80, boxSize, boxSize, {
-                        friction: 0.6,
-                        restitution: 0.5,
-                        //density: 0.005,
-                        frictionAir: 0
-                    })
+                    Bodies.rectangle(canvas.width / 2, 80, boxSize, boxSize, boxOptions) // This box is not actually added.
                 ),
                 walls: [
                     // Left
                     Bodies.rectangle(
-                        0, canvas.height / 2, wallThickness, canvas.height,
-                        { friction: 0.0, isStatic: true }
-                    ),
+                        0, canvas.height / 2, wallThickness, canvas.height, wallOptions),
                     // Right
                     Bodies.rectangle(
-                        canvas.width, canvas.width / 2, wallThickness, canvas.width,
-                        { friction: 0.1, isStatic: true }
-                    ),
+                        canvas.width, canvas.width / 2, wallThickness, canvas.width, wallOptions),
                     // Top
                     Bodies.rectangle(
-                        canvas.width / 2, 0, canvas.width, wallThickness,
-                        { friction: 0.0, isStatic: true }
-                    ),
+                        canvas.width / 2, 0, canvas.width, wallThickness,wallOptions),
                     // Bottom
                     Bodies.rectangle(
-                        canvas.width / 2, canvas.height, canvas.width, wallThickness,
-                        { friction: 1, isStatic: true }
-                    ),
+                        canvas.width / 2, canvas.height, canvas.width, wallThickness, wallOptions),
                 ]
             };
 
-            World.add(engine.world, [].concat(...Object.values(entities)));
+            World.add(world, [].concat(...Object.values(entities)));
 
         } else if (data.type == 'storeUser' && user == null) {
             // Add the new user to the list of all users.
@@ -95,7 +92,6 @@ const stream = (socket) => {
             };
             users.push(newUser);
             console.log(newUser.username + ' connected');
-
         } else if (data.type == 'storeOffer' && user != null) {
             user.offer = data.offer;
         } else if (data.type == 'storeCandidate' && user != null && user.candidates == null) {
@@ -155,13 +151,12 @@ const stream = (socket) => {
             }
 
             // If oma/opa click then add a new box, but if Rhys clicks then do the force effect.
-            if (user.username == 'oma/opa') {
+            if (entities.boxes.length < maxBoxes && user.username == 'oma/opa') {
                 // Add the new box where the user clicks.
-                let newBox = Bodies.rectangle(coordinates.x, coordinates.y, boxSize, boxSize);
-                World.add(engine.world, newBox);
+                let newBox = Bodies.rectangle(coordinates.x, coordinates.y, boxSize, boxSize, boxOptions);
+                World.add(world, newBox);
                 entities.boxes.push(newBox);
-
-            } else {
+            } else if (user.username != 'oma/opa') {
                 entities.boxes.forEach(box => {
                     // https://stackoverflow.com/a/50472656/6243352
 
@@ -172,6 +167,13 @@ const stream = (socket) => {
                     Body.applyForce(box, box.position, forceVector);
                 });
             }
+        } else if (data.type == 'clearScreen' && user != null) {
+            // Remove the boxes from the world as well.
+            // Even if the array is cleared Matter js will still know of its existence.
+            entities.boxes.forEach(box => {
+                World.remove(world, box);
+            });
+            entities.boxes = []; // Clear the boxes array.
         }
     }
 

@@ -1,6 +1,9 @@
 // JavaScript source code
 
-let once = true;
+// Comment this out temporarily cos its annoying.
+//if (!window.location.href.toString().includes("https://")) { alert(`You will need "https://" to view this.`) }
+
+let canvasPropSentToServer = false;
 let myCanvasDiv;
 
 ////////////////////////// BASIC P5 SET UP ////////////////////////////////////////
@@ -12,27 +15,35 @@ function setup() {
     let canvasDiv = document.getElementById('mainCanvas');
     let canvasWidth = canvasDiv.offsetWidth;
     let canvasHeight = canvasDiv.offsetHeight;
-    cnv = createCanvas(canvasWidth, canvasHeight);
+    let cnv = createCanvas(canvasWidth, canvasHeight);
     // Put p5 canvas in the right div on main page.
     cnv.parent("mainCanvas");
     cnv.id('myCanvas');
 
     myCanvasDiv = document.getElementById('myCanvas');
     // Add event listener for whenever the canvas is clicked.
-    myCanvasDiv.addEventListener("mousedown", addBoxes)
+    myCanvasDiv.addEventListener("mousedown", addBoxes);
+
+    // Add event listener for when the clear button is clicked (only on oma/opa's side).
+    if (username == 'oma/opa') {
+        let clearBtn = document.getElementById('clrScrnBtn');
+        clearBtn.addEventListener("click", clearScreen);
+    }
 }
 
 function draw() {
 
     // This only runs once to setup the canvas on the server side.
-    if (once && webSocket.readyState) {
+    // This doesn't work as i want it to cos the receiver will join last and will override these properties.
+    // But idk how i wanna handle that rn.
+    if (!canvasPropSentToServer && webSocket.readyState) {
         let data = {
             type: "canvas",
             canvasWidth: myCanvasDiv.offsetWidth,
             canvasHeight: myCanvasDiv.offsetHeight,
         }
         webSocket.send(JSON.stringify(data));
-        once = false;
+        canvasPropSentToServer = true;
     }
 
 
@@ -83,18 +94,7 @@ function draw() {
 }
 ///////////////////////////////////////////////////////////////////////////////////
 
-// Everytime the user clicks, a new box get added to the world.
-function addBoxes(event) {
-    let data = {
-        type: "userClick",
-        username: username, // This username comes from the recevier and sender js.
-        x: event.offsetX,
-        y: event.offsetY
-    }
-    webSocket.send(JSON.stringify(data));
-}
-
-// 
+// Gets the data from the server and draws those vertices for each object.
 function drawObject(data) {
     clear(); // Clear the canvas and redraw all the shapes and walls.
 
@@ -122,6 +122,26 @@ function drawBody(vertices) {
         vertex(vertices[i].x, vertices[i].y);
     }
     endShape(CLOSE);
+}
+
+// Everytime the user clicks, a new box get added to the world.
+function addBoxes(event) {
+    let data = {
+        type: "userClick",
+        username: username, // This username comes from the recevier and sender js.
+        x: event.offsetX,
+        y: event.offsetY
+    }
+    webSocket.send(JSON.stringify(data));
+}
+
+// Remove all the boxes from the screen.
+function clearScreen(event) {
+    let data = {
+        type: "clearScreen",
+        username: username, // This username comes from the recevier and sender js.
+    }
+    webSocket.send(JSON.stringify(data));
 }
 
 /* OLD CODE
