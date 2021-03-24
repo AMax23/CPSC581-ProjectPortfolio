@@ -147,3 +147,8 @@ function muteVideo() {
     videoOn = !videoOn;
     localVideoStream.getVideoTracks()[0].enabled = videoOn;
 }
+
+// If the end call button is clicked, it takes you back to p2 main page.
+function endCall() {
+    location.href = location.origin + '/pages/p2.html';
+}
