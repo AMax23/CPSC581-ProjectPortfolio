@@ -10,27 +10,27 @@
 </head>
 <body>
 
-    <!--<div>
-        <input placeholder="Enter username..." type="text" id="usernameInput"/>
-        <br>
-        <button onclick="sendUsername()">Send</button>
-        <button onclick="startCall()">Start Call</button>
-    </div>-->
-
     <div class="mainContainer">
 
         <div id="videoCallDiv">
             <video id="remoteVideo" autoplay></video>
+            <br />   <br />   <br />   <br />
             <video muted id="localVideo" autoplay></video>
+
+            <div id="oma/opaBtns">
+                What Oma/Opa see
+                <button id="clrScrnBtn">Clear boxes</button>
+            </div>
+
             <div class="callButtonsDiv">
-                <button onclick="muteVideo()">Mute Video</button>
-                <button onclick="muteAudio()">Mute Audio</button>
+                <img class="callBtns phoneIcon" src="../images/project 2/end-call-button.svg" onclick=endCall()>
+                <img class="callBtns micIcon" src="../images/project 2/mic.png" onclick=muteAudio()>
+                <img class="callBtns cameraIcon" src="../images/project 2/camera.png" onclick=muteVideo()>
             </div>
         </div>
 
         <div class="drawingCanvas" id="mainCanvas">
-            What Oma/Opa see
-            <button id="clrScrnBtn"> Clear boxes</button>
+            <div id="myCanvas"></div>
         </div>
 
     </div>

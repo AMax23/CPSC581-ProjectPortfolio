@@ -8,7 +8,7 @@ html, body {
     display: flex;
     width: 100%;
     height: 100%;
-    background: purple;
+    /*background: yellow;*/
 }
 
 /*div on the left*/
@@ -17,7 +17,7 @@ html, body {
     left: 0;
     width: 24%;
     height: 100%;
-    background: red;
+    background: #1bA8e7; /*Light blue*/
     /*margin: 5px;*/
 }
 
@@ -25,7 +25,13 @@ html, body {
 .drawingCanvas {
     margin: 2px;
     flex-grow: 1; /*This div will occupy the remaining space in the parent div*/
-    background: yellow;
+    background: #F9C651; /*Giraffe orange colour*/
+    margin: 0;
+}
+
+/*The actual canvas on the right side of the screen*/
+#myCanvas {
+    height: 100%;
 }
 
 #localVideo {
@@ -51,12 +57,6 @@ html, body {
     -moz-transform: rotateY(180deg); /* Firefox */
 }
 
-.callButtonsDiv {
-    position: absolute;
-    left: 4%;
-    bottom: 32px;
-}
-
 /* --- CSS Related to button on main page ---*/
 .container {
     height: 200px;
@@ -78,4 +78,37 @@ html, body {
     width: 300px;
     height: 40px;
     cursor: pointer;
+}
+
+.callButtonsDiv {
+    position: absolute;
+    left: 4%;
+    bottom: 32px;
+}
+
+/*The call buttons (end call, camera, mic, etc.) style */
+.callBtns {
+    width: 3%; /* Set width of icon */
+    height: 10%; /* Set height of icon */
+    border: 1px solid white;
+    border-radius: 25%;
+    cursor: pointer;
+    margin-left: 20px;
+}
+
+.phoneIcon {
+    background: #EA312B; /*Red*/
+}
+
+.micIcon {
+    background: white;
+}
+
+.cameraIcon {
+    background: white;
+}
+
+/*Oma/Opa Buttons style*/
+#clrScrnBtn {
+    height: 30px;
 }

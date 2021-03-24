@@ -10,25 +10,28 @@
 </head>
 <body>
 
-    <!--<div>
-        <input placeholder="Enter username..." type="text" id="usernameInput" />
-        <br>
-        <button onclick="joinCall()">Join Call</button>
-    </div>-->
-
     <div class="mainContainer">
 
         <div id="videoCallDiv">
             <video id="remoteVideo" autoplay></video>
+            <br />   <br />   <br />   <br /> 
             <video muted id="localVideo" autoplay></video>
-            <div class="callButtonsDiv">
-                <button onclick="muteVideo()">Mute Video</button>
-                <button onclick="muteAudio()">Mute Audio</button>
+
+            <div>
+                What Rhys sees
             </div>
+
+            <div class="callButtonsDiv">
+                <!--For Rhys the end call btn is hidden-->
+                <img class="callBtns phoneIcon" src="../images/project 2/end-call-button.svg" style="visibility: hidden">
+                <img class="callBtns micIcon" src="../images/project 2/mic.png" onclick=muteAudio()>
+                <img class="callBtns cameraIcon" src="../images/project 2/camera.png" onclick=muteVideo()>
+            </div>
+
         </div>
 
         <div class="drawingCanvas" id="mainCanvas">
-            What Rhys sees
+            <div id="myCanvas"></div>
         </div>
 
     </div>
