@@ -67,18 +67,18 @@ const stream = (socket) => {
                     Bodies.rectangle(canvas.width / 2, 80, boxSize, boxSize, boxOptions) // This box is not actually added.
                 ),
                 walls: [
+                    // Right
+                    Bodies.rectangle(
+                        canvas.width, canvas.height / 2, wallThickness, canvas.height, wallOptions),
                     // Left
                     Bodies.rectangle(
                         0, canvas.height / 2, wallThickness, canvas.height, wallOptions),
-                    // Right
-                    Bodies.rectangle(
-                        canvas.width, canvas.width / 2, wallThickness, canvas.width, wallOptions),
-                    // Top
-                    Bodies.rectangle(
-                        canvas.width / 2, 0, canvas.width, wallThickness,wallOptions),
                     // Bottom
                     Bodies.rectangle(
                         canvas.width / 2, canvas.height, canvas.width, wallThickness, wallOptions),
+                    // Top
+                    Bodies.rectangle(
+                        canvas.width / 2, 0, canvas.width, wallThickness, wallOptions)
                 ]
             };
 
