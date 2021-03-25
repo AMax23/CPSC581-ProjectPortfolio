@@ -6,9 +6,10 @@
 let canvasPropSentToServer = false;
 let myCanvasDiv;
 
+let boxImg;
+
 ////////////////////////// BASIC P5 SET UP ////////////////////////////////////////
 function preload() {
-
 }
 
 function setup() {
@@ -27,6 +28,9 @@ function setup() {
         let clearBtn = document.getElementById('clrScrnBtn');
         clearBtn.addEventListener("click", clearScreen);
     }
+
+    //boxImg = loadImage('//cdn.rawgit.com/liabru/matter-js/2560a681/demo/img/box.png');
+    boxImg = loadImage('../images/project 2/crate.png');
 }
 
 function draw() {
@@ -62,8 +66,31 @@ function drawObject(data) {
     fill(124, 74, 38); // Brown colour
     stroke(255);
     strokeWeight(2);
-    boxes.forEach(box => drawBody(box));
+    boxes.forEach(box => drawSprite(data));
+    //boxes.forEach(box => drawBody(box));
     pop();
+}
+
+// Draws an image over the box position.
+function drawSprite(boxes) {
+    for (let i = 0; i < boxes.positions.length; i++) {
+        const pos = boxes.positions[i];
+        const angle = boxes.angles[i];
+        push();
+        translate(pos.x, pos.y);
+        rotate(angle);
+        imageMode(CENTER);
+        image(boxImg, 0, 0);
+        pop();
+
+        // Add a letter inside the box.
+        push();
+        fill(255);
+        textSize(50);
+        textAlign(CENTER);
+        text('A', pos.x, pos.y + 15);
+        pop();
+    }
 }
 
 // Helper function to draw the vertices for each object.

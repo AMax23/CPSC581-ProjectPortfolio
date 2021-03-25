@@ -15,7 +15,7 @@ let world = engine.world;
 let entities;
 let boxes = 0; // Starting off with no boxes on the screen.
 let maxBoxes = 20;
-let boxSize = 50;
+let boxSize = 62;
 // Properties for the box.
 let boxOptions = {
     friction: 1,
@@ -35,6 +35,21 @@ let users = []; // Store all connected users.
 
 const toVertices = e => e.vertices.map(({ x, y }) => ({ x, y }));
 
+let boxPositions = [];
+let boxAngles = [];
+
+// Gets the box x and y postiions, and angle, and stores it in an array.
+function getBoxProperties(boxes) {
+    boxPositions = [];
+    boxAngles = [];
+    for (let i = 0; i < boxes.length; i++) {
+        if (boxes[i].position) {
+            boxAngles.push(boxes[i].angle);
+            boxPositions.push(boxes[i].position);
+        }
+    }
+}
+
 const stream = (socket) => {
 
     // When both clients are connected then start updating the world and send it to the clients.
@@ -42,10 +57,14 @@ const stream = (socket) => {
         setInterval(() => {
             Engine.update(engine, frameRate);
 
+            getBoxProperties(entities.boxes); // Get the x and y positions, and angle.
+
             let clientData = {
                 type: "UpdateState",
                 boxes: entities.boxes.map(toVertices),
-                walls: entities.walls.map(toVertices)
+                walls: entities.walls.map(toVertices),
+                positions: boxPositions,
+                angles: boxAngles
             }
             // Send message to all connections
             for (let i = 0; i < users.length; i++) {
