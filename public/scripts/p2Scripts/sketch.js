@@ -7,6 +7,7 @@ let canvasPropSentToServer = false;
 let myCanvasDiv;
 
 let boxImg;
+let handImg;
 
 ////////////////////////// BASIC P5 SET UP ////////////////////////////////////////
 function preload() {
@@ -20,17 +21,19 @@ function setup() {
     // Put p5 canvas in the right div on main page.
     cnv.parent("myCanvas");
 
-    // Add event listener for whenever the canvas is clicked.
-    myCanvasDiv.addEventListener("mousedown", addBoxes);
-
-    // Add event listener for when the clear button is clicked (only on oma/opa's side).
+    // Add event listeners (only on oma/opa's side).
     if (username == 'oma/opa') {
+        // When the clear button is clicked
         let clearBtn = document.getElementById('clrScrnBtn');
         clearBtn.addEventListener("click", clearScreen);
+
+        // Add event listener for whenever the canvas is clicked. A box will be added.
+        myCanvasDiv.addEventListener("mousedown", addBoxes);
     }
 
     //boxImg = loadImage('//cdn.rawgit.com/liabru/matter-js/2560a681/demo/img/box.png');
     boxImg = loadImage('../images/project 2/crate.png');
+    handImg = loadImage('../images/project 2/hand.png');
 }
 
 function draw() {
@@ -52,31 +55,42 @@ function draw() {
 }
 ///////////////////////////////////////////////////////////////////////////////////
 
-// Draws an ellipse after tracking the hand position.
-function drawHandPointer(){
+// Draws an image of a hand after tracking the hand position in the x, y location.
+function drawHandPointer() {
     //background(0);
     // These coordinates come from the handtrack.js script.
     if (xCord != null && yCord != null && username != 'oma/opa') {
 
         // Map the coordinates so they fit the user's screen.
-        let xCordMapped = map(xCord, 130, 420, 0, width - 10);
-        let yCordMapped = map(yCord, 100, 400, 10, height - 10);
+        // These numbers came from trial and error.
+        let xCordMapped = map(xCord, 130, 550, 0, width - 10);
+        let yCordMapped = map(yCord, 80, 400, 10, height - 10);
 
         //console.log(xCord, yCord);
-        ellipse(xCordMapped, yCordMapped, 30, 30);
-    }
-    // A second hand.
-    if (xCord2 != null && yCord2 != null && username != 'oma/opa') {
-        push();
-        fill(255, 0, 255);
-        // Map the coordinates so they fit the user's screen.
-        let xCordMapped = map(xCord, 130, 420, 0, width - 10);
-        let yCordMapped = map(yCord, 100, 400, 10, height - 10);
+        //rect(xCordMapped - (handImg.width / 2), yCordMapped - (handImg.height / 2), handImg.width, handImg.height);
+        image(handImg, xCordMapped - (handImg.width / 2), yCordMapped - (handImg.height / 2));
+        //ellipse(xCordMapped, yCordMapped, 30, 30);
 
-        //console.log(xCord, yCord);
-        ellipse(xCordMapped, yCordMapped, 30, 30);
-        pop();
+        // This is to keep it consistent with what addBoxes() is expecting as a parameter.
+        let coords = {
+            offsetX: xCordMapped,
+            offsetY: yCordMapped
+        }
+        addBoxes(coords); // Since Rhys is the one who has the hand, this will destroy the box construction.
     }
+    //// A second hand.
+    //if (xCord2 != null && yCord2 != null && username != 'oma/opa') {
+    //    push();
+    //    fill(255, 0, 255);
+    //    // Map the coordinates so they fit the user's screen.
+    //    // These numbers came from trial and error.
+    //    let xCordMapped = map(xCord, 130, 550, 0, width - 10);
+    //    let yCordMapped = map(yCord, 80, 400, 10, height - 10);
+
+    //    //console.log(xCord, yCord);
+    //    ellipse(xCordMapped, yCordMapped, 30, 30);
+    //    pop();
+    //}
 }
 
 // Gets the data from the server and draws those vertices for each object.
@@ -133,6 +147,7 @@ function drawBody(vertices) {
 }
 
 // Everytime the user clicks, a new box get added to the world.
+// Or if Rhys is the one who clicks then the blocks get destroyed.
 function addBoxes(event) {
     let data = {
         type: "userClick",
