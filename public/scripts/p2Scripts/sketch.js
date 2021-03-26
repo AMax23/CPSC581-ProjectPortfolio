@@ -34,6 +34,9 @@ function setup() {
 }
 
 function draw() {
+
+    drawHandPointer(); // This pointer is only drawn for Rhys.
+
     // This only runs once to setup the canvas on the server side.
     // This doesn't work as i want it to cos the receiver will join last and will override these properties.
     // But idk how i wanna handle that rn.
@@ -48,6 +51,33 @@ function draw() {
     }
 }
 ///////////////////////////////////////////////////////////////////////////////////
+
+// Draws an ellipse after tracking the hand position.
+function drawHandPointer(){
+    //background(0);
+    // These coordinates come from the handtrack.js script.
+    if (xCord != null && yCord != null && username != 'oma/opa') {
+
+        // Map the coordinates so they fit the user's screen.
+        let xCordMapped = map(xCord, 130, 420, 0, width - 10);
+        let yCordMapped = map(yCord, 100, 400, 10, height - 10);
+
+        //console.log(xCord, yCord);
+        ellipse(xCordMapped, yCordMapped, 30, 30);
+    }
+    // A second hand.
+    if (xCord2 != null && yCord2 != null && username != 'oma/opa') {
+        push();
+        fill(255, 0, 255);
+        // Map the coordinates so they fit the user's screen.
+        let xCordMapped = map(xCord, 130, 420, 0, width - 10);
+        let yCordMapped = map(yCord, 100, 400, 10, height - 10);
+
+        //console.log(xCord, yCord);
+        ellipse(xCordMapped, yCordMapped, 30, 30);
+        pop();
+    }
+}
 
 // Gets the data from the server and draws those vertices for each object.
 function drawObject(data) {
