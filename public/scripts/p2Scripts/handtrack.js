@@ -7,10 +7,14 @@
  *  https://github.com/victordibia/handtrack.js/
  */
 
-const video = document.getElementById("localVideo");
+// The reason i am not putting this in the same div as the local video is 
+const video = document.getElementById("localVideoHandTrack");
 const canvas = document.getElementById("myCanvas");
 
-let videoLoaded = false;
+// Turn video on or off
+let renderVideo = true;
+
+let videoLoaded = true;
 let model = null;
 let xCord;
 let yCord;
@@ -21,7 +25,7 @@ const modelParams = {
     flipHorizontal: true,  // flip e.g for video  
     maxNumBoxes: 2,        // maximum number of boxes to detect
     iouThreshold: 0.07,     // ioU threshold for non-max suppression
-    scoreThreshold: 0.8,   // confidence threshold for predictions.
+    scoreThreshold: 0.60,   // confidence threshold for predictions.
 }
 
 // Load the model.
@@ -64,7 +68,7 @@ function runDetection() {
             xCord2 = null;
             yCord2 = null;
         }
-        if (videoLoaded) {
+        if (videoLoaded && renderVideo) {
             requestAnimationFrame(runDetection);
         }
     });

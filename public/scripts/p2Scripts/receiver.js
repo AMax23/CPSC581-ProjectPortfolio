@@ -139,7 +139,6 @@ function joinCall() {
         })
 }
 
-
 function muteAudio() {
     audioOn = !audioOn;
     // Mute the local audio source. Get the audio track from the local stream.
@@ -149,4 +148,12 @@ function muteAudio() {
 function muteVideo() {
     videoOn = !videoOn;
     localVideoStream.getVideoTracks()[0].enabled = videoOn;
+    // If the video is off then there is a second div which has a video for handtracking.
+    // Start the handtracking again if video is turned back on. This comes from handtrack.js
+    if (renderVideo) {
+        renderVideo = false;
+    } else {
+        renderVideo = true;
+        startVideo();
+    }
 }
