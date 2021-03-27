@@ -79,7 +79,7 @@ function drawLetter() {
 function drawHandPointer() {
     //background(0);
     // These coordinates come from the handtrack.js script.
-    if (xCord != null && yCord != null && username != 'oma/opa') {
+    if (xCord != null && yCord != null && username != 'oma/opa' && renderVideo) {
 
         // Map the coordinates so they fit the user's screen.
         // These numbers came from trial and error.
