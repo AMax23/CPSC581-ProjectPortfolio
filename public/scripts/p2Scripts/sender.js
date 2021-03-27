@@ -46,6 +46,13 @@ function handleSignallingData(data) {
         case "UpdateState":
             drawObject(data);
             break;
+        case 'clientDisconnected':
+            // Dispose remote video from the DOM structure.
+            var videoElement = document.getElementById('remoteVideo');
+            videoElement.pause();
+            videoElement.removeAttribute('src'); // Empty source
+            videoElement.load();
+            break;
         default:
             break;
     };

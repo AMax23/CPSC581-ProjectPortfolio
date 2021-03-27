@@ -212,9 +212,19 @@ const stream = (socket) => {
             if (user.conn == socket) {
                 console.log('Client disconnected: ' + user.username);
                 users.splice(users.indexOf(user), 1);
-                return;
+            //    return;
             }
         })
+
+        let clientData = {
+            type: 'clientDisconnected'
+        }
+        // Goes through all the users (should be only 1 left), and let them know other client has left the call.
+        for (let i = 0; i < users.length; i++) {
+            //if (users[i].username != user.username) {
+                users[i].conn.send(JSON.stringify(clientData));
+            //}
+        }
     })
 
     // Helper function for sending messages to a connection.
