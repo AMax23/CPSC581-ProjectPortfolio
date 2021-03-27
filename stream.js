@@ -33,6 +33,8 @@ let frameRate = 1000 / 30;
 
 let users = []; // Store all connected users.
 
+let letter = 'A';
+
 const toVertices = e => e.vertices.map(({ x, y }) => ({ x, y }));
 
 let boxPositions = [];
@@ -64,7 +66,8 @@ const stream = (socket) => {
                 boxes: entities.boxes.map(toVertices),
                 walls: entities.walls.map(toVertices),
                 positions: boxPositions,
-                angles: boxAngles
+                angles: boxAngles,
+                boxesLetters: entities.boxesLetters
             }
             // Send message to all connections
             for (let i = 0; i < users.length; i++) {
@@ -85,6 +88,7 @@ const stream = (socket) => {
                 boxes: [...Array(boxes)].map(() =>
                     Bodies.rectangle(canvas.width / 2, 80, boxSize, boxSize, boxOptions) // This box is not actually added.
                 ),
+                boxesLetters: [], // This list contains all the letters associated with each box.
                 walls: [
                     // Right
                     Bodies.rectangle(
@@ -175,6 +179,8 @@ const stream = (socket) => {
                 let newBox = Bodies.rectangle(coordinates.x, coordinates.y, boxSize, boxSize, boxOptions);
                 World.add(world, newBox);
                 entities.boxes.push(newBox);
+                letter = data.letter;
+                entities.boxesLetters.push(letter);
             } else if (user.username != 'oma/opa') {
                 entities.boxes.forEach(box => {
                     // https://stackoverflow.com/a/50472656/6243352
@@ -192,7 +198,11 @@ const stream = (socket) => {
             entities.boxes.forEach(box => {
                 World.remove(world, box);
             });
+            entities.boxesLetters.forEach(letter => {
+                World.remove(world, letter);
+            });
             entities.boxes = []; // Clear the boxes array.
+            entities.boxesLetters = []; // Clear the boxes letters.
         }
     }
 

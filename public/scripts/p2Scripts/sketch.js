@@ -9,6 +9,8 @@ let myCanvasDiv;
 let boxImg;
 let handImg;
 
+let letter = 'A'; // A letter will appear on the boxes when oma/opa say a letter.
+
 ////////////////////////// BASIC P5 SET UP ////////////////////////////////////////
 function preload() {
 }
@@ -38,7 +40,14 @@ function setup() {
 
 function draw() {
 
-    drawHandPointer(); // This pointer is only drawn for Rhys.
+    if (username == 'Rhys') {
+        drawHandPointer(); // This pointer is only drawn for Rhys.
+    }
+
+    // For oma and opa write the letter that is currently spoken.
+    if (username == "oma/opa") {
+        drawLetter();
+    }
 
     // This only runs once to setup the canvas on the server side.
     // This doesn't work as i want it to cos the receiver will join last and will override these properties.
@@ -54,6 +63,17 @@ function draw() {
     }
 }
 ///////////////////////////////////////////////////////////////////////////////////
+
+// Writes out the letter that is currently spoken by Oma/Opa for them to confirm.
+function drawLetter() {
+    push();
+    fill(255);
+    textSize(30);
+    textAlign(CENTER);
+    letter = letterSpoken != "Background Noise" ? letterSpoken.substr(letterSpoken.length - 1) : letter;
+    text('Letter: ' + letter, 80, 35);
+    pop();
+}
 
 // Draws an image of a hand after tracking the hand position in the x, y location.
 function drawHandPointer() {
@@ -132,7 +152,8 @@ function drawSprite(boxes) {
         fill(255);
         textSize(50);
         textAlign(CENTER);
-        text('A', pos.x, pos.y + 15);
+        letter = boxes.boxesLetters[i];
+        text(letter, pos.x, pos.y + 15);
         pop();
     }
 }
@@ -154,6 +175,11 @@ function addBoxes(event) {
         username: username, // This username comes from the recevier and sender js.
         x: event.offsetX,
         y: event.offsetY
+    }
+    // Only if oma/opa send a box then add a letter.
+    if (username != 'Rhys') {
+        // The letter comes in the format "LetterA".
+        data.letter = letterSpoken != "Background Noise" ? letterSpoken.substr(letterSpoken.length - 1) : letter;
     }
     webSocket.send(JSON.stringify(data));
 }
