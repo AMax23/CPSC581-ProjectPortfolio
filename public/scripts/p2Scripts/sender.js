@@ -138,13 +138,25 @@ function createAndSendOffer() {
 }
 
 function muteAudio() {
-    audioOn = !audioOn;
+    if (audioOn) {
+        document.getElementById('micBtn').src = '../images/project 2/micOff.png';
+        audioOn = false;
+    } else {
+        document.getElementById('micBtn').src = '../images/project 2/mic.png';
+        audioOn = true;
+    }
     // Mute the local audio source.Get the audio track from the local stream.
     localVideoStream.getAudioTracks()[0].enabled = audioOn;
 }
 
 function muteVideo() {
-    videoOn = !videoOn;
+    if (videoOn) {
+        document.getElementById('videoBtn').src = '../images/project 2/videoOff.png';
+        videoOn = false;
+    } else {
+        document.getElementById('videoBtn').src = '../images/project 2/camera.png';
+        videoOn = true;
+    }
     localVideoStream.getVideoTracks()[0].enabled = videoOn;
 }
 

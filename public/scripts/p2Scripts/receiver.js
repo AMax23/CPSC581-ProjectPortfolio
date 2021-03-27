@@ -11,7 +11,6 @@ let personToCall = 'oma/opa'; // Name of the person to call. Hardcoding ito oma/
 var username = "Rhys";
 
 let audioOn = true;
-let videoOn = true;
 
 // Configuration for peer connection.
 // STUN server and TURN servers that it will use to create the ICE candidates and to connect to the peer.
@@ -140,20 +139,27 @@ function joinCall() {
 }
 
 function muteAudio() {
-    audioOn = !audioOn;
+    if (audioOn) {
+        document.getElementById('micBtn').src = '../images/project 2/micOff.png';
+        audioOn = false;
+    } else {
+        document.getElementById('micBtn').src = '../images/project 2/mic.png';
+        audioOn = true;
+    }
     // Mute the local audio source. Get the audio track from the local stream.
     localVideoStream.getAudioTracks()[0].enabled = audioOn;
 }
 
 function muteVideo() {
-    videoOn = !videoOn;
-    localVideoStream.getVideoTracks()[0].enabled = videoOn;
     // If the video is off then there is a second div which has a video for handtracking.
     // Start the handtracking again if video is turned back on. This comes from handtrack.js
     if (renderVideo) {
         renderVideo = false;
+        document.getElementById('videoBtn').src = '../images/project 2/videoOff.png';
     } else {
         renderVideo = true;
         startVideo();
+        document.getElementById('videoBtn').src = '../images/project 2/camera.png';
     }
+    localVideoStream.getVideoTracks()[0].enabled = renderVideo;
 }
