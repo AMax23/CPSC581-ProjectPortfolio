@@ -149,10 +149,13 @@ function drawSprite(boxes) {
 
         // Add a letter inside the box.
         push();
-        fill(255);
+        let colour = boxes.boxesLetters[i].colour;
+        fill(colour.r, colour.g, colour.b);
         textSize(50);
+        stroke(0);
+        strokeWeight(3);
         textAlign(CENTER);
-        letter = boxes.boxesLetters[i];
+        letter = boxes.boxesLetters[i].letter;
         text(letter, pos.x, pos.y + 15);
         pop();
     }
@@ -180,6 +183,7 @@ function addBoxes(event) {
     if (username != 'Rhys') {
         // The letter comes in the format "LetterA".
         data.letter = letterSpoken != "Background Noise" ? letterSpoken.substr(letterSpoken.length - 1) : letter;
+        data.letterColour = { r: random(255), g: random(255), b: random(255) }; // Add a random colour (RGB) for the letter.
     }
     webSocket.send(JSON.stringify(data));
 }

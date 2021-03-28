@@ -34,6 +34,7 @@ let frameRate = 1000 / 30;
 let users = []; // Store all connected users.
 
 let letter = 'A';
+let allLetters = [];
 
 const toVertices = e => e.vertices.map(({ x, y }) => ({ x, y }));
 
@@ -67,7 +68,8 @@ const stream = (socket) => {
                 walls: entities.walls.map(toVertices),
                 positions: boxPositions,
                 angles: boxAngles,
-                boxesLetters: entities.boxesLetters
+                //boxesLetters: entities.boxesLetters
+                boxesLetters: allLetters
             }
             // Send message to all connections
             for (let i = 0; i < users.length; i++) {
@@ -181,6 +183,7 @@ const stream = (socket) => {
                 entities.boxes.push(newBox);
                 letter = data.letter;
                 entities.boxesLetters.push(letter);
+                allLetters.push({letter: letter, colour: data.letterColour});
             } else if (user.username != 'oma/opa') {
                 entities.boxes.forEach(box => {
                     // https://stackoverflow.com/a/50472656/6243352
