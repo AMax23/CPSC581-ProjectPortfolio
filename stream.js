@@ -90,7 +90,6 @@ const stream = (socket) => {
                 boxes: [...Array(boxes)].map(() =>
                     Bodies.rectangle(canvas.width / 2, 80, boxSize, boxSize, boxOptions) // This box is not actually added.
                 ),
-                boxesLetters: [], // This list contains all the letters associated with each box.
                 walls: [
                     // Right
                     Bodies.rectangle(
@@ -165,9 +164,7 @@ const stream = (socket) => {
 
             // Goes through all the users (should be only 2), and whoever drew sends it to the other client.
             for (let i = 0; i < users.length; i++) {
-                //if (users[i].username != user.username) {
                 users[i].conn.send(JSON.stringify(clientData));
-                //}
             }
         } else if (data.type == 'userClick' && user != null) {
             let coordinates = {
@@ -182,8 +179,8 @@ const stream = (socket) => {
                 World.add(world, newBox);
                 entities.boxes.push(newBox);
                 letter = data.letter;
-                entities.boxesLetters.push(letter);
-                allLetters.push({letter: letter, colour: data.letterColour});
+                //entities.boxesLetters.push(letter);
+                allLetters.push({ letter: letter, colour: data.letterColour });
             } else if (user.username != 'oma/opa') {
                 entities.boxes.forEach(box => {
                     // https://stackoverflow.com/a/50472656/6243352
@@ -201,11 +198,8 @@ const stream = (socket) => {
             entities.boxes.forEach(box => {
                 World.remove(world, box);
             });
-            entities.boxesLetters.forEach(letter => {
-                World.remove(world, letter);
-            });
             entities.boxes = []; // Clear the boxes array.
-            entities.boxesLetters = []; // Clear the boxes letters.
+            allLetters = [];
         }
     }
 
@@ -215,7 +209,6 @@ const stream = (socket) => {
             if (user.conn == socket) {
                 console.log('Client disconnected: ' + user.username);
                 users.splice(users.indexOf(user), 1);
-            //    return;
             }
         })
 
@@ -224,9 +217,7 @@ const stream = (socket) => {
         }
         // Goes through all the users (should be only 1 left), and let them know other client has left the call.
         for (let i = 0; i < users.length; i++) {
-            //if (users[i].username != user.username) {
-                users[i].conn.send(JSON.stringify(clientData));
-            //}
+            users[i].conn.send(JSON.stringify(clientData));
         }
     })
 
