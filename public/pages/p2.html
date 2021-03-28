@@ -9,14 +9,27 @@
     <!-- Custom Additional CSS -->
     <link href="../stylesheets/p2Style.css" rel="stylesheet" />
 </head>
-<body>
+<body id="mainPageBackground">
 
     <div class="container">
         <div class="center">
             <button onclick="callRhys()" id="gpBtn">Call Rhys</button> <!--This button will be clicked by Oma/Opa-->
             <button onclick="callOmaOpa()" id="rhysBtn">Call Oma & Opa</button> <!--This button will be clicked by Rhys-->
         </div>
+
+        <div id="mainPgInst">
+            Instructions:
+            <ol>
+                <li>Oma/Opa first have to click call Rhys.</li>
+                <li>Rhys then connects by clicking call Oma & Opa.</li>
+                <li>Have fun!</li>
+            </ol>
+
+        </div>
+
     </div>
+
+    <div id="imgCredit"> <a href="http://www.freepik.com">Background Image designed by rawpixel.com / Freepik</a> </div>
 
     <!--Additional Scripts-->
     <script src="../scripts/p2Scripts/client.js"></script>

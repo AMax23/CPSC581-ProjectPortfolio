@@ -4,6 +4,16 @@ html, body {
     overflow: hidden; /* Hide scrollbars */
 }
 
+#mainPageBackground {
+    background-image: url('../images/project 2/sky.jpg');
+    /* Full height */
+    height: 100%;
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
 .mainContainer {
     display: flex;
     width: 100%;
@@ -36,8 +46,8 @@ html, body {
 
 #localVideo {
     background: #000000;
-    border-radius: 16px;
-    max-width: 100%;
+    border-radius: 10%;
+    width: 100%;
     max-height: 35%;
     /*Mirror video*/
     transform: rotateY(180deg);
@@ -48,8 +58,8 @@ html, body {
 #remoteVideo {
     margin-top: 5%;
     background: #000000;
-    border-radius: 16px;
-    max-width: 100%;
+    border-radius: 10%;
+    width: 100%;
     max-height: 35%;
     /*Mirror video*/
     transform: rotateY(180deg);
@@ -61,7 +71,13 @@ html, body {
 .container {
     height: 200px;
     position: relative;
-    border: 3px solid green;
+    /*border: 3px solid green;*/
+    /*background: #F6F8FF;*/
+    /*Vertically and horizontally center this container on page.*/
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
 }
 
 .center {
@@ -73,11 +89,41 @@ html, body {
     transform: translate(-50%, -50%);
 }
 
+#mainPgInst {
+    color: black;
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    /*background: red;*/
+}
+
+#imgCredit {
+    margin: 0;
+    position: absolute;
+    bottom: 0%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
 #rhysBtn, #gpBtn {
     display: inline-block;
+    background: #1E2235;
+    border-radius: 12px;
+    color: #F6F8FF;
     width: 300px;
-    height: 40px;
+    height: 50px;
     cursor: pointer;
+    font-size: 20px;
+}
+
+#mainPgInst {
+    /*background: white;*/
 }
 
 .callButtonsDiv {
