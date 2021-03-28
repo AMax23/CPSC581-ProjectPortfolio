@@ -155,8 +155,7 @@ function drawSprite(boxes) {
         stroke(0);
         strokeWeight(3);
         textAlign(CENTER);
-        letter = boxes.boxesLetters[i].letter;
-        text(letter, pos.x, pos.y + 15);
+        text(boxes.boxesLetters[i].letter, pos.x, pos.y + 15);
         pop();
     }
 }
@@ -182,7 +181,8 @@ function addBoxes(event) {
     // Only if oma/opa send a box then add a letter.
     if (username != 'Rhys') {
         // The letter comes in the format "LetterA".
-        data.letter = letterSpoken != "Background Noise" ? letterSpoken.substr(letterSpoken.length - 1) : letter;
+        //letter = letterSpoken != "Background Noise" ? letterSpoken.substr(letterSpoken.length - 1) : letter;
+        data.letter = letter;
         data.letterColour = { r: random(255), g: random(255), b: random(255) }; // Add a random colour (RGB) for the letter.
     }
     webSocket.send(JSON.stringify(data));
