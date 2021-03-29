@@ -52,6 +52,11 @@ function handleSignallingData(data) {
             videoElement.removeAttribute('src'); // Empty source
             videoElement.load();
             break;
+        case 'rhysDestoryPerm':
+            rhysPermissionToDestory = data.permissionToDestory; // Change Rhys's permission. This is a global variable in sketch.js.
+            // If Rhys has permission then video will start otherwise it will not in handtrack.js.
+            startVideo();
+            break;
         default:
             break;
     };

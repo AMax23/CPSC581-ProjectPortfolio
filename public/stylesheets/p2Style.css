@@ -156,20 +156,25 @@ html, body {
 }
 
 /*Oma/Opa Buttons style*/
-#clrScrnBtn {
+.actionBtns {
+    /*Center buttons horizontally*/
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+/*These custom buttons are clear screen btns and give rhys permission btn. Only for Oma/Opa.*/
+.customBtn {
     height: 30px;
-    /*Center button horizontally*/
-    margin: 0 auto;
-    display: block;
-    margin-bottom: 5px;
-    float: right;
     border: none;
     cursor: pointer;
     border-radius: 5px;
     text-align: center;
+    margin: 10px 10px;
+    background: white;
 }
 
-    #clrScrnBtn:hover {
+    .customBtn:hover {
         background-color: black;
         color: white;
     }
@@ -182,7 +187,7 @@ html, body {
     font-size: 1.25vw;
     color: #F4F4F5; /*Frost White/Silver*/
     /*background: orange;*/
-    margin-bottom: 40px;
+    margin-bottom: 30px; /*Space between the last instruction and the call btns.*/
 }
 
     .customCounter li {

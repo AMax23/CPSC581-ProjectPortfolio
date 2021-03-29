@@ -68,7 +68,7 @@ function runDetection() {
             xCord2 = null;
             yCord2 = null;
         }
-        if (videoLoaded && renderVideo) {
+        if (videoLoaded && renderVideo && rhysPermissionToDestory) {
             requestAnimationFrame(runDetection);
         }
     });

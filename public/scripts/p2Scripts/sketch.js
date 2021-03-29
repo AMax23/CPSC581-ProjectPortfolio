@@ -5,12 +5,15 @@
 
 let canvasPropSentToServer = false;
 let myCanvasDiv;
+let rhysDestoryBtn;
 
 let boxImg;
 let handImg;
 
 let letter = 'A'; // A letter will appear on the boxes when oma/opa say a letter.
 let letterParag = document.getElementById('letterSpoken');
+
+let rhysPermissionToDestory = false; // Oma/Opa have not given Rhys permission to destory yet.
 
 ////////////////////////// BASIC P5 SET UP ////////////////////////////////////////
 function preload() {
@@ -29,6 +32,9 @@ function setup() {
         // When the clear button is clicked
         let clearBtn = document.getElementById('clrScrnBtn');
         clearBtn.addEventListener("click", clearScreen);
+
+        rhysDestoryBtn = document.getElementById('rhysDestroyBtn');
+        rhysDestoryBtn.addEventListener("click", rhysPermission);
 
         // Add event listener for whenever the canvas is clicked. A box will be added.
         myCanvasDiv.addEventListener("mousedown", addBoxes);
@@ -75,7 +81,7 @@ function drawLetter() {
 function drawHandPointer() {
     //background(0);
     // These coordinates come from the handtrack.js script.
-    if (xCord != null && yCord != null && username != 'oma/opa' && renderVideo) {
+    if (xCord != null && yCord != null && renderVideo && rhysPermissionToDestory) {
 
         // Map the coordinates so they fit the user's screen.
         // These numbers came from trial and error.
@@ -94,19 +100,6 @@ function drawHandPointer() {
         }
         addBoxes(coords); // Since Rhys is the one who has the hand, this will destroy the box construction.
     }
-    //// A second hand.
-    //if (xCord2 != null && yCord2 != null && username != 'oma/opa') {
-    //    push();
-    //    fill(255, 0, 255);
-    //    // Map the coordinates so they fit the user's screen.
-    //    // These numbers came from trial and error.
-    //    let xCordMapped = map(xCord, 130, 550, 0, width - 10);
-    //    let yCordMapped = map(yCord, 80, 400, 10, height - 10);
-
-    //    //console.log(xCord, yCord);
-    //    ellipse(xCordMapped, yCordMapped, 30, 30);
-    //    pop();
-    //}
 }
 
 // Gets the data from the server and draws those vertices for each object.
@@ -189,7 +182,27 @@ function addBoxes(event) {
 function clearScreen(event) {
     let data = {
         type: "clearScreen",
-        username: username, // This username comes from the recevier and sender js.
+        username: username // This username comes from the recevier and sender js.
     }
     webSocket.send(JSON.stringify(data));
+}
+
+// When the button is cliicked Rhys's permission to destory the blocks will change.
+function rhysPermission(event) {
+    rhysPermissionToDestory = !rhysPermissionToDestory;
+    let data = {
+        type: "rhysDestory",
+        username: username, // This username comes from the recevier and sender js.
+        permissionToDestory: rhysPermissionToDestory
+    }
+    webSocket.send(JSON.stringify(data));
+
+    // Change the style of button element when clicked.
+    if (rhysPermissionToDestory) {
+        rhysDestoryBtn.style.background = 'Black';
+        rhysDestoryBtn.style.color = 'White';
+    } else {
+        rhysDestoryBtn.style.background = 'White';
+        rhysDestoryBtn.style.color = 'Black';
+    }
 }

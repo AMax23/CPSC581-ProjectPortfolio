@@ -200,6 +200,15 @@ const stream = (socket) => {
             });
             entities.boxes = []; // Clear the boxes array.
             allLetters = [];
+        } else if (data.type == 'rhysDestory' && user != null) {
+            let clientData = data;
+            clientData.type = "rhysDestoryPerm";
+            // Sends to Rhys the permission data. User who sends this should always be oma/opa.
+            for (let i = 0; i < users.length; i++) {
+                if (users[i].username != user.username) {
+                    users[i].conn.send(JSON.stringify(clientData));
+                }
+            }
         }
     }
 
