@@ -10,6 +10,7 @@ let boxImg;
 let handImg;
 
 let letter = 'A'; // A letter will appear on the boxes when oma/opa say a letter.
+let letterParag = document.getElementById('letterSpoken');
 
 ////////////////////////// BASIC P5 SET UP ////////////////////////////////////////
 function preload() {
@@ -66,13 +67,8 @@ function draw() {
 
 // Writes out the letter that is currently spoken by Oma/Opa for them to confirm.
 function drawLetter() {
-    push();
-    fill(255);
-    textSize(30);
-    textAlign(CENTER);
     letter = letterSpoken != "Background Noise" ? letterSpoken.substr(letterSpoken.length - 1) : letter;
-    text('Letter: ' + letter, 80, 35);
-    pop();
+    letterParag.innerHTML = 'Letter Spoken: ' + letter;
 }
 
 // Draws an image of a hand after tracking the hand position in the x, y location.
@@ -144,6 +140,7 @@ function drawSprite(boxes) {
         translate(pos.x, pos.y);
         rotate(angle);
         imageMode(CENTER);
+        rect(0 - boxImg.width / 2, 0 - boxImg.height / 2, boxImg.width, boxImg.height); // Draw a border around box.
         image(boxImg, 0, 0);
         pop();
 
