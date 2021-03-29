@@ -15,7 +15,7 @@ let world = engine.world;
 let entities;
 let boxes = 0; // Starting off with no boxes on the screen.
 let maxBoxes = 10; // Only this many boxes at a time on the canvas. More than this and it will be laggy :(
-let boxSize = 62;
+let boxSize = 86;
 // Properties for the box.
 let boxOptions = {
     friction: 1,
