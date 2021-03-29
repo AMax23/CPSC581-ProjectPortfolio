@@ -37,6 +37,7 @@ webSocket.onmessage = (event) => {
 function handleSignallingData(data) {
     switch (data.type) {
         case "answer":
+            document.getElementById('clientConnectMessage').innerHTML = '';
             peerConnection.setRemoteDescription(data.answer);
             break;
         // When a remote peer sends an ice candidate to us.
@@ -52,6 +53,7 @@ function handleSignallingData(data) {
             videoElement.pause();
             videoElement.removeAttribute('src'); // Empty source
             videoElement.load();
+            document.getElementById('clientConnectMessage').innerHTML = 'Rhys not connected.';
             break;
         default:
             break;

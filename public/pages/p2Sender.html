@@ -13,11 +13,15 @@
     <div class="mainContainer">
 
         <div id="videoCallDiv">
-            <video id="remoteVideo" autoplay></video>
+            <div class="remoteVideoContainer">
+                <video id="remoteVideo" autoplay></video>
+                <div class="overlay">
+                    <h3 id="clientConnectMessage">Rhys not connected.</h3>
+                </div>
+            </div>
             <video muted id="localVideo" autoplay></video>
 
             <div id="customClientDiv">
-
                 <p id="letterSpoken">Letter Spoken: A</p>
                 <div class="actionBtns">
                     <button class="customBtn" id="clrScrnBtn">Clear boxes</button>

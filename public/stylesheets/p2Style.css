@@ -2,6 +2,7 @@ html, body {
     height: 100%;
     margin: 0;
     overflow: hidden; /* Hide scrollbars */
+    font-family: 'Montserrat', sans-serif;
 }
 
 #mainPageBackground {
@@ -81,6 +82,28 @@ html, body {
     display: block;
 }
 
+.remoteVideoContainer {
+    position: relative;
+}
+/*Add overlay text on top of the remote video for when the user's video is off or not connected.*/
+.overlay {
+    background: rgba(0,0,0,0);
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .overlay h3 {
+        color: white;
+        font-size: 1.2vw;
+        text-align: center;
+    }
+
 /* --- CSS Related to main landing page ---*/
 .container {
     height: 200px;
@@ -121,10 +144,14 @@ html, body {
     height: 50px;
     cursor: pointer;
     font-size: 20px;
+    margin-bottom: 40px;
 }
 
-#mainPgInst {
-    /*background: white;*/
+/* Change the button width when the browser window is 1500px wide or less: */
+@media only screen and (max-width: 1500px) {
+    #rhysBtn, #gpBtn {
+        width: 170px;
+    }
 }
 
 /* --- CSS Related to the instructions and buttons available only to Oma/Opa ---*/
@@ -136,7 +163,7 @@ html, body {
 
 #letterSpoken {
     color: #F4F4F5; /*Frost White/Silver*/
-    font-family: 'Montserrat', sans-serif;
+    /*font-family: 'Montserrat', sans-serif;*/
     font-size: 1.5vw; /*Viewport is the browser window size. 1vw = 1% of viewport width.*/
     margin: 0;
     display: inline-block;
@@ -171,7 +198,7 @@ html, body {
     margin-top: 10px;
     padding: 0;
     list-style-type: none;
-    font-size: 1.25vw;
+    font-size: 1.2vw;
     color: #F4F4F5; /*Frost White/Silver*/
     /*background: orange;*/
     margin-bottom: 30px; /*Space between the last instruction and the call btns.*/
@@ -195,7 +222,7 @@ html, body {
 /*Instructions on the main landing page.*/
 #mainPgInst {
     color: black;
-    font-size: 20px;
+    font-size: 2vw;
     font-weight: bold;
     margin: 0;
     position: absolute;
@@ -208,6 +235,7 @@ html, body {
 
     #mainPgInst li {
         color: black;
+        font-size: 1.5vw;
     }
 
 /* --- CSS Related to call buttons at the bottom. ---*/
