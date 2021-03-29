@@ -9,6 +9,7 @@ let rhysDestoryBtn;
 
 let boxImg;
 let handImg;
+let backgroundImg;
 
 let letter = 'A'; // A letter will appear on the boxes when oma/opa say a letter.
 let letterParag = document.getElementById('letterSpoken');
@@ -43,6 +44,7 @@ function setup() {
     //boxImg = loadImage('//cdn.rawgit.com/liabru/matter-js/2560a681/demo/img/box.png');
     boxImg = loadImage('../images/project 2/crate.png');
     handImg = loadImage('../images/project 2/hand.png');
+    backgroundImg = loadImage('../images/project 2/jungleBackground.webp');
 }
 
 function draw() {
@@ -106,21 +108,25 @@ function drawHandPointer() {
 function drawObject(data) {
     clear(); // Clear the canvas and redraw all the shapes and walls.
 
+    // Game background
+    image(backgroundImg, 0, 0, width, height);
+
     let walls = data.walls;
     let boxes = data.boxes;
 
-    push();
-    fill(154, 203, 75); // Green colour
-    stroke(3);
-    walls.forEach(wall => drawBody(wall));
-    pop();
+    // The wall is just now invisible im not drawing it.
+    //push();
+    //fill(154, 203, 75); // Green colour
+    //stroke(3);
+    //walls.forEach(wall => drawBody(wall));
+    //pop();
 
     push();
     fill(124, 74, 38); // Brown colour
     stroke(255);
     strokeWeight(2);
-    boxes.forEach(box => drawSprite(data));
-    //boxes.forEach(box => drawBody(box));
+    boxes.forEach(box => drawSprite(data)); // Put image on top of the x y positions.
+    //boxes.forEach(box => drawBody(box)); // Draw a rect on with the vertices.
     pop();
 }
 
