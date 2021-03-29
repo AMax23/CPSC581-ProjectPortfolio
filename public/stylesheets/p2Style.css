@@ -14,11 +14,18 @@ html, body {
     background-size: cover;
 }
 
+#clientBody {
+    background: #1C2329; /*Dark bliue*/
+    overflow: hidden;
+}
+
 .mainContainer {
+    margin: 10px;
     display: flex;
-    width: 100%;
-    height: 100%;
-    /*background: yellow;*/
+    /*width: 90%;*/
+    height: 95%;
+    border: 1px solid white;
+    box-shadow: 10px 20px 40px rgb(0 0 0 / 60%);
 }
 
 /*div on the left*/
@@ -28,12 +35,11 @@ html, body {
     width: 24%;
     height: 100%;
     background: #1bA8e7; /*Light blue*/
-    /*margin: 5px;*/
 }
 
 /*div on the right*/
 .drawingCanvas {
-    margin: 2px;
+    /*margin: 2px;*/
     flex-grow: 1; /*This div will occupy the remaining space in the parent div*/
     background: #F9C651; /*Giraffe orange colour*/
     margin: 0;
@@ -46,28 +52,36 @@ html, body {
 
 #localVideo {
     background: #000000;
-    border-radius: 10%;
-    width: 100%;
+    border-radius: 5%;
+    width: 95%;
     max-height: 35%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     /*Mirror video*/
     transform: rotateY(180deg);
     -webkit-transform: rotateY(180deg); /* Safari and Chrome */
     -moz-transform: rotateY(180deg); /* Firefox */
+    /*Center video horizontally*/
+    margin: 5% auto;
+    display: block;
 }
 
 #remoteVideo {
-    margin-top: 5%;
     background: #000000;
-    border-radius: 10%;
-    width: 100%;
+    border-radius: 5%;
+    width: 95%;
     max-height: 35%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     /*Mirror video*/
     transform: rotateY(180deg);
     -webkit-transform: rotateY(180deg); /* Safari and Chrome */
     -moz-transform: rotateY(180deg); /* Firefox */
+    /*Center video horizontally*/
+    margin: 5% auto;
+    /*margin-top: 5%;*/
+    display: block;
 }
 
-/* --- CSS Related to button on main page ---*/
+/* --- CSS Related to main landing page ---*/
 .container {
     height: 200px;
     position: relative;
@@ -113,7 +127,7 @@ html, body {
 
 #rhysBtn, #gpBtn {
     display: inline-block;
-    background: #1E2235;
+    background: #1E2235; /*Dark blue*/
     border-radius: 12px;
     color: #F6F8FF;
     width: 300px;
@@ -126,21 +140,93 @@ html, body {
     /*background: white;*/
 }
 
+/* --- CSS Related to the instructions and buttons available only to Oma/Opa ---*/
+#customClientDiv {
+    /*background: green;*/
+    height: auto;
+    margin: 5%;
+}
+
+#letterSpoken {
+    color: #F4F4F5; /*Frost White/Silver*/
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.5vw; /*Viewport is the browser window size. 1vw = 1% of viewport width.*/
+    margin: 0;
+    display: inline-block;
+}
+
+/*Oma/Opa Buttons style*/
+#clrScrnBtn {
+    height: 30px;
+    /*Center button horizontally*/
+    margin: 0 auto;
+    display: block;
+    margin-bottom: 5px;
+    float: right;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    text-align: center;
+}
+
+    #clrScrnBtn:hover {
+        background-color: black;
+        color: white;
+    }
+
+.customCounter {
+    margin: 0;
+    margin-top: 10px;
+    padding: 0;
+    list-style-type: none;
+    font-size: 1.25vw;
+    color: #F4F4F5; /*Frost White/Silver*/
+    /*background: orange;*/
+    margin-bottom: 40px;
+}
+
+    .customCounter li {
+        counter-increment: step-counter;
+        margin-bottom: 10px;
+    }
+
+        .customCounter li::before {
+            content: counter(step-counter);
+            margin-right: 5px;
+            font-size: 80%;
+            background-color: #313B44; /*Greyish*/
+            color: white;
+            font-weight: bold;
+            padding: 3px 8px;
+            border-radius: 3px;
+        }
+
+/* --- CSS Related to call buttons at the bottom. ---*/
 .callButtonsDiv {
-    position: absolute;
+    /*position: absolute;
     left: 4%;
-    bottom: 32px;
+    bottom: 32px;*/
+    /*background: red;*/
+    margin: 5%;
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: row;
 }
 
 /*The call buttons (end call, camera, mic, etc.) style */
 .callBtns {
-    width: 3%; /* Set width of icon */
-    height: 10%; /* Set height of icon */
+    width: 12%; /* Set width of icon */
+    height: 12%; /* Set height of icon */
     border: 1px solid white;
     border-radius: 25%;
     cursor: pointer;
-    margin-left: 20px;
+    /*margin-left: 20px;*/
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
+
+    .callBtns:hover {
+        opacity: 0.90;
+    }
 
 .phoneIcon {
     background: #EA312B; /*Red*/
@@ -152,9 +238,4 @@ html, body {
 
 .cameraIcon {
     background: white;
-}
-
-/*Oma/Opa Buttons style*/
-#clrScrnBtn {
-    height: 30px;
 }

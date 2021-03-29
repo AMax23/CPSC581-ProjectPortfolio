@@ -8,18 +8,23 @@
     <!-- Custom Additional CSS -->
     <link href="../stylesheets/p2Style.css" rel="stylesheet" />
 </head>
-<body>
+<body id="clientBody">
 
     <div class="mainContainer">
 
         <div id="videoCallDiv">
             <video id="remoteVideo" autoplay></video>
-            <br />   <br />   <br />   <br />
             <video muted id="localVideo" autoplay></video>
-            <video muted id="localVideoHandTrack" style="visibility:hidden"></video>
+            <video muted id="localVideoHandTrack" style="display: none"></video>
 
-            <div>
-                What Rhys sees
+            <div id="customClientDiv">
+                <!--What Rhys sees-->
+                <ol class="customCounter">
+                    <!--Instructions-->
+                    <li>Wait for Oma/Opa to build a tower.</li>
+                    <li>Learn the alphabet.</li>
+                    <li>Wave your hand to destory the tower!</li>
+                </ol>
             </div>
 
             <div class="callButtonsDiv">

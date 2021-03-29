@@ -8,23 +8,30 @@
     <!-- Custom Additional CSS -->
     <link href="../stylesheets/p2Style.css" rel="stylesheet" />
 </head>
-<body>
+<body id="clientBody">
 
     <div class="mainContainer">
 
         <div id="videoCallDiv">
             <video id="remoteVideo" autoplay></video>
-            <br />   <br />   <br />   <br />
             <video muted id="localVideo" autoplay></video>
 
-            <div id="oma/opaBtns">
-                What Oma/Opa see
+            <div id="customClientDiv">
+
+                <p id="letterSpoken">Letter Spoken: A</p>
                 <button id="clrScrnBtn">Clear boxes</button>
+
+                <ol class="customCounter">
+                    <!--Instructions-->
+                    <li>Say a letter.</li>
+                    <li>Click to add a box.</li>
+                    <li>Create a tower for Rhys to Destory!</li>
+                </ol>
             </div>
 
             <div class="callButtonsDiv">
                 <img class="callBtns phoneIcon" src="../images/project 2/end-call-button.svg" onclick=endCall()>
-                <img class="callBtns micIcon" id ="micBtn" src="../images/project 2/mic.png" onclick=muteAudio()>
+                <img class="callBtns micIcon" id="micBtn" src="../images/project 2/mic.png" onclick=muteAudio()>
                 <img class="callBtns cameraIcon" id="videoBtn" src="../images/project 2/camera.png" onclick=muteVideo()>
             </div>
         </div>
