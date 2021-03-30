@@ -53,7 +53,7 @@ function handleSignallingData(data) {
             videoElement.load();
             break;
         case 'rhysDestoryPerm':
-            rhysPermissionToDestory = data.permissionToDestory; // Change Rhys's permission. This is a global variable in sketch.js.
+            rhysPermissionToDestroy = data.permissionToDestroy; // Change Rhys's permission. This is a global variable in sketch.js.
             // If Rhys has permission then video will start otherwise it will not in handtrack.js.
             startVideo();
             break;
