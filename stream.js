@@ -14,8 +14,8 @@ let world = engine.world;
 
 let entities;
 let boxes = 0; // Starting off with no boxes on the screen.
-let maxBoxes = 10; // Only this many boxes at a time on the canvas. More than this and it will be laggy :(
-let boxSize = 86;
+let maxBoxes = 9; // Only this many boxes at a time on the canvas. More than this and it will be laggy :(
+let boxSize = 102;
 // Properties for the box.
 let boxOptions = {
     friction: 1,
@@ -33,8 +33,8 @@ let frameRate = 1000 / 30;
 
 let users = []; // Store all connected users.
 
-let letter = 'A';
-let allLetters = [];
+let animal = 'A';
+let allAnimals = [];
 
 const toVertices = e => e.vertices.map(({ x, y }) => ({ x, y }));
 
@@ -69,7 +69,7 @@ const stream = (socket) => {
                 positions: boxPositions,
                 angles: boxAngles,
                 //boxesLetters: entities.boxesLetters
-                boxesLetters: allLetters
+                boxesAnimals: allAnimals
             }
             // Send message to all connections
             for (let i = 0; i < users.length; i++) {
@@ -178,14 +178,14 @@ const stream = (socket) => {
                 let newBox = Bodies.rectangle(coordinates.x, coordinates.y, boxSize, boxSize, boxOptions);
                 World.add(world, newBox);
                 entities.boxes.push(newBox);
-                letter = data.letter;
-                //entities.boxesLetters.push(letter);
-                allLetters.push({ letter: letter, colour: data.letterColour });
+                animal = data.animalNoise;
+                //entities.boxesLetters.push(animal);
+                allAnimals.push({ animalNoise: animal });
             } else if (user.username != 'oma/opa') {
                 entities.boxes.forEach(box => {
                     // https://stackoverflow.com/a/50472656/6243352
 
-                    let force = 0.05;
+                    let force = 0.09;
                     let deltaVector = Vector.sub(box.position, coordinates);
                     let normalizedDelta = Vector.normalise(deltaVector);
                     let forceVector = Vector.mult(normalizedDelta, force);
@@ -199,7 +199,7 @@ const stream = (socket) => {
                 World.remove(world, box);
             });
             entities.boxes = []; // Clear the boxes array.
-            allLetters = [];
+            allAnimals = [];
         } else if (data.type == 'rhysDestory' && user != null) {
             let clientData = data;
             clientData.type = "rhysDestoryPerm";

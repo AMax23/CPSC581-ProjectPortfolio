@@ -5,16 +5,17 @@
 
 let canvasPropSentToServer = false;
 let myCanvasDiv;
-let rhysDestoryBtn;
+let rhysDestroyBtn;
 
 let boxImg;
 let handImg;
 let backgroundImg;
+let animalImages;
 
-let letter = 'A'; // A letter will appear on the boxes when oma/opa say a letter.
+let word = 'cow'; // An animal will appear on the boxes when oma/opa make a sound.
 let letterParag = document.getElementById('letterSpoken');
 
-let rhysPermissionToDestory = false; // Oma/Opa have not given Rhys permission to destory yet.
+let rhysPermissionToDestroy = false; // Oma/Opa have not given Rhys permission to destory yet.
 
 ////////////////////////// BASIC P5 SET UP ////////////////////////////////////////
 function preload() {
@@ -34,17 +35,28 @@ function setup() {
         let clearBtn = document.getElementById('clrScrnBtn');
         clearBtn.addEventListener("click", clearScreen);
 
-        rhysDestoryBtn = document.getElementById('rhysDestroyBtn');
-        rhysDestoryBtn.addEventListener("click", rhysPermission);
+        rhysDestroyBtn = document.getElementById('rhysDestroyBtn');
+        rhysDestroyBtn.addEventListener("click", rhysPermission);
 
         // Add event listener for whenever the canvas is clicked. A box will be added.
         myCanvasDiv.addEventListener("mousedown", addBoxes);
     }
 
     //boxImg = loadImage('//cdn.rawgit.com/liabru/matter-js/2560a681/demo/img/box.png');
-    boxImg = loadImage('../images/project 2/crate.png');
+    boxImg = loadImage('../images/project 2/needlepointFabric.png');
     handImg = loadImage('../images/project 2/hand.png');
     backgroundImg = loadImage('../images/project 2/jungleBackground.webp');
+
+    animalImages = {
+        cow: loadImage('../images/project 2/Animals/cow.png'),
+        pig: loadImage('../images/project 2/Animals/pig.png'),
+        sheep: loadImage('../images/project 2/Animals/sheep.png'),
+        chicken: loadImage('../images/project 2/Animals/chicken.png'),
+        goat: loadImage('../images/project 2/Animals/goat.png'),
+        duck: loadImage('../images/project 2/Animals/duck.png'),
+        horse: loadImage('../images/project 2/Animals/horse.png'),
+        frog: loadImage('../images/project 2/Animals/frog.png')
+    }
 }
 
 function draw() {
@@ -55,7 +67,7 @@ function draw() {
 
     // For oma and opa write the letter that is currently spoken.
     if (username == "oma/opa") {
-        drawLetter();
+        writeAnimalName();
     }
 
     // This only runs once to setup the canvas on the server side.
@@ -74,16 +86,16 @@ function draw() {
 ///////////////////////////////////////////////////////////////////////////////////
 
 // Writes out the letter that is currently spoken by Oma/Opa for them to confirm.
-function drawLetter() {
-    letter = letterSpoken != "Background Noise" ? letterSpoken.substr(letterSpoken.length - 1) : letter;
-    letterParag.innerHTML = 'Letter Spoken: ' + letter;
+function writeAnimalName() {
+    word = animal != "Background Noise" ? animal : word;
+    letterParag.innerHTML = 'Animal: ' + word.charAt(0).toUpperCase() + word.slice(1); // This just makes the first letter uppercase!
 }
 
 // Draws an image of a hand after tracking the hand position in the x, y location.
 function drawHandPointer() {
     //background(0);
     // These coordinates come from the handtrack.js script.
-    if (xCord != null && yCord != null && renderVideo && rhysPermissionToDestory) {
+    if (xCord != null && yCord != null && renderVideo && rhysPermissionToDestroy) {
 
         // Map the coordinates so they fit the user's screen.
         // These numbers came from trial and error.
@@ -145,13 +157,20 @@ function drawSprite(boxes) {
 
         // Add a letter inside the box.
         push();
-        let colour = boxes.boxesLetters[i].colour;
-        fill(colour.r, colour.g, colour.b);
-        textSize(50);
-        stroke(0);
-        strokeWeight(3);
-        textAlign(CENTER);
-        text(boxes.boxesLetters[i].letter, pos.x, pos.y + 15);
+        //let colour = boxes.boxesLetters[i].colour;
+        //fill(colour.r, colour.g, colour.b);
+        //textSize(50);
+        //stroke(0);
+        //strokeWeight(3);
+        //textAlign(CENTER);
+        //text(boxes.boxesLetters[i].letter, pos.x, pos.y + 15);
+
+        // Rotae the image.
+        translate(pos.x, pos.y);
+        rotate(angle);
+        imageMode(CENTER);
+        let animal = boxes.boxesAnimals[i].animalNoise;
+        image(animalImages[animal], 0, 0);
         pop();
     }
 }
@@ -178,8 +197,8 @@ function addBoxes(event) {
     if (username != 'Rhys') {
         // The letter comes in the format "LetterA".
         //letter = letterSpoken != "Background Noise" ? letterSpoken.substr(letterSpoken.length - 1) : letter;
-        data.letter = letter;
-        data.letterColour = { r: random(255), g: random(255), b: random(255) }; // Add a random colour (RGB) for the letter.
+        data.animalNoise = word;
+        //data.letterColour = { r: random(255), g: random(255), b: random(255) }; // Add a random colour (RGB) for the letter.
     }
     webSocket.send(JSON.stringify(data));
 }
@@ -195,20 +214,20 @@ function clearScreen(event) {
 
 // When the button is cliicked Rhys's permission to destory the blocks will change.
 function rhysPermission(event) {
-    rhysPermissionToDestory = !rhysPermissionToDestory;
+    rhysPermissionToDestroy = !rhysPermissionToDestroy;
     let data = {
         type: "rhysDestory",
         username: username, // This username comes from the recevier and sender js.
-        permissionToDestory: rhysPermissionToDestory
+        permissionToDestroy: rhysPermissionToDestroy
     }
     webSocket.send(JSON.stringify(data));
 
     // Change the style of button element when clicked.
-    if (rhysPermissionToDestory) {
-        rhysDestoryBtn.style.background = 'Black';
-        rhysDestoryBtn.style.color = 'White';
+    if (rhysPermissionToDestroy) {
+        rhysDestroyBtn.style.background = 'Black';
+        rhysDestroyBtn.style.color = 'White';
     } else {
-        rhysDestoryBtn.style.background = 'White';
-        rhysDestoryBtn.style.color = 'Black';
+        rhysDestroyBtn.style.background = 'White';
+        rhysDestroyBtn.style.color = 'Black';
     }
 }
