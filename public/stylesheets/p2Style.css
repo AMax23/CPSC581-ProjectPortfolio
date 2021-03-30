@@ -33,7 +33,7 @@ html, body {
 #videoCallDiv {
     top: 0;
     left: 0;
-    width: 24%;
+    width: 25%;
     height: 100%;
     background: #1bA8e7; /*Light blue*/
 }
@@ -62,7 +62,7 @@ html, body {
     -webkit-transform: rotateY(180deg); /* Safari and Chrome */
     -moz-transform: rotateY(180deg); /* Firefox */
     /*Center video horizontally*/
-    margin: 5% auto;
+    margin: 3% auto;
     display: block;
 }
 
@@ -77,7 +77,7 @@ html, body {
     -webkit-transform: rotateY(180deg); /* Safari and Chrome */
     -moz-transform: rotateY(180deg); /* Firefox */
     /*Center video horizontally*/
-    margin: 5% auto;
+    margin: 2% auto;
     /*margin-top: 5%;*/
     display: block;
 }
@@ -169,8 +169,16 @@ html, body {
     display: inline-block;
 }
 
-/*Oma/Opa Buttons style*/
-.actionBtns {
+#rhysDestroyPerm {
+    /*color: #F4F4F5;*/ /*Frost White/Silver*/
+    /*font-size: 1.2vw;*/ /*Viewport is the browser window size. 1vw = 1% of viewport width.*/
+    margin: 0;
+    /*display: inline-block;*/
+    text-align: center;
+}
+
+    /*Oma/Opa Buttons style*/
+    .actionBtns {
     /*Center buttons horizontally*/
     display: flex;
     justify-content: center;

@@ -46,7 +46,6 @@ function setup() {
     boxImg = loadImage('../images/project 2/needlepointFabric.png');
     handImg = loadImage('../images/project 2/hand.png');
     backgroundImg = loadImage('../images/project 2/jungleBackground.webp');
-
     animalImages = {
         cow: loadImage('../images/project 2/Animals/cow.png'),
         pig: loadImage('../images/project 2/Animals/pig.png'),
@@ -120,8 +119,9 @@ function drawHandPointer() {
 function drawObject(data) {
     clear(); // Clear the canvas and redraw all the shapes and walls.
 
-    // Game background
-    image(backgroundImg, 0, 0, width, height);
+    // Game background. Only draw when Rhys is allowed to destory.
+    // This is because Rhys needs a visual cue to know when he can start waving his hand!
+    if (rhysPermissionToDestroy) { image(backgroundImg, 0, 0, width, height); }
 
     let walls = data.walls;
     let boxes = data.boxes;
@@ -137,8 +137,9 @@ function drawObject(data) {
     fill(124, 74, 38); // Brown colour
     stroke(255);
     strokeWeight(2);
+    // If Rhys doesn't have permission yet then just draw a normal solid box (no image will be added).
+    if (!rhysPermissionToDestroy) { boxes.forEach(box => drawBody(box)); } // Draw a rect on with the vertices.
     boxes.forEach(box => drawSprite(data)); // Put image on top of the x y positions.
-    //boxes.forEach(box => drawBody(box)); // Draw a rect on with the vertices.
     pop();
 }
 
@@ -147,24 +148,19 @@ function drawSprite(boxes) {
     for (let i = 0; i < boxes.positions.length; i++) {
         const pos = boxes.positions[i];
         const angle = boxes.angles[i];
-        push();
-        translate(pos.x, pos.y);
-        rotate(angle);
-        imageMode(CENTER);
-        rect(0 - boxImg.width / 2, 0 - boxImg.height / 2, boxImg.width, boxImg.height); // Draw a border around box.
-        image(boxImg, 0, 0);
-        pop();
+        // Only draw the fabric image if Rhys has permission to destroy.
+        // This is to make the boxes more boring and dull before its Rhys's turn.
+        if (rhysPermissionToDestroy) {
+            push();
+            translate(pos.x, pos.y);
+            rotate(angle);
+            imageMode(CENTER);
+            rect(0 - boxImg.width / 2, 0 - boxImg.height / 2, boxImg.width, boxImg.height); // Draw a border around box.
+            image(boxImg, 0, 0);
+            pop();
+        }
 
-        // Add a letter inside the box.
         push();
-        //let colour = boxes.boxesLetters[i].colour;
-        //fill(colour.r, colour.g, colour.b);
-        //textSize(50);
-        //stroke(0);
-        //strokeWeight(3);
-        //textAlign(CENTER);
-        //text(boxes.boxesLetters[i].letter, pos.x, pos.y + 15);
-
         // Rotae the image.
         translate(pos.x, pos.y);
         rotate(angle);

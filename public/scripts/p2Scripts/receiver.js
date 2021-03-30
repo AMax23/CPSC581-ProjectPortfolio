@@ -56,6 +56,13 @@ function handleSignallingData(data) {
             rhysPermissionToDestroy = data.permissionToDestroy; // Change Rhys's permission. This is a global variable in sketch.js.
             // If Rhys has permission then video will start otherwise it will not in handtrack.js.
             startVideo();
+
+            // Change the style of button element when clicked.
+            if (rhysPermissionToDestroy) {
+                document.getElementById('waveHand').src = '../images/project 2/waveHand.png';
+            } else {
+                document.getElementById('waveHand').src = '../images/project 2/doNotWaveHand.png';
+            }
             break;
         default:
             break;
