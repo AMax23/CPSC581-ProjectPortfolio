@@ -222,7 +222,7 @@ html, body {
 /*Instructions on the main landing page.*/
 #mainPgInst {
     color: black;
-    font-size: 2vw;
+    font-size: 1.5vw;
     font-weight: bold;
     margin: 0;
     position: absolute;
@@ -235,7 +235,7 @@ html, body {
 
     #mainPgInst li {
         color: black;
-        font-size: 1.5vw;
+        font-size: 1.2vw;
     }
 
 /* --- CSS Related to call buttons at the bottom. ---*/
