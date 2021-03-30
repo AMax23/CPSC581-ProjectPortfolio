@@ -8,9 +8,9 @@ window.onload = (event) => {
 // https://github.com/tensorflow/tfjs-models/tree/master/speech-commands
 
 // the link to your model provided by Teachable Machine export panel
-const URL = "https://teachablemachine.withgoogle.com/models/B0FR-Z0vc/";
+const URL = "https://teachablemachine.withgoogle.com/models/ST6D3HRGJ/"; //"https://teachablemachine.withgoogle.com/models/B0FR-Z0vc/";
 
-let letterSpoken = 'A';
+let animal = 'cow';
 
 async function createModel() {
     const checkpointURL = URL + "model.json"; // model topology
@@ -38,7 +38,7 @@ async function init() {
     //}
 
     // listen() takes two arguments:
-    // 1. A callback function that is invoked anytime a word is recognized.
+    // 1. A callback function that is invoked anytime a animal is recognized.
     // 2. A configuration object with adjustable fields
     recognizer.listen(result => {
         let scores = result.scores; // probability of prediction for each class
@@ -49,16 +49,16 @@ async function init() {
         //}
 
         // Everytime the model evaluates a result it will return the scores array
-        // Based on this data we will build a new array with each word and it's corresponding score
+        // Based on this data we will build a new array with each animal and it's corresponding score
         scores = Array.from(scores).map((s, i) => ({ score: s, letter: classLabels[i] }));
 
         // After that we sort the array by scode descending
         scores.sort((s1, s2) => s2.score - s1.score);
 
         // The letter with the highest score. Remove background noise.
-        letterSpoken = scores[0].letter;// == "Background Noise" ? scores[1].letter : scores[0].letter;
+        animal = scores[0].letter;// == "Background Noise" ? scores[1].letter : scores[0].letter;
 
-        //console.log(letterSpoken);
+        //console.log(animal);
 
     }, {
         includeSpectrogram: true, // in case listen should return result.spectrogram
