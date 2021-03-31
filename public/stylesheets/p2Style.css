@@ -177,8 +177,8 @@ html, body {
     text-align: center;
 }
 
-    /*Oma/Opa Buttons style*/
-    .actionBtns {
+/*Oma/Opa Buttons style*/
+.actionBtns {
     /*Center buttons horizontally*/
     display: flex;
     justify-content: center;
@@ -245,6 +245,48 @@ html, body {
     #mainPgInst li {
         color: black;
         font-size: 1.2vw;
+    }
+
+/* --- CSS for tool tip that is for showing the different animal sounds available to Oma/Opa --- */
+.tooltip {
+    color: #F4F4F5;
+    border-bottom: 1px dotted;
+    outline: none;
+    cursor: help;
+    text-decoration: none;
+    position: relative;
+}
+    .tooltip span {
+        display: none;
+    }
+
+    .tooltip:hover span {
+        display: block;
+        color: black;
+        padding: 0.5em 0.8em 0.8em 2em;
+        background: #9FDAEE;
+        border: 1px solid #2BB0D7;
+        border-radius: 5px 5px;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
+        -webkit-box-shadow: 5px 5px rgba(0, 0, 0, 0.1);
+        -moz-box-shadow: 5px 5px rgba(0, 0, 0, 0.1);
+        font-family: Calibri, Tahoma, Geneva, sans-serif;
+        position: absolute;
+        left: 1em;
+        top: 2em;
+        z-index: 99;
+        margin-left: 0;
+        width: 250px;
+    }
+
+    .tooltip:hover em {
+        font-family: Candara, Tahoma, Geneva, sans-serif;
+        font-size: 1.2em;
+        font-weight: bold;
+        display: block;
+        padding: 0.2em 0 0.6em 0;
     }
 
 /* --- CSS Related to call buttons at the bottom. ---*/
