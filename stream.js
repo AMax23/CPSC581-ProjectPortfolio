@@ -15,7 +15,7 @@ let world = engine.world;
 let entities;
 let boxes = 0; // Starting off with no boxes on the screen.
 let maxBoxes = 9; // Only this many boxes at a time on the canvas. More than this and it will be laggy :(
-let boxSize = 102;
+let boxSize = 102; // If this number is changed the box image dimensions will also need to be changed.
 // Properties for the box.
 let boxOptions = {
     friction: 1,
@@ -200,6 +200,7 @@ const stream = (socket) => {
             });
             entities.boxes = []; // Clear the boxes array.
             allAnimals = [];
+            engine.events = {}; //  Remove all events on the engine or any object
         } else if (data.type == 'rhysDestory' && user != null) {
             let clientData = data;
             clientData.type = "rhysDestoryPerm";
@@ -220,6 +221,14 @@ const stream = (socket) => {
                 users.splice(users.indexOf(user), 1);
             }
         })
+
+        /// If someone disconnects reset the engine and world.
+        entities.boxes.forEach(box => {
+            World.remove(world, box);
+        });
+        entities.boxes = []; // Clear the boxes array.
+        allAnimals = [];
+        engine.events = {}; //  Remove all events on the engine or any object
 
         let clientData = {
             type: 'clientDisconnected'
