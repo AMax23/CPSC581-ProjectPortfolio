@@ -1,7 +1,7 @@
 // JavaScript source code
 
 // Comment this out temporarily cos its annoying.
-//if (!window.location.href.toString().includes("https://")) { alert(`You will need "https://" to view this.`) }
+if (!window.location.href.toString().includes("https://")) { alert(`You will need "https://" to view this.`) }
 
 let canvasPropSentToServer = false;
 let myCanvasDiv;
@@ -12,15 +12,12 @@ let handImg;
 let backgroundImg;
 let animalImages;
 
-let word = 'cow'; // An animal will appear on the boxes when oma/opa make a sound.
+let word = 'cow'; // An image of an animal will appear on the boxes when oma/opa make a sound.
 let letterParag = document.getElementById('letterSpoken');
 
 let rhysPermissionToDestroy = false; // Oma/Opa have not given Rhys permission to destory yet.
 
 ////////////////////////// BASIC P5 SET UP ////////////////////////////////////////
-function preload() {
-}
-
 function setup() {
     myCanvasDiv = document.getElementById('myCanvas');
     let canvasWidth = myCanvasDiv.offsetWidth;
@@ -86,7 +83,7 @@ function draw() {
 
 // Writes out the letter that is currently spoken by Oma/Opa for them to confirm.
 function writeAnimalName() {
-    word = animal != "Background Noise" ? animal : word;
+    word = animal != "Background Noise" ? animal : word; // animal variable comes from speech.js
     letterParag.innerHTML = 'Animal: ' + word.charAt(0).toUpperCase() + word.slice(1); // This just makes the first letter uppercase!
 }
 
@@ -161,7 +158,7 @@ function drawSprite(boxes) {
         }
 
         push();
-        // Rotae the image.
+        // Rotate the image.
         translate(pos.x, pos.y);
         rotate(angle);
         imageMode(CENTER);
@@ -191,10 +188,7 @@ function addBoxes(event) {
     }
     // Only if oma/opa send a box then add a letter.
     if (username != 'Rhys') {
-        // The letter comes in the format "LetterA".
-        //letter = letterSpoken != "Background Noise" ? letterSpoken.substr(letterSpoken.length - 1) : letter;
         data.animalNoise = word;
-        //data.letterColour = { r: random(255), g: random(255), b: random(255) }; // Add a random colour (RGB) for the letter.
     }
     webSocket.send(JSON.stringify(data));
 }
