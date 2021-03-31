@@ -164,7 +164,7 @@ html, body {
 #letterSpoken {
     color: #F4F4F5; /*Frost White/Silver*/
     /*font-family: 'Montserrat', sans-serif;*/
-    font-size: 1.5vw; /*Viewport is the browser window size. 1vw = 1% of viewport width.*/
+    font-size: 1.4vw; /*Viewport is the browser window size. 1vw = 1% of viewport width.*/
     margin: 0;
     display: inline-block;
 }
@@ -172,7 +172,7 @@ html, body {
 #rhysDestroyPerm {
     /*color: #F4F4F5;*/ /*Frost White/Silver*/
     /*font-size: 1.2vw;*/ /*Viewport is the browser window size. 1vw = 1% of viewport width.*/
-    margin: 0;
+    margin: 0 0 0 0;
     /*display: inline-block;*/
     text-align: center;
 }
@@ -180,10 +180,11 @@ html, body {
 /*Oma/Opa Buttons style*/
 .actionBtns {
     /*Center buttons horizontally*/
-    display: flex;
+    /*    display: flex;
     justify-content: center;
     align-items: center;
-    height: 100%;
+    height: 100%;*/
+    float: right;
 }
 /*These custom buttons are clear screen btns and give rhys permission btn. Only for Oma/Opa.*/
 .customBtn {
@@ -192,7 +193,7 @@ html, body {
     cursor: pointer;
     border-radius: 5px;
     text-align: center;
-    margin: 10px 10px;
+    /*margin: 10px 10px;*/
     background: white;
     font-size: 1.0vw;
 }
@@ -204,7 +205,7 @@ html, body {
 
 .customCounter {
     margin: 0;
-    margin-top: 10px;
+    margin-top: 20px;
     padding: 0;
     list-style-type: none;
     font-size: 1.1vw;
@@ -295,7 +296,7 @@ html, body {
     left: 4%;
     bottom: 32px;*/
     /*background: red;*/
-    margin: 5%;
+    margin: 3%;
     display: flex;
     justify-content: space-evenly;
     flex-direction: row;
