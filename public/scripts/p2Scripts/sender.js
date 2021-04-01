@@ -61,6 +61,7 @@ function handleSignallingData(data) {
             videoElement.removeAttribute('src'); // Empty source
             videoElement.load();
             document.getElementById('clientConnectMessage').innerHTML = 'Rhys not connected.';
+            location.href = location.origin + '/pages/p2.html';
             break;
         default:
             break;

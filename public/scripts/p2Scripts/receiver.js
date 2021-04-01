@@ -58,6 +58,7 @@ function handleSignallingData(data) {
             videoElement.pause();
             videoElement.removeAttribute('src'); // Empty source
             videoElement.load();
+            location.href = location.origin + '/pages/p2.html';
             break;
         case 'rhysDestoryPerm':
             rhysPermissionToDestroy = data.permissionToDestroy; // Change Rhys's permission. This is a global variable in sketch.js.
