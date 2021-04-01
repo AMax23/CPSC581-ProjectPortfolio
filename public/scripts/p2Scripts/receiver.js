@@ -134,7 +134,7 @@ function joinCall() {
             //peerConnection.addStream(localVideoStream);
             //localVideoStream.getTracks().forEach(track => peerConnection.addTrack(track, localVideoStream));
             stream.getTracks().forEach(function (track) {
-                peerConnection.addTrack(track, localVideoStream);
+                peerConnection.addTrack(track, stream);
             });
 
             // When our peer connection connects with someone else, then a callback function is called:
