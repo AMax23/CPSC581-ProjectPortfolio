@@ -31,6 +31,8 @@ let wallOptions = {
 let wallThickness = 100;
 let frameRate = 1000 / 30;
 
+let worldUpdateInterval;
+
 let users = []; // Store all connected users.
 
 let animal = 'A';
@@ -54,29 +56,6 @@ function getBoxProperties(boxes) {
 }
 
 const stream = (socket) => {
-
-    // When both clients are connected then start updating the world and send it to the clients.
-    if (entities) {
-        setInterval(() => {
-            Engine.update(engine, frameRate);
-
-            getBoxProperties(entities.boxes); // Get the x and y positions, and angle.
-
-            let clientData = {
-                type: "UpdateState",
-                boxes: entities.boxes.map(toVertices),
-                walls: entities.walls.map(toVertices),
-                positions: boxPositions,
-                angles: boxAngles,
-                //boxesLetters: entities.boxesLetters
-                boxesAnimals: allAnimals
-            }
-            // Send message to all connections
-            for (let i = 0; i < users.length; i++) {
-                users[i].conn.send(JSON.stringify(clientData));
-            }
-        }, frameRate);
-    }
 
     socket.onmessage = (message) => {
         var data = JSON.parse(message.data); // String data.
@@ -116,6 +95,11 @@ const stream = (socket) => {
             };
             users.push(newUser);
             console.log(newUser.username + ' connected');
+
+            // When both clients are connected then start updating the world and send it to the clients.
+            if (entities && users.length > 1) {
+                worldUpdateInterval = setInterval(updateWorld, frameRate);
+            }
         } else if (data.type == 'storeOffer' && user != null) {
             user.offer = data.offer;
         } else if (data.type == 'storeCandidate' && user != null && user.candidates == null) {
@@ -239,6 +223,8 @@ const stream = (socket) => {
         for (let i = 0; i < users.length; i++) {
             users[i].conn.send(JSON.stringify(clientData));
         }
+
+        clearInterval(worldUpdateInterval); // Stop the world update when client disconnects.
     })
 
     // Helper function for sending messages to a connection.
@@ -251,6 +237,26 @@ const stream = (socket) => {
         for (let i = 0; i < users.length; i++) {
             if (users[i].username == username)
                 return users[i];
+        }
+    }
+
+    function updateWorld() {
+        Engine.update(engine, frameRate);
+
+        getBoxProperties(entities.boxes); // Get the x and y positions, and angle.
+
+        let clientData = {
+            type: "UpdateState",
+            boxes: entities.boxes.map(toVertices),
+            walls: entities.walls.map(toVertices),
+            positions: boxPositions,
+            angles: boxAngles,
+            //boxesLetters: entities.boxesLetters
+            boxesAnimals: allAnimals
+        }
+        // Send message to all connections
+        for (let i = 0; i < users.length; i++) {
+            users[i].conn.send(JSON.stringify(clientData));
         }
     }
 }
