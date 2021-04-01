@@ -223,12 +223,14 @@ const stream = (socket) => {
         })
 
         /// If someone disconnects reset the engine and world.
-        entities.boxes.forEach(box => {
-            World.remove(world, box);
-        });
-        entities.boxes = []; // Clear the boxes array.
-        allAnimals = [];
-        engine.events = {}; //  Remove all events on the engine or any object
+        if (entities) {
+            entities.boxes.forEach(box => {
+                World.remove(world, box);
+            });
+            entities.boxes = []; // Clear the boxes array.
+            allAnimals = [];
+            engine.events = {}; //  Remove all events on the engine or any object
+        }
 
         let clientData = {
             type: 'clientDisconnected'
