@@ -138,6 +138,9 @@ function joinCall() {
             //});
 
             // When our peer connection connects with someone else, then a callback function is called:
+            peerConnection.onaddstream = (e) => {
+                document.getElementById("remoteVideo").srcObject = e.stream;
+            };
             peerConnection.ontrack = (e) => {
                 document.getElementById("remoteVideo").srcObject = e.streams[0];
             };
