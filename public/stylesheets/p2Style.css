@@ -256,6 +256,11 @@ html, body {
     cursor: help;
     text-decoration: none;
     position: relative;
+
+    /*font-family: 'Oswald';*/
+    color: blue;
+    /*margin: 0;*/
+    line-height: 1em;
 }
     .tooltip span {
         display: none;
