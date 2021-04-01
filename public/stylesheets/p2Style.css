@@ -106,7 +106,7 @@ html, body {
 
 /* --- CSS Related to main landing page ---*/
 .container {
-    height: 200px;
+    height: 600px;
     position: relative;
     /*border: 3px solid green;*/
     /*background: #F6F8FF;*/
@@ -115,6 +115,7 @@ html, body {
     left: 50%;
     -ms-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
+    /*background: purple;*/
 }
 
 .center {
@@ -124,6 +125,8 @@ html, body {
     left: 50%;
     -ms-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
+    /*width: 60%;*/
+    /*background: yellow;*/
 }
 
 #imgCredit {
@@ -135,22 +138,38 @@ html, body {
     transform: translate(-50%, -50%);
 }
 /*Buttons on main page to call oma/opa or to call Rhys.*/
-#rhysBtn, #gpBtn {
+.callBtnDiv {
     display: inline-block;
     background: #1E2235; /*Dark blue*/
     border-radius: 12px;
     color: #F6F8FF;
-    width: 300px;
-    height: 50px;
+    width: 40%;
+    height: auto;
     cursor: pointer;
     font-size: 20px;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
+    margin-right: 20px;
+    text-align: center;
+    padding: 10px;
 }
 
+    .callBtnDiv p {
+        font-size: 1.5vw;
+        display: block;
+        margin: 5px;
+    }
+
+    .callBtnDiv img {
+        width: 100%;
+        height: auto;
+    }
+
 /* Change the button width when the browser window is 1500px wide or less: */
-@media only screen and (max-width: 1500px) {
-    #rhysBtn, #gpBtn {
-        width: 200px;
+@media only screen and (max-width: 1200px) {
+    .callBtnDiv {
+        /*width: 160px;*/
+        margin-right: 0px;
+        /*background: red;*/
     }
 }
 
@@ -234,12 +253,12 @@ html, body {
     color: black;
     font-size: 1.5vw;
     font-weight: bold;
-    margin: 0;
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
+    /*margin: 0;*/
+    /*position: absolute;*/
+    /*top: 100%;*/
+    /*left: 50%;*/
+    /*    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);*/
     /*background: red;*/
 }
 
@@ -256,12 +275,12 @@ html, body {
     cursor: help;
     text-decoration: none;
     position: relative;
-
     /*font-family: 'Oswald';*/
     color: blue;
     /*margin: 0;*/
     line-height: 1em;
 }
+
     .tooltip span {
         display: none;
     }

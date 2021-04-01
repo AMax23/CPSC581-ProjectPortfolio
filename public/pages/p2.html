@@ -13,19 +13,30 @@
 
     <div class="container">
         <div class="center">
-            <button onclick="callRhys()" id="gpBtn">Call Rhys</button> <!--This button will be clicked by Oma/Opa-->
-            <button onclick="callOmaOpa()" id="rhysBtn">Call Oma & Opa</button> <!--This button will be clicked by Rhys-->
+
+            <div class="callBtnDiv" id="gpBtn" onclick="callRhys()">
+                <img src="../images/project 2/Rhys.png" />
+                <p>Call Rhys</p>
+            </div>
+            <!--<button onclick="callRhys()" id="gpBtn">Call Rhys</button>--> <!--This button will be clicked by Oma/Opa-->
+            <div class="callBtnDiv" id="rhysBtn" onclick="callOmaOpa()">
+                <img src="../images/project 2/Rhys.png" />
+                <p>Call Oma & Opa</p>
+            </div>
+            <!--<button onclick="callOmaOpa()" id="rhysBtn">Call Oma & Opa</button>--> <!--This button will be clicked by Rhys-->
+
+            <div id="mainPgInst">
+                Instructions:
+                <ol class="customCounter">
+                    <li>Oma/Opa first have to click call Rhys.</li>
+                    <li>Rhys then connects by clicking call Oma & Opa.</li>
+                    <li>Have fun and Hakuna Matata!</li>
+                </ol>
+            </div>
+
         </div>
 
-        <div id="mainPgInst">
-            Instructions:
-            <ol class="customCounter">
-                <li>Oma/Opa first have to click call Rhys.</li>
-                <li>Rhys then connects by clicking call Oma & Opa.</li>
-                <li>Have fun and Hakuna Matata!</li>
-            </ol>
 
-        </div>
 
     </div>
 
