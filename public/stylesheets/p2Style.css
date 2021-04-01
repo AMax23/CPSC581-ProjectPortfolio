@@ -134,7 +134,7 @@ html, body {
     -ms-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
 }
-
+/*Buttons on main page to call oma/opa or to call Rhys.*/
 #rhysBtn, #gpBtn {
     display: inline-block;
     background: #1E2235; /*Dark blue*/
@@ -150,7 +150,7 @@ html, body {
 /* Change the button width when the browser window is 1500px wide or less: */
 @media only screen and (max-width: 1500px) {
     #rhysBtn, #gpBtn {
-        width: 170px;
+        width: 200px;
     }
 }
 
