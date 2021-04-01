@@ -138,12 +138,9 @@ function joinCall() {
             //});
 
             // When our peer connection connects with someone else, then a callback function is called:
-            peerConnection.onaddstream = (e) => {
-                document.getElementById("remoteVideo").srcObject = e.stream;
+            peerConnection.ontrack = (e) => {
+                document.getElementById("remoteVideo").srcObject = e.streams[0];
             };
-            //peerConnection.ontrack = (e) => {
-            //    document.getElementById("remoteVideo").srcObject = e.streams[0];
-            //};
 
             // As soon as the offer gets created.
             // Those candidates need to be sent to the server and the server will send that candidate to the person connection to us.
