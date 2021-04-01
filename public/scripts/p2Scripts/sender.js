@@ -107,9 +107,9 @@ function startCall() {
             // When some other peer connects to our peer, then our stream will be available to them.
             peerConnection = new RTCPeerConnection(peerConnectionConfig);
             peerConnection.addStream(localVideoStream);
-            stream.getTracks().forEach(function (track) {
-                peerConnection.addTrack(track, localVideoStream);
-            });
+            //stream.getTracks().forEach(function (track) {
+            //    peerConnection.addTrack(track, localVideoStream);
+            //});
 
             // When the peer connection connects with someone else, then a callback function is called:
             peerConnection.ontrack = (e) => {
