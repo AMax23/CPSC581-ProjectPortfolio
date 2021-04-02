@@ -6,6 +6,7 @@ if (!window.location.href.toString().includes("https://")) { alert(`You will nee
 let canvasPropSentToServer = false;
 let myCanvasDiv;
 let rhysDestroyBtn;
+let updateWorld = false;
 
 let boxImg;
 let handImg;
@@ -57,6 +58,10 @@ function setup() {
 
 function draw() {
 
+    if (!updateWorld && !rhysPermissionToDestroy) {
+        clear(); // Clear the canvas
+    }
+
     if (username == 'Rhys') {
         drawHandPointer(); // This pointer is only drawn for Rhys.
     }
@@ -91,7 +96,7 @@ function writeAnimalName() {
 function drawHandPointer() {
     //background(0);
     // These coordinates come from the handtrack.js script.
-    if (xCord != null && yCord != null && renderVideo && rhysPermissionToDestroy) {
+    if (xCord != null && yCord != null && renderVideo && rhysPermissionToDestroy & updateWorld) {
 
         // Map the coordinates so they fit the user's screen.
         // These numbers came from trial and error.
@@ -114,6 +119,7 @@ function drawHandPointer() {
 
 // Gets the data from the server and draws those vertices for each object.
 function drawObject(data) {
+    updateWorld = true;
     clear(); // Clear the canvas and redraw all the shapes and walls.
 
     // Game background. Only draw when Rhys is allowed to destory.
@@ -138,6 +144,7 @@ function drawObject(data) {
     if (!rhysPermissionToDestroy) { boxes.forEach(box => drawBody(box)); } // Draw a rect on with the vertices.
     boxes.forEach(box => drawSprite(data)); // Put image on top of the x y positions.
     pop();
+    if (data.boxes.length == 0) { updateWorld = false; }
 }
 
 // Draws an image over the box position.

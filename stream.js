@@ -165,6 +165,7 @@ const stream = (socket) => {
                 animal = data.animalNoise;
                 //entities.boxesLetters.push(animal);
                 allAnimals.push({ animalNoise: animal });
+                if (entities.boxes.length == 1) { worldUpdateInterval = setInterval(updateWorld, frameRate); }
             } else if (user.username != 'oma/opa') {
                 entities.boxes.forEach(box => {
                     // https://stackoverflow.com/a/50472656/6243352
@@ -258,6 +259,7 @@ const stream = (socket) => {
         for (let i = 0; i < users.length; i++) {
             users[i].conn.send(JSON.stringify(clientData));
         }
+        if (entities.boxes.length == 0) { clearInterval(worldUpdateInterval); }
     }
 }
 
