@@ -29,6 +29,7 @@ function setup() {
 
     // Add event listeners (only on oma/opa's side).
     if (username == 'oma/opa') {
+
         // When the clear button is clicked
         let clearBtn = document.getElementById('clrScrnBtn');
         clearBtn.addEventListener("click", clearScreen);
@@ -226,5 +227,17 @@ function rhysPermission(event) {
     } else {
         rhysDestroyBtn.style.background = 'White';
         rhysDestroyBtn.style.color = 'Black';
+    }
+}
+
+// This is the div setup which displays the instructions and call buttons.
+function setupDiv() {
+    // Unhide the divs and remove the call start button.
+    document.getElementById("customClientDiv").style.display = "block";
+    document.getElementById("callBtn").style.display = "none";
+    document.getElementById("micBtn").style.display = "block";
+    document.getElementById("videoBtn").style.display = "block";
+    if (username == 'oma/opa') {
+        document.getElementById("endCallBtn").style.display = "block";
     }
 }

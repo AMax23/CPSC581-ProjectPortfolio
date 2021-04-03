@@ -13,7 +13,12 @@
     <div class="mainContainer">
 
         <div id="videoCallDiv">
-            <video id="remoteVideo" autoplay></video>
+            <div class="remoteVideoContainer">
+                <video id="remoteVideo" autoplay></video>
+                <div class="overlay">
+                    <h3 id="clientConnectMessage">Oma/Opa not connected.</h3>
+                </div>
+            </div>
             <video muted id="localVideo" autoplay></video>
             <video muted id="localVideoHandTrack" style="display: none"></video>
 
@@ -33,10 +38,11 @@
             </div>
 
             <div class="callButtonsDiv">
+                <img class="callBtns callBtn" id="callBtn" src="../images/project 2/callStart.png">
                 <!--For Rhys the end call btn isn't available-->
                 <!--<img class="callBtns phoneIcon" src="../images/project 2/end-call-button.svg" style="visibility: hidden">-->
-                <img class="callBtns micIcon" id="micBtn" src="../images/project 2/mic.png" onclick=muteAudio()>
-                <img class="callBtns cameraIcon" id="videoBtn" src="../images/project 2/camera.png" onclick=muteVideo()>
+                <img class="callBtns micIcon" id="micBtn" src="../images/project 2/mic.png" onclick=toggleAudio()>
+                <img class="callBtns cameraIcon" id="videoBtn" src="../images/project 2/camera.png" onclick=toggleRhysVideo()>
             </div>
 
         </div>
@@ -60,7 +66,7 @@
 
     <!--Additional Scripts-->
     <script src="../scripts/p2Scripts/handtrack.js"></script>
-    <script src="../scripts/p2Scripts/receiver.js"></script>
+    <script src="../scripts/p2Scripts/clientSocket.js"></script>
     <script src="../scripts/p2Scripts/sketch.js"></script>
 
 </body>

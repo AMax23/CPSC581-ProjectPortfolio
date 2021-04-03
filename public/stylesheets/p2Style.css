@@ -178,6 +178,7 @@ html, body {
     /*background: green;*/
     height: auto;
     margin: 3%;
+    display: none; /*Hidden until call starts.*/
 }
 
 #letterSpoken {
@@ -341,14 +342,21 @@ html, body {
         opacity: 0.90;
     }
 
+.callBtn {
+    background: #43B51F; /*Green*/
+}
+
 .phoneIcon {
     background: #EA312B; /*Red*/
+    display: none; /*Hidden until call starts.*/
 }
 
 .micIcon {
     background: white;
+    display: none; /*Hidden until call starts.*/
 }
 
 .cameraIcon {
     background: white;
+    display: none; /*Hidden until call starts.*/
 }
