@@ -10,3 +10,6 @@ CPSC 581 web portfolio containing projects for the Human-Computer Interaction co
 
 ## Project 1: Wordless
 * https://ahmedhasan-portfolio.herokuapp.com/pages/p1Details.html
+
+## Project 2: The Relationship
+* https://ahmedhasan-portfolio.herokuapp.com/pages/p2Details.html
