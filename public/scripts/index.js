@@ -36,3 +36,15 @@ $("#src-p1").on("click", e => {
 $("#go-p2").on("click", e => {
     window.location.assign(`${URL}/pages/p2.html`);
 });
+
+// P2 Details page
+$("#det-p2").on("click", e => {
+    window.location.assign(`${URL}/pages/p2Details.html`);
+});
+
+// P1 source page --> Github repo
+$("#src-p2").on("click", e => {
+    window.location.href = "https://github.com/AMax23/CPSC581-ProjectPortfolio";
+});
+
+//////////////////////////////////////////////////////////////////////
