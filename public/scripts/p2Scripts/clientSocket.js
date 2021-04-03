@@ -38,8 +38,7 @@ const MessageType = {
     CALL_REQUEST: 3,
 };
 
-//if (params.get('client') == 'client1') {
-function c1() {
+if (params.get('client') == 'client1') {
     username = 'oma/opa';
     getWebcam();
     const HOST = location.origin.replace(/^http/, 'ws'); // WebSocket requests use the WS protocol, not the HTTP protocol.
@@ -48,8 +47,7 @@ function c1() {
     webSocket.onmessage = handleMessage;
 }
 
-//if (params.get('client') == 'client2') {
-function c2(){
+if (params.get('client') == 'client2') {
     username = 'Rhys';
     getWebcam();
     const HOST = location.origin.replace(/^http/, 'ws'); // WebSocket requests use the WS protocol, not the HTTP protocol.
