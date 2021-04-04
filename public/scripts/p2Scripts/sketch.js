@@ -27,20 +27,6 @@ function setup() {
     // Put p5 canvas in the right div on main page.
     cnv.parent("myCanvas");
 
-    // Add event listeners (only on oma/opa's side).
-    if (username == 'oma/opa') {
-
-        // When the clear button is clicked
-        let clearBtn = document.getElementById('clrScrnBtn');
-        clearBtn.addEventListener("click", clearScreen);
-
-        rhysDestroyBtn = document.getElementById('rhysDestroyBtn');
-        rhysDestroyBtn.addEventListener("click", rhysPermission);
-
-        // Add event listener for whenever the canvas is clicked. A box will be added.
-        myCanvasDiv.addEventListener("mousedown", addBoxes);
-    }
-
     //boxImg = loadImage('//cdn.rawgit.com/liabru/matter-js/2560a681/demo/img/box.png');
     boxImg = loadImage('../images/project 2/needlepointFabric.png');
     handImg = loadImage('../images/project 2/hand.png');
@@ -239,5 +225,16 @@ function setupDiv() {
     document.getElementById("videoBtn").style.display = "block";
     if (username == 'oma/opa') {
         document.getElementById("endCallBtn").style.display = "block";
+
+        // Add event listeners (only on oma/opa's side).
+        // When the clear button is clicked
+        let clearBtn = document.getElementById('clrScrnBtn');
+        clearBtn.addEventListener("click", clearScreen);
+
+        rhysDestroyBtn = document.getElementById('rhysDestroyBtn');
+        rhysDestroyBtn.addEventListener("click", rhysPermission);
+
+        // Add event listener for whenever the canvas is clicked. A box will be added.
+        myCanvasDiv.addEventListener("mousedown", addBoxes);
     }
 }
