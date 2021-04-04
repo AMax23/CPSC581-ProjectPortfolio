@@ -2,7 +2,7 @@ const Matter = require("matter-js");
 
 // Module aliases
 let Engine = Matter.Engine,
-    Render = Matter.Render,
+    //Render = Matter.Render,
     World = Matter.World,
     Bodies = Matter.Bodies,
     Body = Matter.Body,
@@ -33,7 +33,6 @@ let frameRate = 1000 / 30;
 
 let worldUpdateInterval;
 
-let animal = '';
 let allAnimals = [];
 
 const toVertices = e => e.vertices.map(({ x, y }) => ({ x, y }));
@@ -106,6 +105,7 @@ const stream = (socket, request) => {
     socket.onmessage = (mEvent) => {
         var msg = JSON.parse(mEvent.data);
         //console.log(msg);
+        // These numbers are from MessageType object values.
         if (msg.type in [0, 1, 2, 3]) {
             switch (request.url) {
                 case "/client1":
@@ -184,9 +184,7 @@ const stream = (socket, request) => {
                     let newBox = Bodies.rectangle(coordinates.x, coordinates.y, boxSize, boxSize, boxOptions);
                     World.add(world, newBox);
                     entities.boxes.push(newBox);
-                    animal = data.animalNoise;
-                    //entities.boxesLetters.push(animal);
-                    allAnimals.push({ animalNoise: animal });
+                    allAnimals.push({ animalNoise: data.animalNoise });
                     if (entities.boxes.length == 1 && clients.client1 && clients.client2) { worldUpdateInterval = setInterval(updateWorld, frameRate); }
                 } else if (user != 'oma/opa') {
                     entities.boxes.forEach(box => {
@@ -235,7 +233,11 @@ const stream = (socket, request) => {
             entities.boxes.forEach(box => {
                 World.remove(world, box);
             });
+            entities.walls.forEach(wall => {
+                World.remove(world, wall);
+            });
             entities.boxes = []; // Clear the boxes array.
+            entities.walls = []; // Clear the boxes array.
             allAnimals = [];
             engine.events = {}; //  Remove all events on the engine or any object
         }
