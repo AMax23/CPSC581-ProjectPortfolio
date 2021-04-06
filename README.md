@@ -13,3 +13,9 @@ CPSC 581 web portfolio containing projects for the Human-Computer Interaction co
 
 ## Project 2: The Relationship
 * https://ahmedhasan-portfolio.herokuapp.com/pages/p2Details.html
+
+## How to Run Locally
+1. Download the project file
+2. Install Node.js
+3. Run node web.js
+4. Navigate to http://localhost:5000
