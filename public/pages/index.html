@@ -1,233 +1,272 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <!-- Based on Bootstrap Album Template-->
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Describe this page." />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
     <title>Ahmed Hasan</title>
 
-    <!-- Bootstrap core CSS -->
+    <!-- Bootstrap Core CSS -->
     <link href="../dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Custom Fonts -->
+    <link href="../dist/css/all.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css" />
+    <link href="../dist/css/simple-line-icons.css" rel="stylesheet" />
+
     <!-- Custom CSS -->
-    <link href="../stylesheets/custom.css" rel="stylesheet" />
+    <link href="../dist/css/stylish-portfolio.min.css" rel="stylesheet" />
 </head>
-<body>
-    <header>
-        <div class="collapse bg-dark" id="navbarHeader">
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm-8 col-md-7 py-4">
-                        <h4 class="text-white">About Me</h4>
-                        <p class="text-muted">
-                            Hey! I am a creative computer science student at the University of Calgary.
-                            Over the past couple of years I've enjoyed creating amazing software, designing applications, and learning about different technologies!
-                            I love building and designing applications and seeing my crazy ideas come to life!
-                            <!--When I'm not working, I like playing games, and creating animations.-->
-                        </p>
-                    </div>
-                    <div class="col-sm-4 offset-md-1 py-4">
-                        <h4 class="text-white">Contact</h4>
-                        <ul class="list-unstyled">
-                            <li><a href="https://www.linkedin.com/in/ahmedhasan01/" class="text-white">LinkedIn</a></li>
-                            <li><!--<a href="#" class="text-white">Facebook</a>--></li>
-                            <li><a href="https://github.com/AMax23" class="text-white">GitHub</a></li>
-                            <li><a href="mailto:ahmed.hasan@ucalgary.ca" class="text-white">Email Me</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+
+<body id="page-top">
+
+    <!-- Navigation -->
+    <a class="menu-toggle rounded" href="#">
+        <i class="fas fa-bars"></i>
+    </a>
+    <nav id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+            <li class="sidebar-brand">
+                <a class="js-scroll-trigger" href="#page-top">Ahmed</a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a class="js-scroll-trigger" href="#page-top">Home</a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a class="js-scroll-trigger" href="#about">About</a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a class="js-scroll-trigger" href="#services">Skills</a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a class="js-scroll-trigger" href="#portfolio">Projects</a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a class="js-scroll-trigger" href="#contact">Contact</a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Header -->
+    <header class="masthead d-flex">
+        <div class="container text-center my-auto">
+            <h1 class="mb-1">Hello, I'm Ahmed!</h1>
+            <h3 class="mb-5">
+                <em>Welcome to My Website</em>
+            </h3>
+            <a class="btn btn-primary btn-xl js-scroll-trigger" href="#about">Find Out More</a>
         </div>
-        <div class="navbar navbar-dark bg-dark shadow-sm">
-            <div class="container">
-                <a href="index.html" class="navbar-brand d-flex align-items-center">
-                    <strong>Ahmed Hasan</strong>
-                </a>
-                <button class="navbar-toggler"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#navbarHeader"
-                        aria-controls="navbarHeader"
-                        aria-expanded="false"
-                        aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-            </div>
-        </div>
+        <div class="overlay"></div>
     </header>
 
-    <main>
-        <section class="py-5 text-center container">
-            <div class="row py-lg-5">
-                <div class="col-lg-6 col-md-8 mx-auto">
-                    <h1 class="fw-light">Welcome to My Website!</h1>
-                    <p class="lead text-muted">
-                        This is a collection of my amazing projects from the Human-Computer Interaction course at the University of Calgary.
+    <!-- About -->
+    <section class="content-section bg-light" id="about">
+        <div class="container text-center">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <h2>About Me</h2>
+                    <p class="lead mb-5">
+                        Hey! I am a creative computer science student at the University of Calgary.
+                        Over the past couple of years I've enjoyed creating amazing software, designing applications, and learning about different technologies!
+                        I love building and designing applications and seeing my crazy ideas come to life!
                     </p>
-                    <p></p>
+                    <a class="btn btn-dark btn-xl js-scroll-trigger" href="#services">My Skills</a>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <div class="album py-5 bg-light">
-            <div class="container">
-                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                    <div class="col">
-                        <div class="card shadow-sm">
-                            <svg class="bd-placeholder-img card-img-top"
-                                 width="100%"
-                                 height="0" <!--"225"-->
-                  xmlns="http://www.w3.org/2000/svg"
-                  role="img"
-                  aria-label="Placeholder: Thumbnail"
-                  preserveAspectRatio="xMidYMid slice"
-                  focusable="false"
-                >
-                  <title>P0 Placeholder</title>
-                  <!--<rect width="100%" height="100%" fill="#55595c" />-->
-                  <!--<text x="50%" y="50%" fill="#eceeef" dy=".3em">-->
-                      <img src="../images/project 0/thumbnail.PNG" alt="Thumbnail" style="height:225px;">
-                  <!--</text>-->
-                </svg>
+    <!-- Services -->
+    <section class="content-section bg-primary text-white text-center" id="services">
+        <div class="container">
+            <div class="content-section-heading">
+                <!--<h3 class="text-secondary mb-0">Services</h3>-->
+                <h2 class="mb-5">Skills Overview</h2>
+            </div>
+            <div class="row">
+                <div class="col-lg-3 col-md-6 mb-5 mb-lg-0">
+                    <span class="service-icon rounded-circle mx-auto mb-3">
+                        <i class="fas fa-code"></i>
+                    </span>
+                    <h4>
+                        <strong>Programming</strong>
+                    </h4>
+                    <p class="text-faded mb-0">Python, Java, C++, Haskell, Assembly, SQL</p>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-5 mb-lg-0">
+                    <span class="service-icon rounded-circle mx-auto mb-3">
+                        <i class="icon-pencil"></i>
+                    </span>
+                    <h4>
+                        <strong>UI/UX</strong>
+                    </h4>
+                    <p class="text-faded mb-0">Designing interactive and intuitive front-end applications. Prototyping with tools such as Figma and Balsamiq</p>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-5 mb-md-0">
+                    <span class="service-icon rounded-circle mx-auto mb-3">
+                        <i class="icon-globe"></i>
+                    </span>
+                    <h4>
+                        <strong>Web Development</strong>
+                    </h4>
+                    <p class="text-faded mb-0">HTML/CSS, JavaScript, React, Express, Node, Socket.io, Create, D3, P5</p>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <span class="service-icon rounded-circle mx-auto mb-3">
+                        <i class="icon-chart"></i>
+                    </span>
+                    <h4>
+                        <strong>Analytics</strong>
+                    </h4>
+                    <p class="text-faded mb-0">SQL, Power BI, Tableau, SSRS </p>
+                </div>
+            </div>
+            <br /><br /><br />
+            <a class="btn btn-dark btn-xl js-scroll-trigger" href="#portfolio">View My Projects</a>
+        </div>
+    </section>
 
-                            <div class="card-body">
-                                <p class="card-text">
-                                    The objective of this project was to create a single button that represents my client.
+    <!-- Callout -->
+    <!--<section class="callout">
+        <div class="container text-center">
+            <h2 class="mx-auto mb-5">
+                Welcome to
+                <em>your</em>
+                next website!
+            </h2>
+            <a class="btn btn-primary btn-xl" href="https://startbootstrap.com/theme/stylish-portfolio/">Download Now!</a>
+        </div>
+    </section>-->
+    <!-- Portfolio -->
+    <section class="content-section" id="portfolio">
+        <div class="container">
+            <div class="content-section-heading text-center">
+                <!--<h3 class="text-secondary mb-0">Portfolio</h3>-->
+                <h2 class="mb-5">Recent Projects</h2>
+                <p class="lead mb-5">
+                    This is a collection of my amazing projects from CPSC 581: Human-Computer Interaction II.
+                </p>
+            </div>
+            <div class="row no-gutters">
+                <div class="col-lg-6">
+                    <a class="portfolio-item" href="/pages/p1Details.html">
+                        <div class="caption">
+                            <div class="caption-content">
+                                <div class="h2">The Button</div>
+                                <p class="mb-0">
+                                    A single button that represents my client, Anastasiya.
                                     The interaction with the button aims to delight and evoke wonder.
-                                    And so, I decided to create a catching game using HTML, CSS, JS, and the P5 framework.
                                 </p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="btn-group">
-
-                                        <button id="go-p0"
-                                                type="button"
-                                                class="btn btn-sm btn-outline-secondary">
-                                            Go
-                                        </button>
-                                        <button id="src-p0"
-                                                type="button"
-                                                class="btn btn-sm btn-outline-secondary">
-                                            Source
-                                        </button>
-                                        <button id="det-p0"
-                                                type="button"
-                                                class="btn btn-sm btn-outline-secondary">
-                                            Details
-                                        </button>
-                                    </div>
-                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col">
-                        <div class="card shadow-sm">
-                            <svg class="bd-placeholder-img card-img-top"
-                                 width="100%"
-                                 height="0"
-                                 xmlns="http://www.w3.org/2000/svg"
-                                 role="img"
-                                 aria-label="Placeholder: Thumbnail"
-                                 preserveAspectRatio="xMidYMid slice"
-                                 focusable="false">
-                                <title>P1 Placeholder</title>
-                                <!--<rect width="100%" height="100%" fill="#55595c" />
-                                <text x="50%" y="50%" fill="#eceeef" dy=".3em">
-                                  Thumbnail
-                                </text>-->
-                                <img src="../images/project 1/thumbnail.PNG" alt="Thumbnail" style="height:225px;">
-
-                            </svg>
-
-                            <div class="card-body">
-                                <p class="card-text">
-                                    The aim of this project was to create an interface that runs on mobile phone web browsers.
-                                    This project uses sound as an input to provide a rich, expressive, and delightful interaction.
-                                    At the same time, this fits under the aesthetic umbrella of WONDER and DELIGHT.
-                                    <!--So, I implemented Whac-A-Mole using web sensors in order to provide a rich interaction with non-verbal audio input.-->
+                        <img class="img-fluid" src="../images/project 0/thumbnail2.PNG" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-6">
+                    <a class="portfolio-item" href="/pages/p1Details.html">
+                        <div class="caption">
+                            <div class="caption-content">
+                                <div class="h2">Wordless</div>
+                                <p class="mb-0">
+                                    An interface that uses sound as an input to provide a rich, expressive, and delightful interaction.
                                 </p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="btn-group">
-                                        <button id="go-p1"
-                                                type="button"
-                                                class="btn btn-sm btn-outline-secondary">
-                                            Go
-                                        </button>
-                                        <button id="src-p1"
-                                                type="button"
-                                                class="btn btn-sm btn-outline-secondary">
-                                            Source
-                                        </button>
-                                        <button id="det-p1"
-                                                type="button"
-                                                class="btn btn-sm btn-outline-secondary">
-                                            Details
-                                        </button>
-                                    </div>
-                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col">
-                        <div class="card shadow-sm">
-                            <svg class="bd-placeholder-img card-img-top"
-                                 width="100%"
-                                 height="0"
-                                 xmlns="http://www.w3.org/2000/svg"
-                                 role="img"
-                                 aria-label="Placeholder: Thumbnail"
-                                 preserveAspectRatio="xMidYMid slice"
-                                 focusable="false">
-                                <title>P2 Placeholder</title>
-                                <!--<rect width="100%" height="100%" fill="#55595c" />
-                                <text x="50%" y="50%" fill="#eceeef" dy=".3em">
-                                  Thumbnail
-                                </text>-->
-                                <img src="../images/project 2/thumbnail.PNG" alt="Thumbnail" style="height:225px;">
-
-                            </svg>
-
-                            <div class="card-body">
-                                <p class="card-text">
+                        <img class="img-fluid" src="../images/project 1/thumbnail2.PNG" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-6">
+                    <a class="portfolio-item" href="/pages/p2Details.html">
+                        <div class="caption">
+                            <div class="caption-content">
+                                <div class="h2">The Relationship</div>
+                                <p class="mb-0">
                                     A technology system that helps facilitate a relationship
                                     between an 8-month-old baby and his grandparents.
                                     I created a video conferencing interface for laptops that has a more interactive dynamic
                                     and goes beyond just a face on a screen.
                                 </p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="btn-group">
-                                        <button id="go-p2"
-                                                type="button"
-                                                class="btn btn-sm btn-outline-secondary">
-                                            Go
-                                        </button>
-                                        <button id="src-p2"
-                                                type="button"
-                                                class="btn btn-sm btn-outline-secondary">
-                                            Source
-                                        </button>
-                                        <button id="det-p2"
-                                                type="button"
-                                                class="btn btn-sm btn-outline-secondary">
-                                            Details
-                                        </button>
-                                    </div>
-                                </div>
                             </div>
                         </div>
-                    </div>
+                        <img class="img-fluid" src="../images/project 2/thumbnail3.PNG" alt="">
+                    </a>
+                </div>
+                <div class="col-lg-6">
+                    <a class="portfolio-item" href="#!">
+                        <div class="caption">
+                            <div class="caption-content">
+                                <div class="h2">Workspace</div>
+                                <p class="mb-0">A yellow workspace with some scissors, pencils, and other objects.</p>
+                            </div>
+                        </div>
+                        <img class="img-fluid" src="../images/index/portfolio-4.jpg" alt="">
+                    </a>
                 </div>
             </div>
         </div>
-    </main>
+    </section>
 
-    <footer class="text-muted py-5">
+    <!-- Call to Action -->
+    <!--<section class="content-section bg-primary text-white">
+        <div class="container text-center">
+            <h2 class="mb-4">The buttons below are impossible to resist...</h2>
+            <a href="#!" class="btn btn-xl btn-light mr-4">Click Me!</a>
+            <a href="#!" class="btn btn-xl btn-dark">Look at Me!</a>
+        </div>
+    </section>-->
+    <!-- Map -->
+    <!--<div id="contact" class="map">
+        <iframe src="https://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=Twitter,+Inc.,+Market+Street,+San+Francisco,+CA&amp;aq=0&amp;oq=twitter&amp;sll=28.659344,-81.187888&amp;sspn=0.128789,0.264187&amp;ie=UTF8&amp;hq=Twitter,+Inc.,+Market+Street,+San+Francisco,+CA&amp;t=m&amp;z=15&amp;iwloc=A&amp;output=embed"></iframe>
+        <br />
+        <small>
+            <a href="https://maps.google.com/maps?f=q&amp;source=embed&amp;hl=en&amp;geocode=&amp;q=Twitter,+Inc.,+Market+Street,+San+Francisco,+CA&amp;aq=0&amp;oq=twitter&amp;sll=28.659344,-81.187888&amp;sspn=0.128789,0.264187&amp;ie=UTF8&amp;hq=Twitter,+Inc.,+Market+Street,+San+Francisco,+CA&amp;t=m&amp;z=15&amp;iwloc=A"></a>
+        </small>
+    </div>-->
+    <!-- Footer -->
+    <footer class="footer text-center" id="contact">
         <div class="container">
-            <p class="mb-1">Album example is from &copy;Bootstrap.</p>
+            <ul class="list-inline mb-5">
+
+                <li class="list-inline-item">
+                    <a class="social-link rounded-circle text-white mr-3" href="https://www.linkedin.com/in/ahmedhasan01/">
+                        <i class="icon-social-linkedin"></i>
+                    </a>
+                </li>
+
+                <li class="list-inline-item">
+                    <a class="social-link rounded-circle text-white mr-3" href="https://github.com/AMax23">
+                        <i class="icon-social-github"></i>
+                    </a>
+                </li>
+
+                <li class="list-inline-item">
+                    <a class="social-link rounded-circle text-white" href="mailto:ahmed.hasan@ucalgary.ca">
+                        <i class="icon-envelope"></i>
+                    </a>
+                </li>
+
+            </ul>
+            <!--<p class="text-muted small mb-0">Copyright &copy; Your Website 2021</p>-->
         </div>
     </footer>
-    <!-- Load Scripts-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded js-scroll-trigger" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="../dist/js/jquery.min.js"></script>
     <script src="../dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="../dist/js/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for this template -->
+    <script src="../dist/js/stylish-portfolio.min.js"></script>
     <script src="../scripts/index.js"></script>
 </body>
+
 </html>
